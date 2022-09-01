@@ -1,0 +1,79 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id       String @id @default(uuid())
+  name     String
+  email    String @unique
+  password String
+
+  @@map("users")
+}
+
+model Motoboy {
+  id      String  @id @default(uuid())
+  name    String
+  email   String? @unique
+  celular String
+
+  motoboy        Route[]
+  motoboyInvoice Invoice[]
+
+  @@map("motoboys")
+}
+
+model Route {
+  id         String   @id @default(uuid())
+  startRoute String?
+  endRoute   String
+  createdAt  DateTime @default(now())
+  motoboyId  String
+  valueRoute Int
+
+  motoboy Motoboy @relation(fields: [motoboyId], references: [id])
+
+  @@map("routes")
+}
+
+model Client {
+  id        String @id @default(uuid())
+  name      String
+  cnpj      String @unique
+  address   String
+  telephone String
+
+  invoice Invoice[]
+
+  @@map("clients")
+}
+
+model TableValues {
+  id            String @id @default(uuid())
+  valueScore    Int
+  district      String @unique
+  valueDistrict Int
+
+  @@map("tableValues")
+}
+
+model Invoice {
+  id          String   @id @default(uuid())
+  date        DateTime @default(now())
+  motoboyId   String
+  cnpjId      String
+  description String
+
+  cnpj    Client  @relation(fields: [cnpjId], references: [id])
+  motoboy Motoboy @relation(fields: [motoboyId], references: [id])
+
+  @@map("invoices")
+}
