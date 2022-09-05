@@ -9,7 +9,7 @@ export const one = async(req: Request, res: Response) => {
     const { id } = req.params
     const user = await UserService.findOne(id)
     if(user) {
-        res.status(200).json({user})
+        res.status(200).json({id: user })
     } else {
         res.status(500).json({error : "Dados invalidos"})
     }
@@ -21,7 +21,7 @@ export const create = async(req: Request, res: Response) => {
         if(!emailExists) {
             const newUser = await UserService.create({name, password, email})
             if(newUser) {
-                res.status(201).json({ user: newUser})
+                res.status(201).json({ id: newUser.dataNewUser.id, token: newUser.token })
             }
         } else {
             res.status(500).json({error : "E-mail já cadastrado. Faça o login!"})
@@ -51,5 +51,29 @@ export const update = async(req: Request, res: Response) => {
     } else {
         res.status(500).json({error : "Dados invalidos"})
     }
-
+}
+export const login = async(req: Request, res: Response) => {
+    const { email, password } = req.body
+    if(email && password) {
+        const loggedUser = await UserService.login(email, password)
+        if(loggedUser) {
+            res.status(200).json({sucess: true, token: loggedUser.token})
+        } else {
+            res.status(500).json({error : "Dados invalidos"})
+        }
+    } else {
+        res.status(500).json({error : "Dados invalidos"})
+    }
+}
+export const logout = async(req: Request, res: Response) => {
+    
+}
+export const deleteUser = async(req: Request, res: Response) => {
+    const { id } = req.params
+    const user = await UserService.deleteUser(id)
+    if(user) {
+       res.json({ success: true})
+    } else {
+        res.status(500).json({error : "Dados invalidos"})
+    }
 }

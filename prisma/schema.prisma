@@ -16,6 +16,8 @@ model User {
   email    String @unique
   password String
 
+  motoboy Motoboy[]
+
   @@map("users")
 }
 
@@ -24,6 +26,9 @@ model Motoboy {
   name    String
   email   String? @unique
   celular String
+  userId  String
+
+  user User @relation(fields: [userId], references: [id])
 
   motoboy        Route[]
   motoboyInvoice Invoice[]
