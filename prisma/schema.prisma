@@ -16,21 +16,22 @@ model User {
   email    String @unique
   password String
 
-  motoboy Motoboy[]
+  motoboy   Motoboy[]
+  userRoute Route[]
+  client    Client[]
 
   @@map("users")
 }
 
 model Motoboy {
   id      String  @id @default(uuid())
-  name    String
+  name    String  @unique
   email   String? @unique
   celular String
   userId  String
 
   user User @relation(fields: [userId], references: [id])
 
-  motoboy        Route[]
   motoboyInvoice Invoice[]
 
   @@map("motoboys")
@@ -38,25 +39,35 @@ model Motoboy {
 
 model Route {
   id         String   @id @default(uuid())
+  requester  String?
+  clientId   String
   startRoute String?
   endRoute   String
+  cep        String?
   createdAt  DateTime @default(now())
-  motoboyId  String
   valueRoute Int
+  userId     String
 
-  motoboy Motoboy @relation(fields: [motoboyId], references: [id])
+  user   User   @relation(fields: [userId], references: [id])
+  client Client @relation(fields: [clientId], references: [id])
 
   @@map("routes")
 }
 
 model Client {
-  id        String @id @default(uuid())
-  name      String
-  cnpj      String @unique
-  address   String
-  telephone String
+  id            String @id @default(uuid())
+  nameFantasy   String
+  corporateName String
+  cnpj          String @unique
+  address       String
+  telephone     String
+  cep           String
+  city          String
+  userId        String
 
+  user    User      @relation(fields: [userId], references: [id])
   invoice Invoice[]
+  route   Route[]
 
   @@map("clients")
 }

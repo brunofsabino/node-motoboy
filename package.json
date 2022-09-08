@@ -22,7 +22,7 @@
   },
   "homepage": "https://github.com/brunofsabino/node-motoboy#readme",
   "dependencies": {
-    "@prisma/client": "^4.2.1",
+    "@prisma/client": "^4.3.1",
     "bcrypt": "^5.0.1",
     "cors": "^2.8.5",
     "dotenv": "^16.0.1",
@@ -44,6 +44,6 @@
     "@types/node": "^18.7.7",
     "@types/passport": "^1.0.10",
     "@types/passport-jwt": "^3.0.6",
-    "prisma": "^4.2.1"
+    "prisma": "^4.3.1"
   }
 }

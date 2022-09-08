@@ -4,16 +4,14 @@ import * as MotoboyController from '../controllers/motoboyControllers'
 
 const router = Router()
 
+router.get('/motoboy', privateRoute, MotoboyController.all)
+router.get('/motoboy/:id', privateRoute, MotoboyController.one)
 
-router.post('/motoboy/:id', MotoboyController.create)
-// router.get('/user', privateRoute, UserController.all)
-// router.get('/user/:id', privateRoute, UserController.one)
+router.post('/motoboy/:id', privateRoute, MotoboyController.create)
 
-// router.post('/user', UserController.create)
+router.put('/motoboy/:id', privateRoute, MotoboyController.update)
 
+router.delete('/motoboy/:id', privateRoute, MotoboyController.deleteMotoboy)
 
-// router.put('/user/:id', privateRoute, UserController.update)
-
-// router.delete('/user/:id', privateRoute, UserController.deleteUser)
 
 export default router

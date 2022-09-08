@@ -4,7 +4,9 @@ import dotenv from 'dotenv'
 import cors from 'cors'
 import passport from 'passport'
 import userRouter from './routes/user'
-import motoboyRouter from './routes/user'
+import motoboyRouter from './routes/motoboy'
+import routeRouter from './routes/route'
+import clientRouter from './routes/client'
 
 
 dotenv.config()
@@ -19,6 +21,8 @@ server.use(express.urlencoded({ extended: true}))
 server.use(passport.initialize())
 server.use(userRouter)
 server.use(motoboyRouter)
+server.use(routeRouter)
+server.use(clientRouter)
 
 const errorHandler: ErrorRequestHandler = (err, req, res, next) => {
     if(err.status) {
