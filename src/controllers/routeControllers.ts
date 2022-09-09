@@ -4,6 +4,23 @@ import { MotoboyService } from '../services/MotoboyService'
 import { RouteService } from '../services/RouteService'
 import { ClientService } from "../services/ClientService";
 
+export const all = async(req: Request, res: Response) => {
+    const routes = await RouteService.findAll()
+    if(routes) {
+        res.status(200).json({routes})
+    } else {
+        res.json(400).json({ error: "Dados invalidos"})
+    }
+}
+export const one = async(req: Request, res: Response) => {
+    const { id } = req.params
+    const route = await RouteService.findOne(id)
+    if(route) {
+        res.status(200).json({route})
+    } else {
+        res.json(400).json({ error: "Dados invalidos"})
+    }
+}
 export const create = async(req: Request, res: Response) => {
     const { idClient } = req.params
     const { startRoute, endRoute, valueRoute, cep, requester } = req.body

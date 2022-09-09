@@ -15,6 +15,12 @@ type PropCreate = {
 }
 
 export const RouteService = {
+    findAll: async() => {
+        return await prisma.route.findMany({})
+    },
+    findOne: async(id: string) => {
+        return await prisma.route.findUnique({ where: { id }})
+    },
     create: async( data: PropCreate) => {
        return await prisma.route.create({ data })
     }
