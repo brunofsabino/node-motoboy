@@ -24,11 +24,15 @@ model User {
 }
 
 model Motoboy {
-  id      String  @id @default(uuid())
-  name    String  @unique
-  email   String? @unique
-  celular String
-  userId  String
+  id          String  @id @default(uuid())
+  name        String  @unique
+  email       String? @unique
+  celular     String
+  cpf         String  @unique
+  rg          String  @unique
+  numberBoard String?
+  cityBoard   String?
+  userId      String
 
   user User @relation(fields: [userId], references: [id])
 
@@ -38,18 +42,22 @@ model Motoboy {
 }
 
 model Route {
-  id         String   @id @default(uuid())
-  requester  String?
-  clientId   String
-  startRoute String?
-  endRoute   String
-  cep        String?
-  createdAt  DateTime @default(now())
-  valueRoute Int
-  userId     String
+  id          String   @id @default(uuid())
+  requester   String?
+  clientId    String
+  startRoute  String?
+  endRoute    String
+  cep         String?
+  createdAt   DateTime @default(now())
+  valueRoute  Int
+  userId      String
+  description String
+  done        Boolean  @default(false)
 
   user   User   @relation(fields: [userId], references: [id])
   client Client @relation(fields: [clientId], references: [id])
+
+  route Invoice[]
 
   @@map("routes")
 }
@@ -82,12 +90,24 @@ model TableValues {
 }
 
 model Invoice {
-  id          String   @id @default(uuid())
-  date        DateTime @default(now())
-  motoboyId   String
-  cnpjId      String
-  description String
+  id            String   @id @default(uuid())
+  date          DateTime @default(now())
+  motoboyId     String
+  nameMotoboy   String
+  numberBoard   String?
+  cnpjId        String
+  description   String
+  numberInvoice Int      @default(autoincrement())
+  nameFantasy   String
+  corporateName String
+  telephone     String
+  idRoute       String
+  requester     String?
+  startRoute    String?
+  endRoute      String
+  valueRoute    Int
 
+  route   Route   @relation(fields: [idRoute], references: [id])
   cnpj    Client  @relation(fields: [cnpjId], references: [id])
   motoboy Motoboy @relation(fields: [motoboyId], references: [id])
 

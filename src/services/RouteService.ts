@@ -11,7 +11,19 @@ type PropCreate = {
     cep?: string,
     clientId: string,
     requester?: string,
-    userId: string
+    userId: string,
+    description: string,
+    done?: boolean
+}
+type PropUpdate = {
+    startRoute?: string, 
+    endRoute?: string,
+    valueRoute?: number,
+    cep?: string,
+    clientId?: string,
+    requester?: string,
+    createdAt?: Date,
+    done?: boolean
 }
 
 export const RouteService = {
@@ -23,5 +35,14 @@ export const RouteService = {
     },
     create: async( data: PropCreate) => {
        return await prisma.route.create({ data })
+    },
+    update: async( id: string, data: PropUpdate) => {
+        return await prisma.route.update({
+            where: { id },
+            data
+        })
+    },
+    deleteRoute: async(id: string) => {
+        return await prisma.route.delete({ where: { id }})
     }
 }

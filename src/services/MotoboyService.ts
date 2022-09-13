@@ -7,12 +7,20 @@ type PropCreate = {
     name: string,
     celular: string,
     userId: string,
-    email?: string
+    email?: string,
+    cpf: string,
+    rg: string,
+    numberBoard?: string,
+    cityBoard?: string
 }
 type PropUpdate = {
     name?: string,
     celular?: string,
-    email?: string
+    email?: string,
+    cpf?: string,
+    rg?: string,
+    numberBoard?: string,
+    cityBoard?: string
 }
 
 export const MotoboyService = {
@@ -25,6 +33,15 @@ export const MotoboyService = {
     findByName: async(name: string) => {
         return await prisma.motoboy.findUnique({ where: { name }})
     },
+    findByEmail: async(email: string) => {
+        return await prisma.motoboy.findUnique({ where: { email}})
+    },
+    findByRG: async(rg: string) => {
+        return await prisma.motoboy.findUnique({ where: { rg }})
+    },
+    findByCPF: async(cpf: string) => {
+        return await prisma.motoboy.findUnique({ where: { cpf }})
+    },
     create: async( data: PropCreate) => {
         return await prisma.motoboy.create({ data }) 
     },
@@ -36,7 +53,11 @@ export const MotoboyService = {
                 data: { 
                     name: data.name,
                     celular: data.celular,
-                    email: data.email
+                    email: data.email,
+                    cpf: data.cpf,
+                    rg: data.rg,
+                    numberBoard: data.numberBoard,
+                    cityBoard: data.cityBoard
                 }
             })
         }

@@ -9,11 +9,10 @@ router.post('/route/:idClient', privateRoute, RouteController.create)
 router.get('/route', privateRoute, RouteController.all)
 router.get('/route/:id', privateRoute, RouteController.one)
 
+router.put('/route/:id', privateRoute, RouteController.update)
+router.put('/route/done/:id', privateRoute, RouteController.done)
 
-
-// router.put('/motoboy/:id', privateRoute, MotoboyController.update)
-
-// router.delete('/motoboy/:id', privateRoute, MotoboyController.deleteMotoboy)
+router.delete('/route/:id', privateRoute, RouteController.deleteRoute)
 
 
 export default router

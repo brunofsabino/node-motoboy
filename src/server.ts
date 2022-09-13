@@ -7,6 +7,7 @@ import userRouter from './routes/user'
 import motoboyRouter from './routes/motoboy'
 import routeRouter from './routes/route'
 import clientRouter from './routes/client'
+import invoiceRouter from './routes/invoice'
 
 
 dotenv.config()
@@ -23,6 +24,7 @@ server.use(userRouter)
 server.use(motoboyRouter)
 server.use(routeRouter)
 server.use(clientRouter)
+server.use(invoiceRouter)
 
 const errorHandler: ErrorRequestHandler = (err, req, res, next) => {
     if(err.status) {
