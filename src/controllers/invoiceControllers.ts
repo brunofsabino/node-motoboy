@@ -15,6 +15,7 @@ export const create = async(req: Request, res: Response) => {
             
             motoboyId: motoboy.id,
             cnpjId: client.id,
+            cnpj: client.cnpj,
             description: route.description,
             corporateName: client.corporateName,
             endRoute: route.endRoute,
@@ -37,3 +38,71 @@ export const create = async(req: Request, res: Response) => {
     }
    
 }
+export const remove = async(req: Request, res: Response) => {
+    const { idInvoice } = req.params
+    const invoice = await InvoiceService.findOne(idInvoice)
+    if(invoice) {
+        const invoiceDelete = await InvoiceService.delete(invoice.id)
+        if(invoiceDelete) {
+            res.status(200).json({ sucess: true})
+        } else {
+            res.status(400).json({ error: "Dados invalidos"})
+        }
+    } else {
+        res.status(400).json({ error: "Dados invalidos"})
+    }
+}
+export const all = async(req: Request, res: Response) => {
+    const all = await InvoiceService.findAll()
+    if(all) {
+        res.status(200).json({ invoices: all})
+    } else {
+        res.status(400).json({ error: "Dados invalidos"})
+    }
+}
+export const one = async(req: Request, res: Response) => {
+    const { idInvoice } = req.params
+    const invoice = await InvoiceService.findOne(idInvoice)
+    if(invoice) {
+        res.status(200).json({ invoice })
+    } else {
+        res.status(400).json({ error: "Dados invalidos"})
+    }
+}
+// export const update = async(req: Request, res: Response) => {
+//     const { idInvoice } = req.params
+//     const { idClient, idMotoboy, idRoute } = req.body
+//     const client = await ClientService.findOne(idClient)
+//     const motoboy = await MotoboyService.findOne(idMotoboy)
+//     const route = await RouteService.findOne(idRoute)
+//     const invoice = await InvoiceService.findOne(idInvoice)
+//     if(invoice) {
+//         if(client ) { // || motoboy || route
+//             const newInvoice = await InvoiceService.update(invoice.id, {
+//                 // motoboyId: motoboy.id ?? invoice.id,
+//                 cnpjId: client.id,
+//                 cnpj: client.cnpj,
+//                 // description: route.description,
+//                 corporateName: client.corporateName,
+//                 // endRoute: route.endRoute,
+//                 // idRoute: route.id,
+//                 nameFantasy: client.nameFantasy,
+//                 // requester: route.requester ?? 'null',
+//                 // startRoute: route.startRoute ?? 'null',
+//                 telephone: client.telephone,
+//                 // valueRoute: route.valueRoute,
+//                 // nameMotoboy: motoboy.name,
+//                 // numberBoard: motoboy.numberBoard ?? 'null'
+//             })
+//             if(newInvoice) {
+//                 res.status(200).json({ invoice: newInvoice})
+//             } else {
+//                 res.status(400).json({ error: "Dados invalidos"})
+//             }
+//         } else {
+//             res.status(400).json({ error: "Dados invalidos"})
+//         }
+//     } else {
+//         res.status(400).json({ error: "Dados invalidos"})
+//     }
+// }

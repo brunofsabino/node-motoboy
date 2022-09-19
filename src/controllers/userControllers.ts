@@ -68,6 +68,12 @@ export const login = async(req: Request, res: Response) => {
 export const logout = async(req: Request, res: Response) => {
     
 }
+export const home = async(req: Request, res: Response) => {
+    const users = await UserService.findAll()
+    if(users) {
+        res.status(200).json({ users})
+    }
+}
 export const deleteUser = async(req: Request, res: Response) => {
     const { id } = req.params
     const user = await UserService.deleteUser(id)

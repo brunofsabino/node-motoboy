@@ -7,6 +7,7 @@ const router = Router()
 
 router.get('/user', privateRoute, UserController.all)
 router.get('/user/:id', privateRoute, UserController.one)
+// router.get('/home', privateRoute, UserController.home)
 
 router.post('/user', UserController.create)
 router.post('/login', UserController.login)

@@ -96,6 +96,7 @@ model Invoice {
   nameMotoboy   String
   numberBoard   String?
   cnpjId        String
+  cnpj          String
   description   String
   numberInvoice Int      @default(autoincrement())
   nameFantasy   String
@@ -107,9 +108,9 @@ model Invoice {
   endRoute      String
   valueRoute    Int
 
-  route   Route   @relation(fields: [idRoute], references: [id])
-  cnpj    Client  @relation(fields: [cnpjId], references: [id])
-  motoboy Motoboy @relation(fields: [motoboyId], references: [id])
+  route      Route   @relation(fields: [idRoute], references: [id])
+  cnpjClient Client  @relation(fields: [cnpjId], references: [id])
+  motoboy    Motoboy @relation(fields: [motoboyId], references: [id])
 
   @@map("invoices")
 }
