@@ -4,14 +4,40 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <link rel="stylesheet" href="css/home.css">
+    <title>Van Express - Home</title>
 </head>
 <body>
     <script>
         const token = localStorage.getItem('token')
     if(!token){window.location = "index.html"}
     </script>
-    Oi
+    <aside class="menuOpen">
+        <div class="menuImg">
+            <img src="images/menu.png" alt="menu">
+        </div>
+        <nav>
+            <ul>
+                <li><a href=""><div class="menuImg2"><div class="menuLeft"></div><img src="images/user.png" alt="usuarios"></div>Usuários</a></li>
+                <li><a href=""><div class="menuImg2"><div class="menuLeft"></div><img src="images/motoboy.png" alt="motoboys"></div>Motoboys</a></li>
+                <li><a href=""><div class="menuImg2"><div class="menuLeft"></div><img src="images/client.png" alt="clientes"></div>Clientes</a></li>
+                <li><a href=""><div class="menuImg2"><div class="menuLeft"></div><img src="images/route.png" alt="rotas"></div>Rotas</a></li>
+                <li><a href=""><div class="menuImg2"><div class="menuLeft"></div><img src="images/invoice.png" alt="notas fiscais"></div>Notas Fiscais</a></li>
+            </ul>
+        </nav>
+    </aside>
+    <div class="content">
+        <div class="area-logo">
+            <img src="images/LOGO_VAN 2.png" alt="logo-van-express">
+        </div>
+        <div class="area-name">
+            <p></p>
+        </div>
+        <div class="area-exit">
+            <img src="images/exit.png" alt="logout">
+            <p>Sair</p>
+        </div>
+    </div>
     <button class="btn-deslogar">Sair</button>
     <script src="js/home.js"></script>
 </body>

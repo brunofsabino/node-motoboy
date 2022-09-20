@@ -4,19 +4,29 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Van Express - Login</title>
+    <link rel="stylesheet" href="css/login.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
 </head>
 <body>
-    
-        <input type="text" name="email" class="email">
-        <input type="password" name="password" class="password">
-        <button >Login</button>
-        <a href="cadastro.html">
-            <div class="register">Cadastrar novos usuarios</div>
-        </a>
-        <script></script>
-         <div class="info"></div>
-    
+    <div class="area-form">
+        <img src="images/LOGO_VAN 2.png" alt="logo-van-express">
+        <div class="area-inputs">
+           <span>E-mail</span>
+            <input type="text" name="email" class="email" placeholder="Digite seu e-mail">
+            <span>Senha</span>
+            <input type="password" name="password" class="password" placeholder="Digite sua senha">
+        </div>
+        <div class="info"></div>
+       <div class="area-buttons">
+            <button id="login">Login</button>
+            <a href="cadastro.html">
+                <button class="register">Crie uma conta</button>
+            </a>
+       </div>
+    </div>
     <script src="js/login.js"></script>
 </body>
 </html>

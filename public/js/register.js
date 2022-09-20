@@ -18,11 +18,18 @@ function register(name, email, password, password2) {
                 })
             })
             const json = await user.json()
-            if(json) {
+            if(json.id) {
                 localStorage.setItem('msg', "Usuario cadastrado com sucesso. Faça o login")
                 window.location.href = 'index.html'
             }
+            if(json.error) {
+                divInfo.classList.add('active')
+                localStorage.setItem('error', json.error)
+                window.location.href = 'index.html'
+            }
+            
         } else {
+            divInfo.classList.add('active')
             divInfo.innerHTML = "As senhas não conferem"
         }
     })

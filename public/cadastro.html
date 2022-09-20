@@ -4,16 +4,30 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cadastrar novos usuários</title>
+    <title>Van Express - Login</title>
+    <link rel="stylesheet" href="css/register.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
 </head>
 <body>
-    
-        Nome:<input type="text" name="name" class="name"><br>
-        E-mail:<input type="email" name="email" class="email"><br>
-        Senha:<input type="password" name="password" class="password"><br>
-        Repetir senha:<input type="password" name="password2" class="password2"><br>
-        <button >Cadastrar</button>
+    <div class="area-form">
+        <img src="images/LOGO_VAN 2.png" alt="logo-van-express">
+        <div class="area-inputs">
+            <span>Nome Completo</span><input type="text" name="name" class="name" placeholder="Digite seu nome"><br>
+            <span>E-mail</span><input type="email" name="email" class="email" placeholder="Digite seu e-mail"><br>
+            <span>Senha</span><input type="password" name="password" class="password" placeholder="Digite sua senha"><br>
+            <span>Repetir Senha</span><input type="password" name="password2" class="password2" placeholder="Digite novamente sua senha"><br>
+        </div>
         <div class="info"></div>
+       <div class="area-buttons">
+            <button id="login">Cadastrar</button>
+            <a href="index.html">
+                <button class="register">Voltar para o Login</button>
+            </a>
+       </div>
+    </div>
     <script src="js/register.js"></script>
 </body>
 </html>
+    

@@ -2,7 +2,7 @@ const form = document.querySelector('form')
 const inputEmail = document.querySelector('.email')
 const inputPassword = document.querySelector('.password')
 const info = document.querySelector('.info')
-const botao = document.querySelector('button')
+const botao = document.getElementById('login')
 
 
  function login(email, password) {
@@ -32,10 +32,12 @@ const botao = document.querySelector('button')
                 
             })
             const json = await res.json()
-            console.log(json.token)
             if(json.token){
                 localStorage.setItem('token', json.token)
                 window.location = 'home.html'
+            } else {
+                info.classList.add('active')
+                info.innerHTML = 'E-mail ou senha invalidos'
             }
         } else {
             
@@ -48,4 +50,10 @@ login(inputEmail, inputPassword)
 
 if(localStorage.getItem("msg")){
     info.innerHTML = `${localStorage.getItem("msg")}`
+    info.classList.add('sucess')
+    localStorage.removeItem("msg")
+} else if(localStorage.getItem("error")){
+    info.innerHTML = `${localStorage.getItem("error")}`
+    info.classList.add('active')
+    localStorage.removeItem("error")
 }
