@@ -34,6 +34,9 @@ const botao = document.getElementById('login')
             const json = await res.json()
             if(json.token){
                 localStorage.setItem('token', json.token)
+                localStorage.setItem('name', json.name)
+                localStorage.setItem('email', json.email)
+                localStorage.setItem('id', json.id)
                 window.location = 'home.html'
             } else {
                 info.classList.add('active')

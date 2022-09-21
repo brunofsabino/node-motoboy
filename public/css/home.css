@@ -13,7 +13,7 @@ body {
     align-items: center; */
 }
 aside {
-    height: 100vh;
+    min-height: 100vh;
     background-color: #141019;
     display: flex;
     flex-direction: column;
@@ -26,7 +26,7 @@ aside {
     margin: 35px;
 }
 aside.menuOpen {
-    width: 200px;  
+    width: 275px;
 }
 aside.menuClosed {
     width: 65px;  
@@ -38,7 +38,10 @@ aside nav li {
     list-style: none;
 }
 aside nav li:hover {
-    opacity: .3;
+    background-color: rgba(0,0,0,0.8);
+}
+aside nav li.active {
+    background-color: rgba(0,0,0,0.8);
 }
 aside nav a {
     display: flex;
@@ -64,16 +67,152 @@ aside nav a img {
     height: 30px;
 }
 .content {
-    height: 150px;
-    display: flex;
+    width: 100%;
 }
-.content .area-logo {
+.content-header {
+    width: 100%;
+    height: 100px;
+    display: flex;
+    align-items: center;
+}
+.content-header .area-logo {
     width: 250px;
 }
-.content .area-name {
+.content-header .area-name {
     flex: 3;
 }
-.content .area-exit {
+.content-header .area-exit {
     flex: 1;
     width: 250px;
 }
+.btn-deslogar {
+    width: 160px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+.btn-deslogar img {
+    width: 50px;
+}
+.btn-deslogar p {
+    font-weight: bold;
+}
+.area-name p {
+    font-weight: bold;
+    margin-left: 46px;
+    font-size: 20px;
+}
+.area-content-users {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 3%;
+}
+.area-content-users h1 {
+    margin-bottom: 30px;
+    background-color: #F28520;
+    padding: 7px 25px;
+    border-radius: 16px;
+    color: #FFF;
+    font-size: 26px;
+}
+.info.active {
+    width: 50%;
+    height: 55px;
+    background-color: red;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    font-weight: 600;
+    color: #FFF;
+}
+.info.sucess {
+    width: 50%;
+    height: 55px;
+    background-color: green;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    font-weight: 600;
+    color: #FFF;
+}
+.area-inputs,
+.area-buttons {
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.area-buttons {
+    margin-bottom: 25px;
+}
+.area-inputs span {
+    font-size: 18px;
+    font-weight: bold;
+}
+.area-inputs input {
+    border: none;
+    background-color: #F2F4FF;
+    border-bottom: 1px solid #141019;
+    outline: none;
+    padding: 6px 0px 4px 0px;
+    font-size: 16px;
+}
+.area-inputs input[type="email"] {
+    background-color: #e1e1e1;
+    cursor: not-allowed;
+}
+.area-buttons button {
+    width: 100%;
+    height: 45px;
+    font-size: 20px;
+    font-weight: 900;
+    background-color: #0CA4A5;
+    border: none;
+    border-radius: 10px;
+    color: #F2F4FF;
+    margin-top: 15px;
+    cursor: pointer;
+}
+/* .area-buttons a button {
+    background-color: #0CA4A5;
+} */
+.area-buttons button:hover {
+    opacity: 0.9;
+}
+
+.area-content-motoboys {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 3%;
+}
+.area-content-clients {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 3%;
+}
+.area-content-routes {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 3%;
+}
+.area-content-invoices {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 3%;
+}
+
+

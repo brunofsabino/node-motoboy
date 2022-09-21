@@ -33,15 +33,24 @@ export const create = async(req: Request, res: Response) => {
 export const update = async(req: Request, res: Response) => {
     const { id } = req.params
     const { name, password } = req.body
-
+    console.log(password)
     const user = await UserService.findOne(id)
     if(user) {
-        if(name || password) {
-            const userUpdate = await UserService.update(id, {
-                name, password
+        if(name && password != undefined) {
+            const userUpdate = await UserService.update(user.id, {
+                name, password: password !== undefined ? password : user.password
             })
             if(userUpdate) {
-                res.status(201).json({ user: userUpdate})
+                res.status(201).json({ id: userUpdate.id, name: userUpdate.name, email: userUpdate.email})
+            } else {
+                res.status(500).json({error : "Dados invalidos"})
+            }
+        } else if(name) {
+            const userUpdateName = await UserService.updateName(user.id, {
+                name
+            })
+            if(userUpdateName) {
+                res.status(201).json({ id: userUpdateName.id, name: userUpdateName.name, email: userUpdateName.email})
             } else {
                 res.status(500).json({error : "Dados invalidos"})
             }
@@ -57,7 +66,7 @@ export const login = async(req: Request, res: Response) => {
     if(email && password) {
         const loggedUser = await UserService.login(email, password)
         if(loggedUser) {
-            res.status(200).json({sucess: true, token: loggedUser.token})
+            res.status(200).json({sucess: true, token: loggedUser.token, name: loggedUser.name, email: loggedUser.email, id: loggedUser.id})
         } else {
             res.status(500).json({error : "Dados invalidos"})
         }

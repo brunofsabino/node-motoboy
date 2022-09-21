@@ -44,13 +44,21 @@ export const UserService = {
             }
         })
     },
+    updateName: async(id: string, data: PropUpdate) => {
+        return await prisma.user.update({
+            where: { id },
+            data : {
+                name : data.name
+            }
+        })
+    },
     login: async(email: string, password: string) => {
         const user =  await prisma.user.findUnique({ where: { email }})
         if(user) {
             let hash = bcrypt.compareSync(password as string, user.password)
             if(hash) {
                 const token = generateToken({ id: user.id })
-                return { hash, token }
+                return { hash, token, name: user.name, email: user.email, id: user.id}
             }
         }
     },
