@@ -54,13 +54,43 @@
         </div>
         <div class="area-content-motoboys">
            <div class="area-motoboys-buttons">
-                <button>Editar Dados Motoboy</button>
-                <button>Deletar Motoboy</button>
+                <button class="btn-add-motoboy">Adicionar Motoboy</button>
+                <button class="btn-update-motoboy">Editar Dados Motoboy</button>
+                <button class="btn-delete-motoboy">Deletar Motoboy</button>
+           </div>
+           <div class="area-motoboys-modal">
+                <div class="area-motoboys-modal-content-add">
+                    <div class="area-modal-header">
+                        <h1>Preencha os campos</h1>
+                        <div class="area-modal-exit">X</div>
+                    </div>
+                    <div class="area-modal-inputs">
+                        <div class="area-modal-inputs-name-email">
+                            <input type="text" name="name-motoboy" class="name-motoboy" placeholder="Digite o nome completo*">
+                            <input type="email" name="email" class="email-motoboy" placeholder="Digite e-mail">
+                        </div>
+                        <div class="area-modal-inputs-celular-address">
+                            <input type="text" name="celular" class="celular-motoboy" placeholder="Digite o celular (WhatsApp)*">
+                            <input type="text" name="address" class="address-motoboy" placeholder="Digite o endereço (rua, número e bairro)">
+                        </div>
+                        <div class="area-modal-inputs-rg-cpf">
+                            <input type="text" name="rg" class="rg-motoboy" placeholder="Digite o RG">
+                            <input type="text" name="cpf" class="cpf-motoboy" placeholder="Digite o cpf">
+                        </div>
+                        <div class="area-modal-inputs-number-board">
+                            <input type="text" name="numberBoard" class="numberBoard-motoboy" placeholder="Digite o número da placa">
+                            <input type="text" name="cityBoard"  class="cityBoard-motoboy" placeholder="Digite a cidade da placa">
+                        </div>
+                    </div>
+                    <div class="modal-info">Os campos com asterisco(*) são de preenchimentos obrigatórios</div>
+                    <div class="area-modal-submit">
+                        <button>Adicionar</button>
+                    </div>
+
+                </div>
            </div>
            <div class="area-motoboys">
-                <ul>
-                    <li><div class="motoboy-circle"></div><div class="motoboy-name">Motoboy Legal</div><div class="motoboy-email">legal@teste.com</div><div class="motoboy-cel">119999999</div></li>
-                </ul>
+                <ul></ul>
            </div>
         </div>
         <div class="area-content-clients">

@@ -26,10 +26,11 @@ model User {
 model Motoboy {
   id          String  @id @default(uuid())
   name        String  @unique
-  email       String? @unique
-  celular     String
-  cpf         String  @unique
-  rg          String  @unique
+  email       String?
+  celular     String  @unique
+  cpf         String?
+  address     String?
+  rg          String?
   numberBoard String?
   cityBoard   String?
   userId      String

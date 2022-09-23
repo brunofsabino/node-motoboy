@@ -196,13 +196,144 @@ aside nav a img {
 .area-motoboys {
     width: 80%;
 }
+.area-motoboys-buttons {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.area-content-motoboys .area-motoboys-buttons button {
+    width: 30%;
+    height: 50px;
+    font-size: 16px;
+    font-weight: 900;
+    border: none;
+    border-radius: 10px;
+    color: #F2F4FF;
+    margin: 15px;
+    cursor: pointer;
+    padding: 0px 15px;
+    line-height: 17px;
+}
+.area-content-motoboys .area-motoboys-buttons .btn-add-motoboy {
+    background-color: #0CA4A5;
+}
+.area-content-motoboys .area-motoboys-buttons .btn-delete-motoboy {
+    background-color: #F22020;
+}
+.area-content-motoboys .area-motoboys-buttons .btn-update-motoboy {
+    background-color: #F28520;
+}
+.area-motoboys-modal {
+    width: 100%;
+    height: 100vh;
+    background-color: rgba(0,0,0,0.7);
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    display: none;
+    justify-content: center;
+    align-items: center;
+}
+.area-motoboys-modal-content-add {
+    width: 60%;
+    background-color:#F2F4FF;
+    border-radius: 25px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+.area-modal-header {
+    display: flex;
+    margin: 30px;
+}
+
+.area-motoboys-modal-content-add .area-modal-header h1 {
+    background-color: #F28520;
+    padding: 7px 25px;
+    border-radius: 16px;
+    color: #FFF;
+    font-size: 26px;
+}
+.area-motoboys-modal-content-add .area-modal-header .area-modal-exit {
+    width: 30px;
+    height: 30px;
+    background-color: red;
+    position: relative;
+    left: 200px;
+    cursor: pointer;
+    text-align: center;
+    line-height: 30px;
+    color: #FFF;
+    font-weight: 900;
+}
+.area-modal-inputs {
+    width: 90%;
+    display: flex;
+    padding: 15px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #FFF;
+    border-radius: 25px;
+}
+.area-motoboys-modal-content-add .area-modal-inputs input {
+    margin: 15px;
+    outline: none;
+    border: none;
+    background-color: #FFF;
+    border-bottom: 2px solid;
+    padding: 10px 14px;
+    font-size: 16px;
+    width: 100%;
+}
+.area-modal-inputs-name-email, .area-modal-inputs-celular-address, .area-modal-inputs-rg-cpf , .area-modal-inputs-number-board {
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+}
+.area-modal-submit {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.area-modal-submit button {
+    width: 30%;
+    height: 50px;
+    background-color: #0CA4A5;
+    font-size: 16px;
+    font-weight: 900;
+    border: none;
+    border-radius: 10px;
+    color: #F2F4FF;
+    margin: 30px;
+    cursor: pointer;
+    padding: 0px 15px;
+    line-height: 17px;
+}
+.area-modal-submit button:hover {
+    opacity: 0.7;
+}
 .area-motoboys ul li {
     border: 3px solid;
     border-radius: 40px;
-    height: 50px;
+    height: 60px;
     display: flex;
     align-items: center;
     justify-content: space-around;
+    margin: 30px;
+    cursor: pointer;
+}
+.area-motoboys ul li:hover {
+    background-color: rgba(0,0,0,.3);
+    color: #fff;
+}
+.area-motoboy-circle {
+    width: 30px;
 }
 .motoboy-circle {
     width: 10px;
@@ -210,6 +341,7 @@ aside nav a img {
     border: 2px solid;
     border-radius: 50%;
 }
+
 .area-content-clients {
     display: none;
     flex-direction: column;

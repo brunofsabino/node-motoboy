@@ -6,10 +6,11 @@ const prisma = new PrismaClient()
 type PropCreate = {
     name: string,
     celular: string,
+    address?: string,
     userId: string,
     email?: string,
-    cpf: string,
-    rg: string,
+    cpf?: string,
+    rg?: string,
     numberBoard?: string,
     cityBoard?: string
 }
@@ -19,6 +20,7 @@ type PropUpdate = {
     email?: string,
     cpf?: string,
     rg?: string,
+    address?: string,
     numberBoard?: string,
     cityBoard?: string
 }
@@ -33,14 +35,8 @@ export const MotoboyService = {
     findByName: async(name: string) => {
         return await prisma.motoboy.findUnique({ where: { name }})
     },
-    findByEmail: async(email: string) => {
-        return await prisma.motoboy.findUnique({ where: { email}})
-    },
-    findByRG: async(rg: string) => {
-        return await prisma.motoboy.findUnique({ where: { rg }})
-    },
-    findByCPF: async(cpf: string) => {
-        return await prisma.motoboy.findUnique({ where: { cpf }})
+    findByCelular: async(celular: string) => {
+        return await prisma.motoboy.findUnique({ where: { celular: celular }})
     },
     create: async( data: PropCreate) => {
         return await prisma.motoboy.create({ data }) 
@@ -62,10 +58,7 @@ export const MotoboyService = {
             })
         }
     },
-    delete: async(id: string) => {
-        const motoboy = await prisma.motoboy.findUnique({ where: { id }})
-        if(motoboy) {
-            return await prisma.motoboy.delete({ where: { id: motoboy.id }})
-        }
+    deleteBoy: async(id: string) => {
+        return await prisma.motoboy.delete({ where: {id}})
     }
 }

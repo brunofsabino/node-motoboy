@@ -23,50 +23,45 @@ export const one = async (req: Request, res: Response) => {
 
 export const create = async (req: Request, res: Response) => {
     const { id } = req.params
-    const { name, email, celular, cpf, rg, numberBoard, cityBoard } = req.body
+    const { name, email, celular, cpf, rg, numberBoard, cityBoard, address } = req.body
     const user = await UserService.findOne(id)
-    const findEmail = await MotoboyService.findByEmail(email)
-    if(!findEmail) {
-        const findRG = await MotoboyService.findByRG(rg)
-        if(!findRG) {
-            const findCPF = await MotoboyService.findByCPF(cpf)
-            if(!findCPF) {
-                if(user && name && celular && cpf && rg) {
-                    const motoboy = await MotoboyService.findByName(name)
-                    if(!motoboy) {
-                        const newMotoboy = await MotoboyService.create( {
-                            name, celular, userId: user.id, email, cpf, rg, numberBoard: numberBoard ?? 'null', cityBoard: cityBoard ?? 'null' 
-                        })
-                        if(newMotoboy) {
-                            res.status(201).json({ motoboy: newMotoboy})
-                        } else {
-                            res.status(500).json({ error: "Dados invalidos"})
-                        }
+    const findCelular = await MotoboyService.findByCelular(celular)
+    const findName = await MotoboyService.findByName(name)
+    if(!findCelular) {
+        if(!findName) {
+            if(user && name && celular && cpf && rg) {
+                const motoboy = await MotoboyService.findByName(name)
+                if(!motoboy) {
+                    const newMotoboy = await MotoboyService.create( {
+                        name, celular, address, userId: user.id, email, cpf, rg, numberBoard: numberBoard ?? 'null', cityBoard: cityBoard ?? 'null' 
+                    })
+                    if(newMotoboy) {
+                        res.status(201).json({ motoboy: newMotoboy})
                     } else {
-                        res.status(500).json({ error: "Nome de motoboy já cadastrado!"})
+                        res.status(500).json({ error: "Dados invalidos"})
                     }
                 } else {
-                    res.status(500).json({ error: "Dados invalidos"})
+                    res.status(500).json({ error: "Nome de motoboy já cadastrado!"})
                 }
             } else {
-                res.status(500).json({ error: "CPF já cadastrado"})
-            }
+                res.status(500).json({ error: "Dados invalidos"})
+            }  
         } else {
-            res.status(500).json({ error: "RG já cadastrado"})
-        }
+            res.status(500).json({ error: "Nome completo já cadastrado"})
+        } 
     } else {
-        res.status(500).json({ error: "E-mail já cadastrado"})
+        res.status(500).json({ error: "Celular já cadastrado"})
     }
 }
 
 export const update = async (req: Request, res: Response) => {
     const { id } = req.params
-    const { name, email, celular, cpf, rg, numberBoard, cityBoard } = req.body
+    const { name, email, celular, cpf, rg, numberBoard, cityBoard, address } = req.body
     const motoboy = await MotoboyService.findOne(id)
     if(motoboy) {
-        if(name || email || celular || cpf || rg || numberBoard || cityBoard) {
+        if(name || email || celular || cpf || rg || numberBoard || cityBoard || address) {
             const motoboyUpdate = await MotoboyService.update(motoboy.id, {
-                name, email, celular, cpf, rg, numberBoard, cityBoard
+                name, email, celular, cpf, rg, numberBoard, cityBoard, address
             })
             if(motoboyUpdate) {
                 res.status(200).json({ motoboy: motoboyUpdate})
@@ -83,9 +78,12 @@ export const update = async (req: Request, res: Response) => {
 
 export const deleteMotoboy = async (req: Request, res: Response) => {
     const { id } = req.params
-    const motoboy = await MotoboyService.delete(id)
+    const motoboy = await MotoboyService.findOne(id)
     if(motoboy) {
-        res.status(200).json({ success: true})
+        const deleteBoy = await MotoboyService.deleteBoy(motoboy.id)
+        if(deleteBoy) {
+            res.status(200).json({ success: true})
+        }
     } else {
         res.status(500).json({ error: "Dados invalidos"})
     }
