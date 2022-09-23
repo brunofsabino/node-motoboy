@@ -193,6 +193,23 @@ aside nav a img {
     align-items: center;
     padding: 3%;
 }
+.area-motoboys {
+    width: 80%;
+}
+.area-motoboys ul li {
+    border: 3px solid;
+    border-radius: 40px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+.motoboy-circle {
+    width: 10px;
+    height: 10px;
+    border: 2px solid;
+    border-radius: 50%;
+}
 .area-content-clients {
     display: none;
     flex-direction: column;

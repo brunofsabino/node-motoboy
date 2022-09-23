@@ -27,6 +27,8 @@ const info = document.querySelector('.area-content-users .info')
 const idUser = localStorage.getItem('id')
 const buttonUpdadeUser = document.querySelector('.area-content-users button')
 
+const tagUlMotoboys = document.querySelector('.area-motoboys ul')
+
 
 btn_sair.addEventListener('click', deslogar)
 function deslogar() {
@@ -128,7 +130,23 @@ async function updateUser(name , password, password2 , id) {
         info.classList.add('active')
         info.innerHTML = "As senhas não conferem"
     }
-    
+}
+async function listMotoboys() {
+    const motoboys = await fetch(`/motoboy`, {
+        method: 'GET',
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+            "Authorization": `Bearer ${localStorage.getItem('token')}`
+        }
+    })
+    const json = await motoboys.json()
+    if(json){
+        json.motoboys.forEach((item, indice) => {
+            console.log(item)
+            // tagUlMotoboys.innerHTML = `${item[indice]}`
+            tagUlMotoboys.innerHTML += `<li><div class="motoboy-circle"></div><div class="motoboy-name">${item.name}</div><div class="motoboy-email">${item.email}</div><div class="motoboy-cel">${item.celular}</div></li>`
+        })
+    }
 }
 function displayFlexDisplayNone(item) {
     switch(item) {
@@ -139,6 +157,7 @@ function displayFlexDisplayNone(item) {
         case 'Motoboys':
             alterarLiDois()
             updateHeightAside()
+            listMotoboys()
         break
         case 'Clientes':
             alterarLiTres()

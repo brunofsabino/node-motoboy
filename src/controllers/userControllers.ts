@@ -33,7 +33,6 @@ export const create = async(req: Request, res: Response) => {
 export const update = async(req: Request, res: Response) => {
     const { id } = req.params
     const { name, password } = req.body
-    console.log(password)
     const user = await UserService.findOne(id)
     if(user) {
         if(name && password != undefined) {
