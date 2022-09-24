@@ -36,7 +36,7 @@ export const MotoboyService = {
         return await prisma.motoboy.findUnique({ where: { name }})
     },
     findByCelular: async(celular: string) => {
-        return await prisma.motoboy.findUnique({ where: { celular: celular }})
+        return await prisma.motoboy.findUnique({ where: { celular }})
     },
     create: async( data: PropCreate) => {
         return await prisma.motoboy.create({ data }) 

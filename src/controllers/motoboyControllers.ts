@@ -25,33 +25,30 @@ export const create = async (req: Request, res: Response) => {
     const { id } = req.params
     const { name, email, celular, cpf, rg, numberBoard, cityBoard, address } = req.body
     const user = await UserService.findOne(id)
-    const findCelular = await MotoboyService.findByCelular(celular)
     const findName = await MotoboyService.findByName(name)
-    if(!findCelular) {
+    const findCelular = await MotoboyService.findByCelular(celular)
+    if(user) {
         if(!findName) {
-            if(user && name && celular && cpf && rg) {
-                const motoboy = await MotoboyService.findByName(name)
-                if(!motoboy) {
-                    const newMotoboy = await MotoboyService.create( {
-                        name, celular, address, userId: user.id, email, cpf, rg, numberBoard: numberBoard ?? 'null', cityBoard: cityBoard ?? 'null' 
-                    })
-                    if(newMotoboy) {
-                        res.status(201).json({ motoboy: newMotoboy})
-                    } else {
-                        res.status(500).json({ error: "Dados invalidos"})
-                    }
+            if(!findCelular) {
+                const newMotoboy = await MotoboyService.create( {
+                    name, celular, address: address ?? 'null', userId: user.id, email: email ?? 'null', cpf: cpf ?? 'null', rg : rg ?? 'null', numberBoard: numberBoard ?? 'null', cityBoard: cityBoard ?? 'null' 
+                })
+                if(newMotoboy) {
+                    res.status(201).json({ motoboy: newMotoboy})
                 } else {
-                    res.status(500).json({ error: "Nome de motoboy já cadastrado!"})
+                    res.status(500).json({ error: "Dados invalidos"})
                 }
             } else {
-                res.status(500).json({ error: "Dados invalidos"})
-            }  
+                res.status(500).json({ error: "Celular do Motoboy já cadastrado"})
+            }
         } else {
-            res.status(500).json({ error: "Nome completo já cadastrado"})
+            res.status(500).json({ error: "Nome do Motoboy já cadastrado"})
         } 
     } else {
-        res.status(500).json({ error: "Celular já cadastrado"})
-    }
+        res.status(500).json({ error: "Dados invalidos"})
+    }  
+    
+    
 }
 
 export const update = async (req: Request, res: Response) => {

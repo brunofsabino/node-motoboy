@@ -45,6 +45,7 @@ const cityBoardMotoboy = document.querySelector('.cityBoard-motoboy')
 const infoModal = document.querySelector('.modal-info')
 
 
+
 buttonOpenModalBoy.addEventListener('click', openModal)
 closeModal.addEventListener('click', functionCloseModal)
 buttonAddMotoboy.addEventListener('click', () => {
@@ -56,6 +57,8 @@ function deslogar() {
     localStorage.removeItem('token')
     window.location = 'index.html'
 }
+
+
 
 menuImg.addEventListener('click', openCloseMenu)
 
@@ -111,7 +114,6 @@ li.forEach( item => {
     })
 })
 async function functionAddMotoboy(nameMotoboy, emailMotoboy, celularMotoboy, addressMotoboy, rgMotoboy, cpfMotoboy, numberBoardMotoboy, cityBoardMotoboy, id) {
-    
     if(nameMotoboy && celularMotoboy) {
         console.log(nameMotoboy, emailMotoboy, celularMotoboy, addressMotoboy, rgMotoboy, cpfMotoboy, numberBoardMotoboy, cityBoardMotoboy)
         const motoboy = await fetch(`/motoboy/${id}`, {
@@ -121,11 +123,21 @@ async function functionAddMotoboy(nameMotoboy, emailMotoboy, celularMotoboy, add
                 "Authorization": `Bearer ${localStorage.getItem('token')}`
             },
             body: new URLSearchParams({
-                nameMotoboy, emailMotoboy, celularMotoboy, addressMotoboy, rgMotoboy, cpfMotoboy, numberBoardMotoboy, cityBoardMotoboy
+                name: nameMotoboy, email: emailMotoboy, celular: celularMotoboy, address: addressMotoboy, rg: rgMotoboy, cpf: cpfMotoboy, numberBoard: numberBoardMotoboy, cityBoard: cityBoardMotoboy
             })
         })
         const json = await motoboy.json()
-        console.log(json)
+        if(json.error) {
+            infoModal.innerHTML = json.error
+            exit
+        }
+        if(json) {
+            clearListMotoboys()
+            listMotoboys()
+            
+            functionCloseModal()
+            tagLiMotoboys()
+        }
     } else {
         infoModal.innerHTML = 'Preencha os campos obrigatórios!'
     }
@@ -189,12 +201,26 @@ async function listMotoboys() {
     if(json){
         json.motoboys.forEach((item, indice) => {
             console.log(item)
-            tagUlMotoboys.innerHTML += `<li id-item="${item.id}"><div class="area-motoboy-circle"><div class="motoboy-circle"></div></div><div class="motoboy-name">${item.name}</div><div class="motoboy-cel">${item.celular}</div></li>`
+            tagUlMotoboys.innerHTML += `<li id-item="${item.id}" ><div class="area-li"><div class="area-motoboy-circle" ><div class="motoboy-circle"></div></div><div class="motoboy-name">${item.name}</div><div class="motoboy-cel">${item.celular}</div></div></li>`
         })
     }
 }
 function clearListMotoboys() {
     tagUlMotoboys.innerHTML = ''
+}
+function tagLiMotoboys() {
+    setTimeout(() => {
+        const tagLiMotoboys = document.querySelectorAll('.area-motoboys li')
+        tagLiMotoboys.forEach(item => {
+            item.addEventListener('click', tagLi => {
+                // console.log(tagLi.target.getAttribute('id-item'))
+                item.style.backgroundColor = 'rgba(0,0,0,0.2)'
+                // console.log(tagLi)
+               
+            })
+        })
+        updateHeightAside()
+    }, 500)
 }
 function displayFlexDisplayNone(item) {
     switch(item) {
@@ -205,8 +231,9 @@ function displayFlexDisplayNone(item) {
         break
         case 'Motoboys':
             alterarLiDois()
-            updateHeightAside()
             listMotoboys()
+            tagLiMotoboys()
+            updateHeightAside()
         break
         case 'Clientes':
             alterarLiTres()
@@ -226,8 +253,8 @@ function displayFlexDisplayNone(item) {
     }
 }
 function updateHeightAside() {
-    aside.style.height = `${100 + areaMotoboy.clientHeight}px`
-    
+    const areaMotoboy2 = areaMotoboy.clientHeight
+    aside.style.height = `${100 + areaMotoboy2}px`
 }
 
 function alterarLiUm(){

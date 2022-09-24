@@ -191,7 +191,7 @@ aside nav a img {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding: 3%;
+    /* padding: 10px; */
 }
 .area-motoboys {
     width: 80%;
@@ -329,8 +329,20 @@ aside nav a img {
     cursor: pointer;
 }
 .area-motoboys ul li:hover {
-    background-color: rgba(0,0,0,.3);
-    color: #fff;
+    background-color: rgba(0,0,0,.1);
+    border: 3px solid #000;
+    /* color: #fff; */
+}
+.area-motoboys ul li .area-li {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+.area-motoboys ul li [selected="selected"] {
+    background-color: rgba(0,0,0,.1);
+    /* border: 3px solid #000; */
+    /* color: #fff; */
 }
 .area-motoboy-circle {
     width: 30px;
