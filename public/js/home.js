@@ -201,7 +201,7 @@ async function listMotoboys() {
     if(json){
         json.motoboys.forEach((item, indice) => {
             console.log(item)
-            tagUlMotoboys.innerHTML += `<li id-item="${item.id}" ><div class="area-li"><div class="area-motoboy-circle" ><div class="motoboy-circle"></div></div><div class="motoboy-name">${item.name}</div><div class="motoboy-cel">${item.celular}</div></div></li>`
+            tagUlMotoboys.innerHTML += `<li id-item="${item.id}" class="" ><div class="area-li"><div class="area-motoboy-circle" ><div class="motoboy-circle"></div></div><div class="motoboy-name">${item.name}</div><div class="motoboy-cel">${item.celular}</div></div></li>`
         })
     }
 }
@@ -213,14 +213,18 @@ function tagLiMotoboys() {
         const tagLiMotoboys = document.querySelectorAll('.area-motoboys li')
         tagLiMotoboys.forEach(item => {
             item.addEventListener('click', tagLi => {
-                // console.log(tagLi.target.getAttribute('id-item'))
-                item.style.backgroundColor = 'rgba(0,0,0,0.2)'
-                // console.log(tagLi)
-               
+                tagLiMotoboysSelected()
+                item.classList.toggle('selected')
             })
         })
         updateHeightAside()
     }, 500)
+}
+function tagLiMotoboysSelected() {
+    const tagLiMotoboys = document.querySelectorAll('.area-motoboys li')
+    tagLiMotoboys.forEach( item => {
+        item.classList.remove('selected')
+    })
 }
 function displayFlexDisplayNone(item) {
     switch(item) {
