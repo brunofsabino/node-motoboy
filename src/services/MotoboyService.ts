@@ -53,7 +53,8 @@ export const MotoboyService = {
                     cpf: data.cpf,
                     rg: data.rg,
                     numberBoard: data.numberBoard,
-                    cityBoard: data.cityBoard
+                    cityBoard: data.cityBoard,
+                    address: data.address,
                 }
             })
         }

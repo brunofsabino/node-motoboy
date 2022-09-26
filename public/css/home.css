@@ -223,7 +223,8 @@ aside nav a img {
 .area-content-motoboys .area-motoboys-buttons .btn-update-motoboy {
     background-color: #F28520;
 }
-.area-motoboys-modal {
+.area-motoboys-modal,
+.area-motoboys-modal-warning {
     width: 100%;
     height: 100vh;
     background-color: rgba(0,0,0,0.7);
@@ -236,6 +237,26 @@ aside nav a img {
     justify-content: center;
     align-items: center;
 }
+.area-motoboys-modal-buttons {
+    display: none;
+}
+.area-motoboys-modal-buttons button {
+    padding: 5px 20px;
+    margin: 15px;
+    font-size: 16px;
+    font-weight: 900;
+    border: none;
+    border-radius: 10px;
+    color: #F2F4FF;
+    cursor: pointer;
+    line-height: 17px;
+}
+.area-motoboys-modal-buttons .btn-delete {
+    background-color: #F22020;
+}
+.area-motoboys-modal-buttons .btn-no-delete {
+    background-color:#0CA4A5;
+}
 .area-motoboys-modal-content-add {
     width: 60%;
     background-color:#F2F4FF;
@@ -244,6 +265,41 @@ aside nav a img {
     justify-content: center;
     align-items: center;
     flex-direction: column;
+}
+.area-motoboys-modal-content {
+    width: 25%;
+    background-color: #FFF;
+    border-radius: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    border: 3px solid #F28520;
+}
+.area-modal-warning-msg {
+    padding: 15px 20px;
+    background-color: #F28520;
+    font-weight: 600;
+    border-radius: 12px;
+    color: #FFF;
+    margin: 20px 15px;
+    text-align: center;
+}
+.area-motoboys-modal-content .area-modal-exit {
+    display:flex;
+    justify-content: right;
+    width: 80%;
+    padding: 15px 0px;
+}
+.area-modal-exit-content {
+    width: 25px;
+    height: 25px;
+    background-color: red;
+    text-align: center;
+    line-height: 25px;
+    color: #FFF;
+    font-weight: 900;
+    cursor: pointer;
 }
 .area-modal-header {
     display: flex;
@@ -301,7 +357,8 @@ aside nav a img {
     justify-content: center;
     align-items: center;
 }
-.area-modal-submit button {
+.area-modal-submit button,
+.btn-update-boy {
     width: 30%;
     height: 50px;
     background-color: #0CA4A5;
@@ -315,8 +372,13 @@ aside nav a img {
     padding: 0px 15px;
     line-height: 17px;
 }
-.area-modal-submit button:hover {
+
+.area-modal-submit button:hover,
+.btn-update-boy:hover {
     opacity: 0.7;
+}
+.btn-update-boy {
+    display: none;
 }
 .area-motoboys ul li {
     border: 3px solid;
@@ -340,9 +402,7 @@ aside nav a img {
     justify-content: space-around;
 }
 .area-motoboys  .selected {
-    background-color: rgba(0,0,0,.1);
-    /* border: 3px solid #000; */
-    /* color: #fff; */
+    background-color: rgba(0,0,0,.2);
 }
 .area-motoboy-circle {
     width: 30px;

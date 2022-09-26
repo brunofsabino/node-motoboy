@@ -54,8 +54,11 @@ export const create = async (req: Request, res: Response) => {
 export const update = async (req: Request, res: Response) => {
     const { id } = req.params
     const { name, email, celular, cpf, rg, numberBoard, cityBoard, address } = req.body
+    const findName = await MotoboyService.findByName(name)
+    const findCelular = await MotoboyService.findByCelular(celular)
     const motoboy = await MotoboyService.findOne(id)
     if(motoboy) {
+        
         if(name || email || celular || cpf || rg || numberBoard || cityBoard || address) {
             const motoboyUpdate = await MotoboyService.update(motoboy.id, {
                 name, email, celular, cpf, rg, numberBoard, cityBoard, address
@@ -68,6 +71,7 @@ export const update = async (req: Request, res: Response) => {
         } else {
             res.status(500).json({ error: "Dados invalidos"})
         }
+             
     } else {
         res.status(500).json({ error: "Dados invalidos"})
     }

@@ -30,9 +30,18 @@ const buttonUpdadeUser = document.querySelector('.area-content-users button')
 const tagUlMotoboys = document.querySelector('.area-motoboys ul')
 
 const buttonOpenModalBoy = document.querySelector('.btn-add-motoboy')
-const modalMotoboy = document.querySelector('.area-motoboys-modal')
+const buttonAddMotoboy2 = document.querySelector('.btn-update-boy ')
+const modalMotoboy = document.querySelector('.area-motoboys-modal') 
+const modalMotoboyWarning = document.querySelector('.area-motoboys-modal-warning') 
+const modalMotoboyWarningMsg = document.querySelector('.area-modal-warning-msg') 
+const modalAreaButtons = document.querySelector('.area-motoboys-modal-buttons') 
 const closeModal = document.querySelector('.area-modal-exit')
+const closeModalMsg = document.querySelector('.area-modal-exit-content')
 const buttonAddMotoboy = document.querySelector('.area-modal-submit button')
+const h1Modal = document.querySelector('.area-modal-header h1')
+
+const buttonUpdateMotoboy = document.querySelector('.btn-update-motoboy')
+const buttonDeleteMotoboy = document.querySelector('.btn-delete-motoboy')
 
 const nameMotoboy = document.querySelector('.name-motoboy')
 const emailMotoboy = document.querySelector('.email-motoboy')
@@ -46,11 +55,21 @@ const infoModal = document.querySelector('.modal-info')
 
 
 
-buttonOpenModalBoy.addEventListener('click', openModal)
+buttonOpenModalBoy.addEventListener('click', openModalAdd)
 closeModal.addEventListener('click', functionCloseModal)
+closeModalMsg.addEventListener('click', functionCloseModal)
 buttonAddMotoboy.addEventListener('click', () => {
+    h1Modal.innerHTML = "Preencha os campos"
+    buttonAddMotoboy.innerHTML = "Cadastrar"
     functionAddMotoboy(nameMotoboy.value, emailMotoboy.value, celularMotoboy.value, addressMotoboy.value, rgMotoboy.value, cpfMotoboy.value, numberBoardMotoboy.value, cityBoardMotoboy.value, idUser)
 })
+
+buttonUpdateMotoboy.addEventListener('click', ()=> {
+    modalAreaButtons.style.display = 'none'
+    const motoboy = verifyMotoboy()
+})
+
+buttonDeleteMotoboy.addEventListener('click', verifyIdMotoboy)
 
 btn_sair.addEventListener('click', deslogar)
 function deslogar() {
@@ -59,14 +78,87 @@ function deslogar() {
 }
 
 
-
 menuImg.addEventListener('click', openCloseMenu)
 
-function openModal() {
+function verifyIdMotoboy() {
+    const tagLiMotoboys = document.querySelector('.area-motoboys .selected')
+    const buttonNoDelete = document.querySelector('.btn-no-delete')
+    const buttonDelete = document.querySelector('.btn-delete')
+    if(!tagLiMotoboys) {
+        openModalWarning('Selecione um motoboy!')
+    } else {
+        const id = tagLiMotoboys.getAttribute('id-item')
+        modalAreaButtons.style.display = 'flex'
+        openModalWarning('Tem certeza que deseja excluir o motoboy?')
+        buttonNoDelete.addEventListener('click', functionCloseModal)
+        buttonDelete.addEventListener('click', async() => {
+            await functionDeleteMotoboy(id)
+            functionCloseModal()
+            setTimeout(()=>{
+                clearListMotoboys()
+                listMotoboys()
+                tagLiMotoboys()
+            }, 200)
+            }
+        )
+        
+    }
+}
+
+async function verifyMotoboy() {
+    const tagLiMotoboys = document.querySelector('.area-motoboys .selected')
+    if(!tagLiMotoboys) {
+        openModalWarning('Selecione um motoboy!')
+    } else {
+        const id = tagLiMotoboys.getAttribute('id-item')
+        const boy = await getMotoboy(id)
+        if(boy) {
+            h1Modal.innerHTML = "Atualize os campos"
+            buttonAddMotoboy2.style.display = 'block'
+            buttonAddMotoboy.style.display = 'none'
+            nameMotoboy.value = boy.motoboy.name
+            emailMotoboy.value = boy.motoboy.email
+            celularMotoboy.value = boy.motoboy.celular
+            addressMotoboy.value = boy.motoboy.address
+            rgMotoboy.value = boy.motoboy.rg
+            cpfMotoboy.value = boy.motoboy.cpf
+            numberBoardMotoboy.value = boy.motoboy.numberBoard
+            cityBoardMotoboy.value = boy.motoboy.cityBoard
+            openModalUpdate()
+            console.log(boy)
+            buttonAddMotoboy2.addEventListener('click', () => {
+                functionUpdateMotoboy(nameMotoboy.value, emailMotoboy.value, celularMotoboy.value, addressMotoboy.value, rgMotoboy.value, cpfMotoboy.value, numberBoardMotoboy.value, cityBoardMotoboy.value, boy.motoboy.id)
+            })
+        }
+    }
+}
+function openModalWarning(msg) {
+    modalMotoboyWarning.style.display = 'flex'
+    modalMotoboyWarningMsg.innerHTML = msg
+}
+function openModalAdd() {
+    h1Modal.innerHTML = 'Preencha os campos'
+    buttonAddMotoboy2.style.display = 'none'
+    buttonAddMotoboy.style.display = 'block'
     modalMotoboy.style.display = 'flex'
+    fieldsClear()
+}
+function openModalUpdate() {
+    modalMotoboy.style.display = 'flex'
+}
+function fieldsClear() {
+    nameMotoboy.value = ''
+    emailMotoboy.value = ''
+    celularMotoboy.value = ''
+    addressMotoboy.value = ''
+    rgMotoboy.value = ''
+    cpfMotoboy.value = ''
+    numberBoardMotoboy.value = ''
+    cityBoardMotoboy.value = ''
 }
 function functionCloseModal() {
     modalMotoboy.style.display = 'none'
+    modalMotoboyWarning.style.display = 'none'
 }
 function openCloseMenu() {
     if(aside.classList.contains('menuClosed')) {
@@ -113,9 +205,40 @@ li.forEach( item => {
         displayFlexDisplayNone(c.target.innerText)
     })
 })
+async function getMotoboy(id) {
+    const motoboy = await fetch(`/motoboy/${id}`, {
+        method: 'GET',
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+            "Authorization": `Bearer ${localStorage.getItem('token')}`
+        }
+    })
+    const json = await motoboy.json()
+    return json
+}
+
+async function functionDeleteMotoboy(id) {
+    if(id) {
+        const del = await fetch(`/motoboy/${id}`, {
+            method: 'DELETE',
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded",
+                "Authorization": `Bearer ${localStorage.getItem('token')}`
+            }
+        })
+        const json = await del.json()
+        if(json.sucess) {
+            clearListMotoboys()
+            listMotoboys()
+            functionCloseModal()
+            tagLiMotoboys()
+            modalAreaButtons.style.display = 'none'
+        }
+    }
+}
+
 async function functionAddMotoboy(nameMotoboy, emailMotoboy, celularMotoboy, addressMotoboy, rgMotoboy, cpfMotoboy, numberBoardMotoboy, cityBoardMotoboy, id) {
     if(nameMotoboy && celularMotoboy) {
-        console.log(nameMotoboy, emailMotoboy, celularMotoboy, addressMotoboy, rgMotoboy, cpfMotoboy, numberBoardMotoboy, cityBoardMotoboy)
         const motoboy = await fetch(`/motoboy/${id}`, {
             method: 'POST',
             headers: {
@@ -130,6 +253,34 @@ async function functionAddMotoboy(nameMotoboy, emailMotoboy, celularMotoboy, add
         if(json.error) {
             infoModal.innerHTML = json.error
             exit
+        }
+        if(json) {
+            clearListMotoboys()
+            listMotoboys()
+            functionCloseModal()
+            tagLiMotoboys()
+        }
+    } else {
+        infoModal.innerHTML = 'Preencha os campos obrigatórios!'
+    }
+}
+async function functionUpdateMotoboy(nameMotoboy, emailMotoboy, celularMotoboy, addressMotoboy, rgMotoboy, cpfMotoboy, numberBoardMotoboy, cityBoardMotoboy, id) {
+    if(nameMotoboy && celularMotoboy) {
+        console.log(nameMotoboy, emailMotoboy, celularMotoboy, addressMotoboy, rgMotoboy, cpfMotoboy, numberBoardMotoboy, cityBoardMotoboy)
+        const motoboy = await fetch(`/motoboy/${id}`, {
+            method: 'PUT',
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded",
+                "Authorization": `Bearer ${localStorage.getItem('token')}`
+            },
+            body: new URLSearchParams({ 
+                name: nameMotoboy, email: emailMotoboy, celular: celularMotoboy, address: addressMotoboy, rg: rgMotoboy, cpf: cpfMotoboy, numberBoard: numberBoardMotoboy, cityBoard: cityBoardMotoboy
+            })
+        })
+        const json = await motoboy.json()
+        if(json.error) {
+            infoModal.innerHTML = json.error
+            
         }
         if(json) {
             clearListMotoboys()
@@ -214,7 +365,7 @@ function tagLiMotoboys() {
         tagLiMotoboys.forEach(item => {
             item.addEventListener('click', tagLi => {
                 tagLiMotoboysSelected()
-                item.classList.toggle('selected')
+                item.classList.add('selected')
             })
         })
         updateHeightAside()
