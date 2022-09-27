@@ -31,7 +31,7 @@ export const ClientService = {
     findOne: async(id: string) => {
         return await prisma.client.findUnique({ where: { id }})
     },
-    findByEmail: async(cnpj: string) => {
+    findByCNPJ: async(cnpj: string) => {
         return await prisma.client.findUnique({ where: { cnpj }})
     },
     create: async(data: PropCreate) => {

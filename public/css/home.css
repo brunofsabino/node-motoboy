@@ -186,22 +186,34 @@ aside nav a img {
     opacity: 0.9;
 }
 
-.area-content-motoboys {
+.area-content-motoboys,
+.area-content-clients {
     display: none;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    /* padding: 10px; */
 }
-.area-motoboys {
+.area-content-motoboys h1,
+.area-content-clients h1 {
+    margin: 30px;
+    background-color: #F28520;
+    padding: 7px 25px;
+    border-radius: 16px;
+    color: #FFF;
+    font-size: 26px;
+}
+.area-motoboys,
+.area-clients {
     width: 80%;
 }
-.area-motoboys-buttons {
+.area-motoboys-buttons,
+.area-clients-buttons {
     display: flex;
     align-items: center;
     justify-content: center;
 }
-.area-content-motoboys .area-motoboys-buttons button {
+.area-content-motoboys .area-motoboys-buttons button, 
+.area-content-clients .area-clients-buttons button {
     width: 30%;
     height: 50px;
     font-size: 16px;
@@ -214,14 +226,22 @@ aside nav a img {
     padding: 0px 15px;
     line-height: 17px;
 }
-.area-content-motoboys .area-motoboys-buttons .btn-add-motoboy {
+.area-content-motoboys .area-motoboys-buttons .btn-add-motoboy,
+.area-content-clients .area-clients-buttons .btn-add-clients {
     background-color: #0CA4A5;
 }
-.area-content-motoboys .area-motoboys-buttons .btn-delete-motoboy {
+.area-content-motoboys .area-motoboys-buttons .btn-delete-motoboy,
+.area-content-clients .area-clients-buttons .btn-delete-clients {
     background-color: #F22020;
 }
-.area-content-motoboys .area-motoboys-buttons .btn-update-motoboy {
-    background-color: #F28520;
+.area-content-motoboys .area-motoboys-buttons .btn-update-motoboy,
+.area-content-clients .area-clients-buttons .btn-update-clients {
+    /* background-color: #F28520; */
+    background-color: #747a10;
+}
+.area-content-motoboys .area-motoboys-buttons button:hover,
+.area-content-clients .area-clients-buttons  button:hover {
+    opacity: 0.7;
 }
 .area-motoboys-modal,
 .area-motoboys-modal-warning {
@@ -318,7 +338,7 @@ aside nav a img {
     height: 30px;
     background-color: red;
     position: relative;
-    left: 200px;
+    left: 170px;
     cursor: pointer;
     text-align: center;
     line-height: 30px;
@@ -380,7 +400,8 @@ aside nav a img {
 .btn-update-boy {
     display: none;
 }
-.area-motoboys ul li {
+.area-motoboys ul li,
+.area-clients ul li {
     border: 3px solid;
     border-radius: 40px;
     height: 60px;
@@ -390,12 +411,14 @@ aside nav a img {
     margin: 30px;
     cursor: pointer;
 }
-.area-motoboys ul li:hover {
+.area-motoboys ul li:hover,
+.area-clients ul li:hover  {
     background-color: rgba(0,0,0,.1);
     border: 3px solid #000;
     /* color: #fff; */
 }
-.area-motoboys ul li .area-li {
+.area-motoboys ul li .area-li,
+.area-clients ul li .area-li {
     width: 100%;
     display: flex;
     align-items: center;
@@ -404,10 +427,12 @@ aside nav a img {
 .area-motoboys  .selected {
     background-color: rgba(0,0,0,.2);
 }
-.area-motoboy-circle {
+.area-motoboy-circle,
+.area-client-circle {
     width: 30px;
 }
-.motoboy-circle {
+.motoboy-circle,
+.client-circle {
     width: 10px;
     height: 10px;
     border: 2px solid;

@@ -28,6 +28,7 @@ const idUser = localStorage.getItem('id')
 const buttonUpdadeUser = document.querySelector('.area-content-users button')
 
 const tagUlMotoboys = document.querySelector('.area-motoboys ul')
+const tagUlClients = document.querySelector('.area-clients ul')
 
 const buttonOpenModalBoy = document.querySelector('.btn-add-motoboy')
 const buttonAddMotoboy2 = document.querySelector('.btn-update-boy ')
@@ -81,13 +82,13 @@ function deslogar() {
 menuImg.addEventListener('click', openCloseMenu)
 
 function verifyIdMotoboy() {
-    const tagLiMotoboys = document.querySelector('.area-motoboys .selected')
+    const tagLiMotoboys2 = document.querySelector('.area-motoboys .selected')
     const buttonNoDelete = document.querySelector('.btn-no-delete')
     const buttonDelete = document.querySelector('.btn-delete')
-    if(!tagLiMotoboys) {
+    if(!tagLiMotoboys2) {
         openModalWarning('Selecione um motoboy!')
     } else {
-        const id = tagLiMotoboys.getAttribute('id-item')
+        const id = tagLiMotoboys2.getAttribute('id-item')
         modalAreaButtons.style.display = 'flex'
         openModalWarning('Tem certeza que deseja excluir o motoboy?')
         buttonNoDelete.addEventListener('click', functionCloseModal)
@@ -125,7 +126,6 @@ async function verifyMotoboy() {
             numberBoardMotoboy.value = boy.motoboy.numberBoard
             cityBoardMotoboy.value = boy.motoboy.cityBoard
             openModalUpdate()
-            console.log(boy)
             buttonAddMotoboy2.addEventListener('click', () => {
                 functionUpdateMotoboy(nameMotoboy.value, emailMotoboy.value, celularMotoboy.value, addressMotoboy.value, rgMotoboy.value, cpfMotoboy.value, numberBoardMotoboy.value, cityBoardMotoboy.value, boy.motoboy.id)
             })
@@ -188,7 +188,6 @@ nameUser.value = localStorage.getItem('name')
 emailUser.value = localStorage.getItem('email')
 
 buttonUpdadeUser.addEventListener('click', () => {
-    console.log(passwordUser2.value.length)
     if(passwordUser.value.length > 0 && passwordUser2.value.length > 0 && nameUser.value.length > 0) {
         updateUser(nameUser.value, passwordUser.value, passwordUser2.value, idUser)
     } else if(nameUser.value.length > 0) {
@@ -266,7 +265,6 @@ async function functionAddMotoboy(nameMotoboy, emailMotoboy, celularMotoboy, add
 }
 async function functionUpdateMotoboy(nameMotoboy, emailMotoboy, celularMotoboy, addressMotoboy, rgMotoboy, cpfMotoboy, numberBoardMotoboy, cityBoardMotoboy, id) {
     if(nameMotoboy && celularMotoboy) {
-        console.log(nameMotoboy, emailMotoboy, celularMotoboy, addressMotoboy, rgMotoboy, cpfMotoboy, numberBoardMotoboy, cityBoardMotoboy)
         const motoboy = await fetch(`/motoboy/${id}`, {
             method: 'PUT',
             headers: {
@@ -295,8 +293,6 @@ async function functionUpdateMotoboy(nameMotoboy, emailMotoboy, celularMotoboy, 
 }
 
 async function updateUser(name , password, password2 , id) {
-    console.log(name.typeof)
-    console.log(password)
     if(password === password2) {
         if(name  && password != undefined && password2 != undefined) {
             const userUpdate = await fetch(`/user/${id}`, {
@@ -351,13 +347,31 @@ async function listMotoboys() {
     const json = await motoboys.json()
     if(json){
         json.motoboys.forEach((item, indice) => {
-            console.log(item)
             tagUlMotoboys.innerHTML += `<li id-item="${item.id}" class="" ><div class="area-li"><div class="area-motoboy-circle" ><div class="motoboy-circle"></div></div><div class="motoboy-name">${item.name}</div><div class="motoboy-cel">${item.celular}</div></div></li>`
+        })
+    }
+}
+async function listClients() {
+    const clients = await fetch(`/client`, {
+        method: 'GET',
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+            "Authorization": `Bearer ${localStorage.getItem('token')}`
+        }
+    })
+    const json = await clients.json()
+    console.log(json)
+    if(json){
+        json.clients.forEach((item, indice) => {
+            tagUlClients.innerHTML += `<li id-item="${item.id}" class="" ><div class="area-li"><div class="area-client-circle" ><div class="client-circle"></div></div><div class="client-name">${item.nameFantasy}</div><div class="client-cel">${item.cnpj}</div></div></li>`
         })
     }
 }
 function clearListMotoboys() {
     tagUlMotoboys.innerHTML = ''
+}
+function clearListClients() {
+    tagUlClients.innerHTML = ''
 }
 function tagLiMotoboys() {
     setTimeout(() => {
@@ -383,19 +397,25 @@ function displayFlexDisplayNone(item) {
             alterarLiUm()
             updateHeightAside()
             clearListMotoboys()
+            clearListClients()
         break
         case 'Motoboys':
+            clearListMotoboys()
             alterarLiDois()
             listMotoboys()
             tagLiMotoboys()
             updateHeightAside()
+            clearListClients()
         break
         case 'Clientes':
+            clearListClients()
             alterarLiTres()
             updateHeightAside()
             clearListMotoboys()
+            listClients()
         break
         case 'Rotas':
+            clearListClients()
             alterarLiQuatro()
             updateHeightAside()
             clearListMotoboys()
@@ -404,6 +424,7 @@ function displayFlexDisplayNone(item) {
             alterarLiCinco()
             updateHeightAside()
             clearListMotoboys()
+            clearListClients()
         break
     }
 }

@@ -23,7 +23,7 @@ export const create =  async(req: Request, res: Response) => {
     const { id } = req.params
     const { nameFantasy, cnpj, address, telephone, cep, city, corporateName } = req.body
     const user = await UserService.findOne(id)
-    const cnjpClient = await ClientService.findByEmail(cnpj)
+    const cnjpClient = await ClientService.findByCNPJ(cnpj)
     if(!cnjpClient) {
         if(user && nameFantasy && cnpj && address && telephone && cep && city && corporateName) {
             const newClient = await ClientService.create({
@@ -47,7 +47,7 @@ export const update = async(req: Request, res: Response)  => {
     const client = await ClientService.findOne(idClient)
     if(client) {
         if(nameFantasy || cnpj || address || telephone || cep || city || corporateName ) {
-            const cnjpClient = await ClientService.findByEmail(cnpj)
+            const cnjpClient = await ClientService.findByCNPJ(cnpj)
             if(!cnjpClient) {
                 const clientUpdated = await ClientService.update(client.id, {
                     nameFantasy: nameFantasy ? nameFantasy : client.nameFantasy,
