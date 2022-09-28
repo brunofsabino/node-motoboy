@@ -227,15 +227,15 @@ aside nav a img {
     line-height: 17px;
 }
 .area-content-motoboys .area-motoboys-buttons .btn-add-motoboy,
-.area-content-clients .area-clients-buttons .btn-add-clients {
+.area-content-clients .area-clients-buttons .btn-add-client {
     background-color: #0CA4A5;
 }
 .area-content-motoboys .area-motoboys-buttons .btn-delete-motoboy,
-.area-content-clients .area-clients-buttons .btn-delete-clients {
+.area-content-clients .area-clients-buttons .btn-delete-client {
     background-color: #F22020;
 }
 .area-content-motoboys .area-motoboys-buttons .btn-update-motoboy,
-.area-content-clients .area-clients-buttons .btn-update-clients {
+.area-content-clients .area-clients-buttons .btn-update-client {
     /* background-color: #F28520; */
     background-color: #747a10;
 }
@@ -244,7 +244,8 @@ aside nav a img {
     opacity: 0.7;
 }
 .area-motoboys-modal,
-.area-motoboys-modal-warning {
+.area-motoboys-modal-warning,
+.area-clients-modal {
     width: 100%;
     height: 100vh;
     background-color: rgba(0,0,0,0.7);
@@ -277,7 +278,8 @@ aside nav a img {
 .area-motoboys-modal-buttons .btn-no-delete {
     background-color:#0CA4A5;
 }
-.area-motoboys-modal-content-add {
+.area-motoboys-modal-content-add,
+.area-clients-modal-content-add {
     width: 60%;
     background-color:#F2F4FF;
     border-radius: 25px;
@@ -305,7 +307,8 @@ aside nav a img {
     margin: 20px 15px;
     text-align: center;
 }
-.area-motoboys-modal-content .area-modal-exit {
+.area-motoboys-modal-content .area-modal-exit,
+.area-motoboys-modal-content .area-modal-exit-client {
     display:flex;
     justify-content: right;
     width: 80%;
@@ -326,14 +329,16 @@ aside nav a img {
     margin: 30px;
 }
 
-.area-motoboys-modal-content-add .area-modal-header h1 {
+.area-motoboys-modal-content-add .area-modal-header h1,
+.area-clients-modal-content-add .area-modal-header h1 {
     background-color: #F28520;
     padding: 7px 25px;
     border-radius: 16px;
     color: #FFF;
     font-size: 26px;
 }
-.area-motoboys-modal-content-add .area-modal-header .area-modal-exit {
+.area-motoboys-modal-content-add .area-modal-header .area-modal-exit,
+.area-clients-modal-content-add .area-modal-header .area-modal-exit-client {
     width: 30px;
     height: 30px;
     background-color: red;
@@ -355,7 +360,8 @@ aside nav a img {
     background-color: #FFF;
     border-radius: 25px;
 }
-.area-motoboys-modal-content-add .area-modal-inputs input {
+.area-motoboys-modal-content-add .area-modal-inputs input,
+.area-clients-modal-content-add .area-modal-inputs input {
     margin: 15px;
     outline: none;
     border: none;
@@ -424,7 +430,8 @@ aside nav a img {
     align-items: center;
     justify-content: space-around;
 }
-.area-motoboys  .selected {
+.area-motoboys  .selected,
+.area-clients  .selected {
     background-color: rgba(0,0,0,.2);
 }
 .area-motoboy-circle,

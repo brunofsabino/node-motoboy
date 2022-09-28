@@ -32,6 +32,7 @@ const tagUlClients = document.querySelector('.area-clients ul')
 
 const buttonOpenModalBoy = document.querySelector('.btn-add-motoboy')
 const buttonAddMotoboy2 = document.querySelector('.btn-update-boy ')
+
 const modalMotoboy = document.querySelector('.area-motoboys-modal') 
 const modalMotoboyWarning = document.querySelector('.area-motoboys-modal-warning') 
 const modalMotoboyWarningMsg = document.querySelector('.area-modal-warning-msg') 
@@ -54,6 +55,34 @@ const numberBoardMotoboy = document.querySelector('.numberBoard-motoboy')
 const cityBoardMotoboy = document.querySelector('.cityBoard-motoboy')
 const infoModal = document.querySelector('.modal-info')
 
+
+
+const buttonOpenModalClient = document.querySelector('.btn-add-client')
+const modalClient = document.querySelector('.area-clients-modal') 
+const buttonCloseModal = document.querySelector('.area-modal-exit-client')
+const buttonAddClient = document.querySelector('.area-clients-modal-content-add .area-modal-submit button')
+const h1ModalClient = document.querySelector('.area-clients-modal-content-add .area-modal-header h1')
+
+const nameClient = document.querySelector('.nameFantasy-clients')
+const corporateClient = document.querySelector('.corporateName-clients')
+const CNPJClient = document.querySelector('.cnpj-clients')
+const addressClient = document.querySelector('.address-clients')
+const telephoneClient = document.querySelector('.telephone-clients')
+const CEPClient = document.querySelector('.cep-clients')
+const cityClient = document.querySelector('.city-clients')
+
+const infoModalClient = document.querySelector('.modal-info-client')
+
+
+
+
+buttonOpenModalClient.addEventListener('click', openModalClientAdd)
+buttonCloseModal.addEventListener('click', functionCloseModalClient)
+buttonAddClient.addEventListener('click', () => {
+    h1ModalClient.innerHTML = "Preencha os campos"
+    buttonAddClient.innerHTML = "Cadastrar"
+    functionAddClient(nameClient.value, corporateClient.value, CNPJClient.value, addressClient.value, telephoneClient.value, CEPClient.value, cityClient.value, idUser)
+})
 
 
 buttonOpenModalBoy.addEventListener('click', openModalAdd)
@@ -143,6 +172,9 @@ function openModalAdd() {
     modalMotoboy.style.display = 'flex'
     fieldsClear()
 }
+function openModalClientAdd() {
+    modalClient.style.display = 'flex'
+}
 function openModalUpdate() {
     modalMotoboy.style.display = 'flex'
 }
@@ -159,6 +191,9 @@ function fieldsClear() {
 function functionCloseModal() {
     modalMotoboy.style.display = 'none'
     modalMotoboyWarning.style.display = 'none'
+}
+function functionCloseModalClient() {
+    modalClient.style.display = 'none'
 }
 function openCloseMenu() {
     if(aside.classList.contains('menuClosed')) {
@@ -261,6 +296,33 @@ async function functionAddMotoboy(nameMotoboy, emailMotoboy, celularMotoboy, add
         }
     } else {
         infoModal.innerHTML = 'Preencha os campos obrigatórios!'
+    }
+}
+async function functionAddClient(nameFantasy, corporateName, cnpj, address, telephone, cep, city, id) {
+    if(nameFantasy && corporateName && cnpj && address && telephone && cep && city) {
+        const motoboy = await fetch(`/client/${id}`, {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded",
+                "Authorization": `Bearer ${localStorage.getItem('token')}`
+            },
+            body: new URLSearchParams({
+                nameFantasy, corporateName, cnpj, address, telephone, cep, city
+            })
+        })
+        const json = await motoboy.json()
+        if(json.error) {
+            infoModalClient.innerHTML = json.error
+            exit
+        }
+        if(json) {
+            clearListClients() 
+            listClients()
+            functionCloseModalClient()
+            // tagLiMotoboys()
+        }
+    } else {
+        infoModalClient.innerHTML = 'Preencha os campos obrigatórios!'
     }
 }
 async function functionUpdateMotoboy(nameMotoboy, emailMotoboy, celularMotoboy, addressMotoboy, rgMotoboy, cpfMotoboy, numberBoardMotoboy, cityBoardMotoboy, id) {
@@ -385,8 +447,26 @@ function tagLiMotoboys() {
         updateHeightAside()
     }, 500)
 }
+function tagLiClients() {
+    setTimeout(() => {
+        const tagLiCli = document.querySelectorAll('.area-clients li')
+        tagLiCli.forEach(item => {
+            item.addEventListener('click', tagLi => {
+                tagLiClientsSelected()
+                item.classList.add('selected')
+            })
+        })
+        updateHeightAside()
+    }, 500)
+}
 function tagLiMotoboysSelected() {
     const tagLiMotoboys = document.querySelectorAll('.area-motoboys li')
+    tagLiMotoboys.forEach( item => {
+        item.classList.remove('selected')
+    })
+}
+function tagLiClientsSelected() {
+    const tagLiMotoboys = document.querySelectorAll('.area-clients li')
     tagLiMotoboys.forEach( item => {
         item.classList.remove('selected')
     })
@@ -410,9 +490,11 @@ function displayFlexDisplayNone(item) {
         case 'Clientes':
             clearListClients()
             alterarLiTres()
+            tagLiClients()
+            listClients()
             updateHeightAside()
             clearListMotoboys()
-            listClients()
+            
         break
         case 'Rotas':
             clearListClients()
@@ -431,6 +513,8 @@ function displayFlexDisplayNone(item) {
 function updateHeightAside() {
     const areaMotoboy2 = areaMotoboy.clientHeight
     aside.style.height = `${100 + areaMotoboy2}px`
+    const areaClient2 = areaClient.clientHeight
+    aside.style.height = `${100 + areaClient2}px`
 }
 
 function alterarLiUm(){
