@@ -48,24 +48,22 @@ export const update = async(req: Request, res: Response)  => {
     if(client) {
         if(nameFantasy || cnpj || address || telephone || cep || city || corporateName ) {
             const cnjpClient = await ClientService.findByCNPJ(cnpj)
-            if(!cnjpClient) {
-                const clientUpdated = await ClientService.update(client.id, {
-                    nameFantasy: nameFantasy ? nameFantasy : client.nameFantasy,
-                    cnpj: cnpj ? cnpj : client.cnpj,
-                    address: address ? address : client.address,
-                    telephone: telephone ? telephone : client.telephone,
-                    cep: cep ? cep : client.cep,
-                    city: city ? city : client.city,
-                    corporateName: corporateName ? corporateName : client.corporateName
-                })
-                if(clientUpdated) {
-                    res.status(200).json({ client: clientUpdated})
-                } else {
-                    res.status(400).json({ error: "Dados invalidos"})
-                }
+            
+            const clientUpdated = await ClientService.update(client.id, {
+                nameFantasy: nameFantasy ? nameFantasy : client.nameFantasy,
+                cnpj: cnpj ? cnpj : client.cnpj,
+                address: address ? address : client.address,
+                telephone: telephone ? telephone : client.telephone,
+                cep: cep ? cep : client.cep,
+                city: city ? city : client.city,
+                corporateName: corporateName ? corporateName : client.corporateName
+            })
+            if(clientUpdated) {
+                res.status(200).json({ client: clientUpdated})
             } else {
-                res.status(400).json({ error: "CNPJ já cadastrado"})
+                res.status(400).json({ error: "Dados invalidos"})
             }
+            
         } else {
             res.status(400).json({ error: "Dados invalidos"})
         }

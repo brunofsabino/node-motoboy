@@ -245,6 +245,7 @@ aside nav a img {
 }
 .area-motoboys-modal,
 .area-motoboys-modal-warning,
+.area-clients-modal-warning,
 .area-clients-modal {
     width: 100%;
     height: 100vh;
@@ -261,7 +262,8 @@ aside nav a img {
 .area-motoboys-modal-buttons {
     display: none;
 }
-.area-motoboys-modal-buttons button {
+.area-motoboys-modal-buttons button,
+.area-clients-modal-buttons button {
     padding: 5px 20px;
     margin: 15px;
     font-size: 16px;
@@ -272,10 +274,12 @@ aside nav a img {
     cursor: pointer;
     line-height: 17px;
 }
-.area-motoboys-modal-buttons .btn-delete {
+.area-motoboys-modal-buttons .btn-delete,
+.area-clients-modal-buttons .btn-delete {
     background-color: #F22020;
 }
-.area-motoboys-modal-buttons .btn-no-delete {
+.area-motoboys-modal-buttons .btn-no-delete,
+.area-clients-modal-buttons .btn-no-delete {
     background-color:#0CA4A5;
 }
 .area-motoboys-modal-content-add,
@@ -288,7 +292,8 @@ aside nav a img {
     align-items: center;
     flex-direction: column;
 }
-.area-motoboys-modal-content {
+.area-motoboys-modal-content,
+.area-clients-modal-content {
     width: 25%;
     background-color: #FFF;
     border-radius: 20px;
@@ -298,7 +303,8 @@ aside nav a img {
     flex-direction: column;
     border: 3px solid #F28520;
 }
-.area-modal-warning-msg {
+.area-modal-warning-msg,
+.area-modal-warning-msg-cli {
     padding: 15px 20px;
     background-color: #F28520;
     font-weight: 600;
@@ -308,13 +314,14 @@ aside nav a img {
     text-align: center;
 }
 .area-motoboys-modal-content .area-modal-exit,
-.area-motoboys-modal-content .area-modal-exit-client {
+.area-clients-modal-content .area-modal-exit-client {
     display:flex;
     justify-content: right;
     width: 80%;
     padding: 15px 0px;
 }
-.area-modal-exit-content {
+.area-modal-exit-content,
+.area-modal-exit-content-client {
     width: 25px;
     height: 25px;
     background-color: red;

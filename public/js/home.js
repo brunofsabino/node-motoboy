@@ -45,6 +45,8 @@ const h1Modal = document.querySelector('.area-modal-header h1')
 const buttonUpdateMotoboy = document.querySelector('.btn-update-motoboy')
 const buttonDeleteMotoboy = document.querySelector('.btn-delete-motoboy')
 
+
+const closeModalCliMsg = document.querySelector('.area-modal-exit-content-client')
 const nameMotoboy = document.querySelector('.name-motoboy')
 const emailMotoboy = document.querySelector('.email-motoboy')
 const celularMotoboy = document.querySelector('.celular-motoboy')
@@ -58,9 +60,16 @@ const infoModal = document.querySelector('.modal-info')
 
 
 const buttonOpenModalClient = document.querySelector('.btn-add-client')
+const buttonUpdateClient = document.querySelector('.btn-update-client')
+const buttonDeleteClient = document.querySelector('.btn-delete-client')
+
+const modalClientWarning = document.querySelector('.area-clients-modal-warning') 
+const modalClientWarningMsg = document.querySelector('.area-modal-warning-msg-cli') 
+const modalAreaButtonsCli = document.querySelector('.area-clients-modal-buttons') 
 const modalClient = document.querySelector('.area-clients-modal') 
 const buttonCloseModal = document.querySelector('.area-modal-exit-client')
 const buttonAddClient = document.querySelector('.area-clients-modal-content-add .area-modal-submit button')
+const buttonAddClient2 = document.querySelector('.btn-update-cli ')
 const h1ModalClient = document.querySelector('.area-clients-modal-content-add .area-modal-header h1')
 
 const nameClient = document.querySelector('.nameFantasy-clients')
@@ -94,12 +103,18 @@ buttonAddMotoboy.addEventListener('click', () => {
     functionAddMotoboy(nameMotoboy.value, emailMotoboy.value, celularMotoboy.value, addressMotoboy.value, rgMotoboy.value, cpfMotoboy.value, numberBoardMotoboy.value, cityBoardMotoboy.value, idUser)
 })
 
+closeModalCliMsg.addEventListener('click', functionCloseModalClient)
 buttonUpdateMotoboy.addEventListener('click', ()=> {
     modalAreaButtons.style.display = 'none'
     const motoboy = verifyMotoboy()
 })
+buttonUpdateClient.addEventListener('click', ()=> {
+    modalAreaButtonsCli.style.display = 'none'
+    verifyClient()
+})
 
 buttonDeleteMotoboy.addEventListener('click', verifyIdMotoboy)
+buttonDeleteClient.addEventListener('click', verifyIdClient)
 
 btn_sair.addEventListener('click', deslogar)
 function deslogar() {
@@ -134,6 +149,30 @@ function verifyIdMotoboy() {
         
     }
 }
+function verifyIdClient() {
+    const tagLiClients = document.querySelector('.area-clients .selected')
+    const buttonNoDelete = document.querySelector('.area-clients-modal-buttons .btn-no-delete')
+    const buttonDelete = document.querySelector('.area-clients-modal-buttons .btn-delete')
+    if(!tagLiClients) {
+        openModalWarningCli('Selecione um cliente!')
+    } else {
+        const id = tagLiClients.getAttribute('id-item')
+        modalAreaButtonsCli.style.display = 'flex'
+        openModalWarningCli('Tem certeza que deseja excluir este cliente?')
+        buttonNoDelete.addEventListener('click', functionCloseModalClient)
+        buttonDelete.addEventListener('click', async() => {
+            await functionDeleteClient(id)
+            functionCloseModalClient()
+            setTimeout(()=>{
+                clearListClients()
+                listClients()
+                // tagLiClients()
+            }, 200)
+            }
+        )
+        
+    }
+}
 
 async function verifyMotoboy() {
     const tagLiMotoboys = document.querySelector('.area-motoboys .selected')
@@ -143,7 +182,7 @@ async function verifyMotoboy() {
         const id = tagLiMotoboys.getAttribute('id-item')
         const boy = await getMotoboy(id)
         if(boy) {
-            h1Modal.innerHTML = "Atualize os campos"
+            h1ModalClient.innerHTML = "Atualize os campos"
             buttonAddMotoboy2.style.display = 'block'
             buttonAddMotoboy.style.display = 'none'
             nameMotoboy.value = boy.motoboy.name
@@ -161,9 +200,38 @@ async function verifyMotoboy() {
         }
     }
 }
+async function verifyClient() {
+    const tagLiClients = document.querySelector('.area-clients .selected')
+    if(!tagLiClients) {
+        openModalWarningCli('Selecione um cliente!')
+    } else {
+        const id = tagLiClients.getAttribute('id-item')
+        const client = await getClient(id)
+        if(client) {
+            h1Modal.innerHTML = "Atualize os campos"
+            buttonAddClient2.style.display = 'block'
+            buttonAddClient.style.display = 'none'
+            nameClient.value = client.client.nameFantasy
+            corporateClient.value = client.client.corporateName
+            CNPJClient.value = client.client.cnpj
+            addressClient.value = client.client.address
+            telephoneClient.value = client.client.telephone
+            CEPClient.value = client.client.cep
+            cityClient.value = client.client.city
+            openModalUpdateCli()
+            buttonAddClient2.addEventListener('click', () => {
+                functionUpdateClient(nameClient.value, corporateClient.value, CNPJClient.value, addressClient.value, telephoneClient.value, CEPClient.value, cityClient.value, client.client.id)
+            })
+        }
+    }
+}
 function openModalWarning(msg) {
     modalMotoboyWarning.style.display = 'flex'
     modalMotoboyWarningMsg.innerHTML = msg
+}
+function openModalWarningCli(msg) {
+    modalClientWarning.style.display = 'flex'
+    modalClientWarningMsg.innerHTML = msg
 }
 function openModalAdd() {
     h1Modal.innerHTML = 'Preencha os campos'
@@ -174,9 +242,16 @@ function openModalAdd() {
 }
 function openModalClientAdd() {
     modalClient.style.display = 'flex'
+    buttonAddClient2.style.display = 'none'
+    buttonAddClient.style.display = 'block'
+    modalClient.style.display = 'flex'
+    fieldsClear()
 }
 function openModalUpdate() {
     modalMotoboy.style.display = 'flex'
+}
+function openModalUpdateCli() {
+    modalClient.style.display = 'flex'
 }
 function fieldsClear() {
     nameMotoboy.value = ''
@@ -187,6 +262,13 @@ function fieldsClear() {
     cpfMotoboy.value = ''
     numberBoardMotoboy.value = ''
     cityBoardMotoboy.value = ''
+    nameClient.value = ''
+    corporateClient.value = ''
+    CNPJClient.value = ''
+    addressClient.value = ''
+    telephoneClient.value = ''
+    CEPClient.value = ''
+    cityClient.value = ''
 }
 function functionCloseModal() {
     modalMotoboy.style.display = 'none'
@@ -194,6 +276,7 @@ function functionCloseModal() {
 }
 function functionCloseModalClient() {
     modalClient.style.display = 'none'
+    modalClientWarning.style.display = 'none'
 }
 function openCloseMenu() {
     if(aside.classList.contains('menuClosed')) {
@@ -250,6 +333,17 @@ async function getMotoboy(id) {
     const json = await motoboy.json()
     return json
 }
+async function getClient(id) {
+    const client = await fetch(`/client/${id}`, {
+        method: 'GET',
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+            "Authorization": `Bearer ${localStorage.getItem('token')}`
+        }
+    })
+    const json = await client.json()
+    return json
+}
 
 async function functionDeleteMotoboy(id) {
     if(id) {
@@ -267,6 +361,25 @@ async function functionDeleteMotoboy(id) {
             functionCloseModal()
             tagLiMotoboys()
             modalAreaButtons.style.display = 'none'
+        }
+    }
+}
+async function functionDeleteClient(id) {
+    if(id) {
+        const del = await fetch(`/client/${id}`, {
+            method: 'DELETE',
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded",
+                "Authorization": `Bearer ${localStorage.getItem('token')}`
+            }
+        })
+        const json = await del.json()
+        if(json.sucess) {
+            clearListClients()
+            listClients()
+            functionCloseModalClient()
+            tagLiClients()
+            modalAreaButtonsCli.style.display = 'none'
         }
     }
 }
@@ -319,7 +432,7 @@ async function functionAddClient(nameFantasy, corporateName, cnpj, address, tele
             clearListClients() 
             listClients()
             functionCloseModalClient()
-            // tagLiMotoboys()
+            tagLiClients()
         }
     } else {
         infoModalClient.innerHTML = 'Preencha os campos obrigatórios!'
@@ -340,17 +453,41 @@ async function functionUpdateMotoboy(nameMotoboy, emailMotoboy, celularMotoboy, 
         const json = await motoboy.json()
         if(json.error) {
             infoModal.innerHTML = json.error
-            
         }
         if(json) {
             clearListMotoboys()
             listMotoboys()
-            
             functionCloseModal()
             tagLiMotoboys()
         }
     } else {
         infoModal.innerHTML = 'Preencha os campos obrigatórios!'
+    }
+}
+async function functionUpdateClient(nameFantasy, corporateName, cnpj, address, telephone, cep, city, id) {
+    if(nameFantasy && corporateName && cnpj && address && telephone && cep && city)  {
+        const client = await fetch(`/client/${id}`, {
+            method: 'PUT',
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded",
+                "Authorization": `Bearer ${localStorage.getItem('token')}`
+            },
+            body: new URLSearchParams({ 
+                nameFantasy, corporateName, cnpj, address, telephone, cep, city, id
+            })
+        })
+        const json = await client.json()
+        if(json.error) {
+            infoModalClient.innerHTML = json.error
+        }
+        if(json) {
+            clearListClients()
+            listClients()
+            functionCloseModalClient()
+            tagLiClients()
+        }
+    } else {
+        infoModalClient.innerHTML = 'Preencha os campos obrigatórios!'
     }
 }
 
@@ -422,7 +559,6 @@ async function listClients() {
         }
     })
     const json = await clients.json()
-    console.log(json)
     if(json){
         json.clients.forEach((item, indice) => {
             tagUlClients.innerHTML += `<li id-item="${item.id}" class="" ><div class="area-li"><div class="area-client-circle" ><div class="client-circle"></div></div><div class="client-name">${item.nameFantasy}</div><div class="client-cel">${item.cnpj}</div></div></li>`
