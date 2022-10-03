@@ -24,7 +24,7 @@ export const one = async(req: Request, res: Response) => {
 }
 export const create = async(req: Request, res: Response) => {
     const { idClient } = req.params
-    const { startRoute, endRoute, valueRoute, cep, requester } = req.body
+    const { startRoute, endRoute, valueRoute, cepStartRoute, cepEndRoute, requester } = req.body
     const client = await ClientService.findOne(idClient)
     // const motoboy = await MotoboyService.findOne(idMotoboy)
     if(client && startRoute && endRoute && valueRoute) {
@@ -32,8 +32,10 @@ export const create = async(req: Request, res: Response) => {
             startRoute, 
             endRoute, 
             valueRoute: parseInt(valueRoute), 
-            cep: client.cep, 
+            cepStartRoute: cepStartRoute ?? 'null', 
+            cepEndRoute: cepEndRoute ?? 'null', 
             clientId: client.id, 
+            clientName: client.nameFantasy,
             requester: requester ?? undefined,
             userId: client.userId,
             description: `Objeto retirado na ${startRoute} e entregue na ${endRoute}`

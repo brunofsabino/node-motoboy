@@ -43,17 +43,19 @@ model Motoboy {
 }
 
 model Route {
-  id          String   @id @default(uuid())
-  requester   String?
-  clientId    String
-  startRoute  String?
-  endRoute    String
-  cep         String?
-  createdAt   DateTime @default(now())
-  valueRoute  Int
-  userId      String
-  description String
-  done        Boolean  @default(false)
+  id            String   @id @default(uuid())
+  requester     String?
+  clientId      String
+  clientName    String
+  cepStartRoute String?
+  cepEndRoute   String?
+  startRoute    String?
+  endRoute      String
+  createdAt     DateTime @default(now())
+  valueRoute    Int
+  userId        String
+  description   String
+  done          Boolean  @default(false)
 
   user   User   @relation(fields: [userId], references: [id])
   client Client @relation(fields: [clientId], references: [id])

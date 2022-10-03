@@ -29,6 +29,7 @@ const buttonUpdadeUser = document.querySelector('.area-content-users button')
 
 const tagUlMotoboys = document.querySelector('.area-motoboys ul')
 const tagUlClients = document.querySelector('.area-clients ul')
+const tagUlRoutes = document.querySelector('.area-routes ul')
 
 const buttonOpenModalBoy = document.querySelector('.btn-add-motoboy')
 const buttonAddMotoboy2 = document.querySelector('.btn-update-boy ')
@@ -565,6 +566,28 @@ async function listClients() {
         })
     }
 }
+async function listRoutes() {
+    const routes = await fetch(`/route`, {
+        method: 'GET',
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+            "Authorization": `Bearer ${localStorage.getItem('token')}`
+        }
+    })
+    const json = await routes.json()
+    if(json){
+        json.routes.forEach((item, indice) => {
+            tagUlRoutes.innerHTML += `<li id-item="${item.id}" class="" >
+                                        <div class="area-li"><div class="area-route-circle" >
+                                            <div class="client-circle"></div></div>
+                                            <div class="route-name">Empresa solicitante:${item.clientName}</div>
+                                            <div class="route-end">De:${item.startRoute}</div>
+                                            <div class="route-end">Para:${item.endRoute}</div>
+                                        </div>
+                                      </li>`
+        })
+    }
+}
 function clearListMotoboys() {
     tagUlMotoboys.innerHTML = ''
 }
@@ -637,6 +660,7 @@ function displayFlexDisplayNone(item) {
             alterarLiQuatro()
             updateHeightAside()
             clearListMotoboys()
+            listRoutes()
         break
         case 'Notas Fiscais':
             alterarLiCinco()

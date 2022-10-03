@@ -192,9 +192,11 @@ aside nav a img {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    padding: 3%;
 }
 .area-content-motoboys h1,
-.area-content-clients h1 {
+.area-content-clients h1,
+.area-content-routes h1 {
     margin: 30px;
     background-color: #F28520;
     padding: 7px 25px;
@@ -207,13 +209,15 @@ aside nav a img {
     width: 80%;
 }
 .area-motoboys-buttons,
-.area-clients-buttons {
+.area-clients-buttons,
+.area-routes-buttons-delivery {
     display: flex;
     align-items: center;
     justify-content: center;
 }
 .area-content-motoboys .area-motoboys-buttons button, 
-.area-content-clients .area-clients-buttons button {
+.area-content-clients .area-clients-buttons button,
+.area-content-routes .area-routes-buttons-delivery button {
     width: 30%;
     height: 50px;
     font-size: 16px;
@@ -227,20 +231,24 @@ aside nav a img {
     line-height: 17px;
 }
 .area-content-motoboys .area-motoboys-buttons .btn-add-motoboy,
-.area-content-clients .area-clients-buttons .btn-add-client {
+.area-content-clients .area-clients-buttons .btn-add-client,
+.area-content-routes .area-routes-buttons-delivery .btn-add-routes-delivery  {
     background-color: #0CA4A5;
 }
 .area-content-motoboys .area-motoboys-buttons .btn-delete-motoboy,
-.area-content-clients .area-clients-buttons .btn-delete-client {
+.area-content-clients .area-clients-buttons .btn-delete-client,
+.area-content-routes .area-routes-buttons-delivery .btn-delete-routes-delivery  {
     background-color: #F22020;
 }
 .area-content-motoboys .area-motoboys-buttons .btn-update-motoboy,
-.area-content-clients .area-clients-buttons .btn-update-client {
+.area-content-clients .area-clients-buttons .btn-update-client,
+.area-content-routes .area-routes-buttons-delivery .btn-update-routes-delivery  {
     /* background-color: #F28520; */
     background-color: #747a10;
 }
 .area-content-motoboys .area-motoboys-buttons button:hover,
-.area-content-clients .area-clients-buttons  button:hover {
+.area-content-clients .area-clients-buttons  button:hover,
+.area-content-routes .area-routes-buttons-delivery button:hover {
     opacity: 0.7;
 }
 .area-motoboys-modal,
@@ -431,7 +439,8 @@ aside nav a img {
     /* color: #fff; */
 }
 .area-motoboys ul li .area-li,
-.area-clients ul li .area-li {
+.area-clients ul li .area-li,
+.area-routes ul li .area-li {
     width: 100%;
     display: flex;
     align-items: center;
@@ -467,6 +476,16 @@ aside nav a img {
     align-items: center;
     padding: 3%;
 }
+.area-routes-delivery {
+    width: 80%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    border: 5px solid #F28520;
+    border-radius: 33px;
+    padding: 20px 20px 35px;
+}
 .area-content-invoices {
     display: none;
     flex-direction: column;
@@ -474,5 +493,18 @@ aside nav a img {
     align-items: center;
     padding: 3%;
 }
-
-
+.area-routes li {
+    border: 2px solid;
+    padding: 8px 15px;
+    border-radius: 15px;
+    height: auto;
+    list-style: none;
+}
+.area-routes ul li .area-li {
+    flex-direction: column;
+    padding: 15px;
+    height: inherit;
+}
+.area-routes ul li .area-li .area-route-circle {
+    display: none;
+}
