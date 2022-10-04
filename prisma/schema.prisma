@@ -38,6 +38,7 @@ model Motoboy {
   user User @relation(fields: [userId], references: [id])
 
   motoboyInvoice Invoice[]
+  motoboyRoute   MotoboyRoute[]
 
   @@map("motoboys")
 }
@@ -50,6 +51,7 @@ model Route {
   cepStartRoute String?
   cepEndRoute   String?
   startRoute    String?
+  nameMotoboy   String?
   endRoute      String
   createdAt     DateTime @default(now())
   valueRoute    Int
@@ -60,9 +62,30 @@ model Route {
   user   User   @relation(fields: [userId], references: [id])
   client Client @relation(fields: [clientId], references: [id])
 
-  route Invoice[]
+  route        Invoice[]
+  motoboyRoute MotoboyRoute[]
 
   @@map("routes")
+}
+
+model MotoboyRoute {
+  id            String   @id @default(uuid())
+  motoboyId     String
+  routeId       String
+  nameMotoboy   String
+  clientName    String
+  cepStartRoute String?
+  cepEndRoute   String?
+  startRoute    String?
+  endRoute      String
+  createdAt     DateTime
+  valueRoute    Int
+  description   String
+
+  boy   Motoboy @relation(fields: [motoboyId], references: [id])
+  route Route   @relation(fields: [routeId], references: [id])
+
+  @@map("motoboysRoute")
 }
 
 model Client {

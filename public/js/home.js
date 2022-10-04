@@ -581,8 +581,9 @@ async function listRoutes() {
                                         <div class="area-li"><div class="area-route-circle" >
                                             <div class="client-circle"></div></div>
                                             <div class="route-name">Empresa solicitante:${item.clientName}</div>
-                                            <div class="route-end">De:${item.startRoute}</div>
+                                            <div class="route-start">De:${item.startRoute}</div>
                                             <div class="route-end">Para:${item.endRoute}</div>
+                                            <div class="route-motoboy">${item.nameMotoboy != null ? 'Motoboy legal' : ''}</div>
                                         </div>
                                       </li>`
         })
