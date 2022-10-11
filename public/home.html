@@ -167,6 +167,51 @@
                     <button class="btn-update-routes-delivery">Editar Dados Rotas</button>
                     <button class="btn-delete-routes-delivery">Deletar Rotas</button>
                 </div>
+                <div class="area-routes-modal">
+                    <div class="area-routes-modal-content-add">
+                        <div class="area-modal-header">
+                            <h1>Preencha os campos</h1>
+                            <div class="area-modal-exit-route">X</div>
+                        </div>
+                        <div class="area-modal-inputs">
+                            <div class="area-modal-inputs-name-email">
+                                <select name="names-motoboys" id=""></select>
+                            </div>
+                            <div class="area-modal-inputs-celular-address">
+                                <fieldset>
+                                    <legend>Retirar objeto em:</legend>
+                                    <input type="text" name="cepStartRoute" class="startRoute-routes" placeholder="Digite o CEP">
+                                    <input type="text" name="startRoute" class="logradouro-routes" placeholder="Digite o logradouro*">
+                                    <input type="text" name="telephone" class="complemento-routes" placeholder="Digite o complemento">
+                                    <input type="text" name="bairro-routes" class="bairro-routes" placeholder="Digite o bairro*">
+                                    <input type="text" name="localidade-routes" class="localidade-routes" placeholder="Digite a localidade">
+                                    <input type="text" name="numero-routes" class="numero-routes" placeholder="Digite o número*">
+                                    <input type="text" name="solicitante-routes" class="solicitante-routes" placeholder="Digite o nome do solicitante">
+                                </fieldset>
+                            </div>
+                            <div class="area-modal-inputs-rg-cpf">
+                                <fieldset>
+                                    <legend>Entregar objeto em:</legend>
+                                    <input type="text" name="cepEndRoute" class="startRoute-routes2" placeholder="Digite o CEP">
+                                    <input type="text" name="endRoute" class="logradouro-routes2" placeholder="Digite o logradouro*">
+                                    <input type="text" name="telephone" class="complemento-routes2" placeholder="Digite o complemento">
+                                    <input type="text" name="bairro-routes2" class="bairro-routes2" placeholder="Digite o bairro*">
+                                    <input type="text" name="localidade-routes2" class="localidade-routes2" placeholder="Digite a localidade">
+                                    <input type="text" name="numero-routes2" class="numero-routes2" placeholder="Digite o número*">
+                                    <input type="text" name="comments-routes" class="comments-routes" placeholder="Observações">
+                                </fieldset>
+                            </div>
+                            <div class="area-routes-modal-values">Digite o valor da corrida:*
+                                <input type="text" name="valueRoute" class="valueRoute" placeholder="0,00">
+                            </div>
+                        </div>
+                        <div class="modal-info-route">Os campos com asterisco(*) são de preenchimentos obrigatórios</div>
+                        <div class="area-modal-submit">
+                            <button>Adicionar</button>
+                            <button class="btn-update-route">Atualizar</button>
+                        </div>
+                    </div>
+                </div>
                 <div class="area-routes">
                     <ul></ul>
                </div>

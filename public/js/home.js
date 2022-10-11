@@ -84,7 +84,41 @@ const cityClient = document.querySelector('.city-clients')
 const infoModalClient = document.querySelector('.modal-info-client')
 
 
+const buttonOpenModalRouteDelivery = document.querySelector('.btn-add-routes-delivery')
+const modalRoute = document.querySelector('.area-routes-modal') 
+const buttonUpdateRoute2 = document.querySelector('.btn-update-route ')
+const buttonCloseModalRoute = document.querySelector('.area-modal-exit-route') 
+const optionSelectMotoboys = document.querySelector('.area-modal-inputs-name-email select') 
 
+
+const fieldStartRoute = document.querySelector('.startRoute-routes') 
+const fieldStartRoute2 = document.querySelector('.startRoute-routes2') 
+const fieldLogradouroRoute = document.querySelector('.logradouro-routes') 
+const fieldLogradouroRoute2 = document.querySelector('.logradouro-routes2') 
+const fieldComplementoRoute = document.querySelector('.complemento-routes') 
+const fieldComplementoRoute2 = document.querySelector('.complemento-routes2') 
+const fieldBairroRoute = document.querySelector('.bairro-routes') 
+const fieldBairroRoute2 = document.querySelector('.bairro-routes2') 
+const fieldLocalidadeRoute = document.querySelector('.localidade-routes') 
+const fieldLocalidadeRoute2 = document.querySelector('.localidade-routes2') 
+const fieldNumeroRoute = document.querySelector('.numero-routes') 
+const fieldNumeroRoute2 = document.querySelector('.numero-routes2') 
+const fieldSolicitanteRoute = document.querySelector('.solicitante-routes') 
+const fieldCommentsRoute = document.querySelector('.comments-routes') 
+const valueRoute = document.querySelector('.valueRoute') 
+
+
+valueRoute.addEventListener("keyup", formatarMoeda)
+
+fieldStartRoute.addEventListener('keyup', event => {
+    formatCep(event, 'cep1')
+})
+fieldStartRoute2.addEventListener('keyup', event => {
+    formatCep(event, 'cep2')
+})
+
+buttonOpenModalRouteDelivery.addEventListener('click', openModalRouteDeliveryAdd)
+buttonCloseModalRoute.addEventListener('click', functionCloseModalRoute)
 
 buttonOpenModalClient.addEventListener('click', openModalClientAdd)
 buttonCloseModal.addEventListener('click', functionCloseModalClient)
@@ -126,6 +160,43 @@ function deslogar() {
 
 menuImg.addEventListener('click', openCloseMenu)
 
+function formatarMoeda(e) {
+    let v = e.target.value.replace(/\D/g,"");
+    v = (v/100).toFixed(2) + "";
+    v = v.replace(".", ",");
+    v = v.replace(/(\d)(\d{3})(\d{3}),/g, "$1.$2.$3,");
+    v = v.replace(/(\d)(\d{3}),/g, "$1.$2,");
+    e.target.value = v;
+}
+async function formatCep(e, str) {
+    let v= e.target.value.replace(/\D/g,"")                
+    v = v.replace(/^(\d{5})(\d)/,"$1-$2") 
+    e.target.value = v;
+    if(str === 'cep1') {
+        if(e.target.value.length >= 9) {
+            let b = e.target.value.replace(/-/i, '')
+            let url = await fetch(`http://viacep.com.br/ws/${b}/json/` )
+            let json = await url.json()
+            fillingFieldsCeps(json, fieldLogradouroRoute, fieldComplementoRoute, fieldBairroRoute, fieldLocalidadeRoute)
+        }
+    } else if(str === 'cep2') {
+        if(e.target.value.length >= 9) {
+            let b = e.target.value.replace(/-/i, '')
+            let url = await fetch(`http://viacep.com.br/ws/${b}/json/` )
+            let json = await url.json()
+            fillingFieldsCeps(json, fieldLogradouroRoute2, fieldComplementoRoute2, fieldBairroRoute2, fieldLocalidadeRoute2)
+        }
+    }
+    
+}
+
+function fillingFieldsCeps(data, fieldLogradouro, fieldComplemento, fieldBairro, fieldLocalidade) {
+    fieldLogradouro.value = data.logradouro
+    fieldComplemento.value = data.complemento
+    fieldBairro.value = data.bairro
+    fieldLocalidade.value = data.localidade
+    
+}
 function verifyIdMotoboy() {
     const tagLiMotoboys2 = document.querySelector('.area-motoboys .selected')
     const buttonNoDelete = document.querySelector('.btn-no-delete')
@@ -248,6 +319,11 @@ function openModalClientAdd() {
     modalClient.style.display = 'flex'
     fieldsClear()
 }
+function openModalRouteDeliveryAdd() {
+    modalRoute.style.display = 'flex'
+    buttonUpdateRoute2.style.display = 'none'
+    listClients()
+}
 function openModalUpdate() {
     modalMotoboy.style.display = 'flex'
 }
@@ -278,6 +354,10 @@ function functionCloseModal() {
 function functionCloseModalClient() {
     modalClient.style.display = 'none'
     modalClientWarning.style.display = 'none'
+}
+function functionCloseModalRoute() {
+    modalRoute.style.display = 'none'
+    clearListMotoboys()
 }
 function openCloseMenu() {
     if(aside.classList.contains('menuClosed')) {
@@ -407,6 +487,7 @@ async function functionAddMotoboy(nameMotoboy, emailMotoboy, celularMotoboy, add
             listMotoboys()
             functionCloseModal()
             tagLiMotoboys()
+            // updateHeightAside()
         }
     } else {
         infoModal.innerHTML = 'Preencha os campos obrigatórios!'
@@ -550,6 +631,7 @@ async function listMotoboys() {
             tagUlMotoboys.innerHTML += `<li id-item="${item.id}" class="" ><div class="area-li"><div class="area-motoboy-circle" ><div class="motoboy-circle"></div></div><div class="motoboy-name">${item.name}</div><div class="motoboy-cel">${item.celular}</div></div></li>`
         })
     }
+    // updateHeightAside()
 }
 async function listClients() {
     const clients = await fetch(`/client`, {
@@ -561,8 +643,10 @@ async function listClients() {
     })
     const json = await clients.json()
     if(json){
+        optionSelectMotoboys.innerHTML += `<option value="">Selecione a empresa solicitante:* </option>`
         json.clients.forEach((item, indice) => {
             tagUlClients.innerHTML += `<li id-item="${item.id}" class="" ><div class="area-li"><div class="area-client-circle" ><div class="client-circle"></div></div><div class="client-name">${item.nameFantasy}</div><div class="client-cel">${item.cnpj}</div></div></li>`
+            optionSelectMotoboys.innerHTML += `<option value="${item.id}">${item.nameFantasy}</option>`
         })
     }
 }
@@ -591,6 +675,7 @@ async function listRoutes() {
 }
 function clearListMotoboys() {
     tagUlMotoboys.innerHTML = ''
+    optionSelectMotoboys.innerHTML = ''
 }
 function clearListClients() {
     tagUlClients.innerHTML = ''
@@ -604,7 +689,7 @@ function tagLiMotoboys() {
                 item.classList.add('selected')
             })
         })
-        updateHeightAside()
+        // updateHeightAside()
     }, 500)
 }
 function tagLiClients() {
@@ -616,7 +701,7 @@ function tagLiClients() {
                 item.classList.add('selected')
             })
         })
-        updateHeightAside()
+        // updateHeightAside()
     }, 500)
 }
 function tagLiMotoboysSelected() {
@@ -635,7 +720,7 @@ function displayFlexDisplayNone(item) {
     switch(item) {
         case 'Configurações':
             alterarLiUm()
-            updateHeightAside()
+            // updateHeightAside()
             clearListMotoboys()
             clearListClients()
         break
@@ -644,39 +729,39 @@ function displayFlexDisplayNone(item) {
             alterarLiDois()
             listMotoboys()
             tagLiMotoboys()
-            updateHeightAside()
             clearListClients()
+            // updateHeightAside()
         break
         case 'Clientes':
             clearListClients()
             alterarLiTres()
             tagLiClients()
             listClients()
-            updateHeightAside()
+            // updateHeightAside()
             clearListMotoboys()
             
         break
         case 'Rotas':
             clearListClients()
             alterarLiQuatro()
-            updateHeightAside()
+            // updateHeightAside()
             clearListMotoboys()
             listRoutes()
         break
         case 'Notas Fiscais':
             alterarLiCinco()
-            updateHeightAside()
+            // updateHeightAside()
             clearListMotoboys()
             clearListClients()
         break
     }
 }
-function updateHeightAside() {
-    const areaMotoboy2 = areaMotoboy.clientHeight
-    aside.style.height = `${100 + areaMotoboy2}px`
-    const areaClient2 = areaClient.clientHeight
-    aside.style.height = `${100 + areaClient2}px`
-}
+// function updateHeightAside() {
+//     const areaMotoboy2 = parseInt(areaMotoboy.clientHeight)
+//     aside.style.height = `${100 + areaMotoboy2}px`
+//     const areaClient2 = areaClient.clientHeight
+//     aside.style.height = `${100 + areaClient2}px`
+// }
 
 function alterarLiUm(){
     li1.classList.add('active')
