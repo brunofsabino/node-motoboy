@@ -86,11 +86,13 @@ const infoModalClient = document.querySelector('.modal-info-client')
 
 const buttonOpenModalRouteDelivery = document.querySelector('.btn-add-routes-delivery')
 const modalRoute = document.querySelector('.area-routes-modal') 
+const infoRoute = document.querySelector('.modal-info-route') 
 const buttonUpdateRoute2 = document.querySelector('.btn-update-route ')
 const buttonCloseModalRoute = document.querySelector('.area-modal-exit-route') 
 const optionSelectMotoboys = document.querySelector('.area-modal-inputs-name-email select') 
 
 
+const selectClients = document.querySelector('.area-routes-delivery select')
 const fieldStartRoute = document.querySelector('.startRoute-routes') 
 const fieldStartRoute2 = document.querySelector('.startRoute-routes2') 
 const fieldLogradouroRoute = document.querySelector('.logradouro-routes') 
@@ -106,9 +108,39 @@ const fieldNumeroRoute2 = document.querySelector('.numero-routes2')
 const fieldSolicitanteRoute = document.querySelector('.solicitante-routes') 
 const fieldCommentsRoute = document.querySelector('.comments-routes') 
 const valueRoute = document.querySelector('.valueRoute') 
+const buttonAddRoute = document.querySelector('.area-routes-delivery .area-modal-submit button') 
 
-
+buttonAddRoute.addEventListener('click', () => {
+    infoRoute.innerHTML = 'Os campos com asterisco(*) são de preenchimentos obrigatórios'
+    fieldsDelivery( { 
+        selectClients: selectClients.value, 
+        fieldStartRoute: fieldStartRoute.value, 
+        fieldStartRoute2: fieldStartRoute2.value, 
+        fieldLogradouroRoute: fieldLogradouroRoute.value, 
+        fieldLogradouroRoute2: fieldLogradouroRoute2.value, 
+        fieldComplementoRoute: fieldComplementoRoute.value, 
+        fieldComplementoRoute2: fieldComplementoRoute2.value,
+        fieldBairroRoute: fieldBairroRoute.value,
+        fieldBairroRoute2: fieldBairroRoute2.value,
+        fieldLocalidadeRoute: fieldLocalidadeRoute.value,
+        fieldLocalidadeRoute2: fieldLocalidadeRoute2.value,
+        fieldNumeroRoute: fieldNumeroRoute.value,
+        fieldNumeroRoute2: fieldNumeroRoute2.value,
+        fieldSolicitanteRoute: fieldSolicitanteRoute.value,
+        fieldCommentsRoute: fieldCommentsRoute.value,
+        valueRoute: valueRoute.value
+    })
+})
 valueRoute.addEventListener("keyup", formatarMoeda)
+
+function fieldsDelivery(data) {
+    if(data.selectClients == '' || data.fieldLogradouroRoute == '' || data.fieldLogradouroRoute2 == '' || data.fieldBairroRoute == '' || data.fieldBairroRoute2 == '' || data.fieldNumeroRoute == '' || data.fieldNumeroRoute2 == '' || data.valueRoute == '') {
+        infoRoute.innerHTML = 'Preencha os campos obrigatorios!'
+    } else {
+        console.log(data)
+    }
+    
+}
 
 fieldStartRoute.addEventListener('keyup', event => {
     formatCep(event, 'cep1')
@@ -119,6 +151,9 @@ fieldStartRoute2.addEventListener('keyup', event => {
 
 buttonOpenModalRouteDelivery.addEventListener('click', openModalRouteDeliveryAdd)
 buttonCloseModalRoute.addEventListener('click', functionCloseModalRoute)
+
+
+CNPJClient.addEventListener("keyup", formatCNPJ)
 
 buttonOpenModalClient.addEventListener('click', openModalClientAdd)
 buttonCloseModal.addEventListener('click', functionCloseModalClient)
@@ -160,6 +195,24 @@ function deslogar() {
 
 menuImg.addEventListener('click', openCloseMenu)
 
+async function formatCNPJ(e){
+    let v= e.target.value.replace(/\D/g,"");
+    v=v.replace(/^(\d{2})(\d)/,"$1.$2");
+    v=v.replace(/^(\d{2})\.(\d{3})(\d)/,"$1.$2.$3");
+    v=v.replace(/\.(\d{3})(\d)/,".$1/$2");
+    v=v.replace(/(\d{4})(\d)/,"$1-$2");  
+    e.target.value = v;
+    if(e.target.value.length > 17) {
+        let a = e.target.value.replace('.', '')
+        let b = a.replace('.', '')
+        let c = b.replace('/', '')
+        let cnpj = c.replace('-', '')
+        let url = await fetch(`https://publica.cnpj.ws/cnpj/${cnpj}`) 
+        let json = await url.json()
+        fillingFieldsCNPJ(json, nameClient, corporateClient, addressClient, telephoneClient, CEPClient, cityClient)
+    }
+}
+
 function formatarMoeda(e) {
     let v = e.target.value.replace(/\D/g,"");
     v = (v/100).toFixed(2) + "";
@@ -195,7 +248,14 @@ function fillingFieldsCeps(data, fieldLogradouro, fieldComplemento, fieldBairro,
     fieldComplemento.value = data.complemento
     fieldBairro.value = data.bairro
     fieldLocalidade.value = data.localidade
-    
+}
+function fillingFieldsCNPJ(data, fieldName, fieldCorporate, fieldAddress, fieldTelephone, fieldCep, fieldCity) {
+    fieldName.value = data.estabelecimento.nome_fantasia
+    fieldCorporate.value = data.razao_social
+    fieldAddress.value = `${data.estabelecimento.tipo_logradouro} ${data.estabelecimento.logradouro}, nº ${data.estabelecimento.numero}, bairro ${data.estabelecimento.bairro}`
+    fieldTelephone.value = `${data.estabelecimento.ddd1} ${data.estabelecimento.telefone1}`
+    fieldCep.value = data.estabelecimento.cep
+    fieldCity.value = data.estabelecimento.cidade.nome
 }
 function verifyIdMotoboy() {
     const tagLiMotoboys2 = document.querySelector('.area-motoboys .selected')
