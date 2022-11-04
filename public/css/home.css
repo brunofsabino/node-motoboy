@@ -399,6 +399,7 @@ aside nav a img {
 .area-routes-modal-content-add {
     width: 70%;
 }
+
 .area-routes-modal-content-add .area-modal-inputs select {
     margin: 15px;
     outline: none;
@@ -604,6 +605,9 @@ aside nav a img {
     align-items: center;
     padding: 3%;
 }
+.area-routes {
+    width: 90%;
+}
 .area-routes li {
     border: 3px solid #F28520;
     padding: 8px 15px;
@@ -613,8 +617,7 @@ aside nav a img {
     cursor: pointer;
 }
 .area-routes ul li .area-li {
-    flex-direction: column;
-    padding: 15px;
+    flex-wrap: wrap;
     height: inherit;
 }
 .area-routes ul li .area-li .area-route-circle {

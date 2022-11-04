@@ -93,6 +93,7 @@ const optionSelectMotoboys = document.querySelector('.area-modal-inputs-name-ema
 
 
 const selectClients = document.querySelector('.area-routes-delivery select')
+const selectMotoboys = document.querySelector('.names-motoboys')
 const fieldStartRoute = document.querySelector('.startRoute-routes') 
 const fieldStartRoute2 = document.querySelector('.startRoute-routes2') 
 const fieldLogradouroRoute = document.querySelector('.logradouro-routes') 
@@ -111,6 +112,7 @@ const valueRoute = document.querySelector('.valueRoute')
 const buttonAddRoute = document.querySelector('.area-routes-delivery .area-modal-submit button') 
 
 buttonAddRoute.addEventListener('click', () => {
+    
     infoRoute.innerHTML = 'Os campos com asterisco(*) são de preenchimentos obrigatórios'
     fieldsDelivery( { 
         selectClients: selectClients.value, 
@@ -130,6 +132,7 @@ buttonAddRoute.addEventListener('click', () => {
         fieldCommentsRoute: fieldCommentsRoute.value,
         valueRoute: valueRoute.value
     })
+    
 })
 valueRoute.addEventListener("keyup", formatarMoeda)
 
@@ -138,7 +141,6 @@ function fieldsDelivery(data) {
         infoRoute.innerHTML = 'Preencha os campos obrigatorios!'
     } else {
         addRoutes(data)
-        console.log(data)
     }
     
 }
@@ -384,6 +386,7 @@ function openModalRouteDeliveryAdd() {
     modalRoute.style.display = 'flex'
     buttonUpdateRoute2.style.display = 'none'
     listClients()
+    listMotoboys()
 }
 function openModalUpdate() {
     modalMotoboy.style.display = 'flex'
@@ -535,7 +538,13 @@ async function addRoutes(data) {
                 "Authorization": `Bearer ${localStorage.getItem('token')}`
             },
             body: new URLSearchParams({
-                name: nameMotoboy, email: emailMotoboy, celular: celularMotoboy, address: addressMotoboy, rg: rgMotoboy, cpf: cpfMotoboy, numberBoard: numberBoardMotoboy, cityBoard: cityBoardMotoboy
+                startRoute: `${data.fieldLogradouroRoute}, nº ${data.fieldNumeroRoute}, Bairro ${data.fieldBairroRoute}  ${data.fieldComplementoRoute} - ${data.fieldLocalidadeRoute}`, 
+                endRoute: `${data.fieldLogradouroRoute2}, nº ${data.fieldNumeroRoute2}, Bairro ${data.fieldBairroRoute2}  ${data.fieldComplementoRoute2} - ${data.fieldLocalidadeRoute2}`, 
+                valueRoute: data.valueRoute, 
+                cepStartRoute: data.fieldStartRoute ?? '', 
+                cepEndRoute: data.fieldStartRoute2 ?? '', 
+                requester: data.fieldSolicitanteRoute ?? '',
+                commentsEndRoute: data.fieldCommentsRoute ?? ''
             })
         })
         const json = await route.json()
@@ -716,12 +725,29 @@ async function listMotoboys() {
     })
     const json = await motoboys.json()
     if(json){
+        selectMotoboys.innerHTML += `<option value="">Selecione o motoboy para a corrida:* </option>`
         json.motoboys.forEach((item, indice) => {
             tagUlMotoboys.innerHTML += `<li id-item="${item.id}" class="" ><div class="area-li"><div class="area-motoboy-circle" ><div class="motoboy-circle"></div></div><div class="motoboy-name">${item.name}</div><div class="motoboy-cel">${item.celular}</div></div></li>`
+            selectMotoboys.innerHTML += `<option value="${item.id}">${item.name}</option>`
         })
     }
-    // updateHeightAside()
 }
+// async function listMotoboysRoutes() {
+//     const motoboys = await fetch(`/motoboy`, {
+//         method: 'GET',
+//         headers: {
+//             "Content-Type": "application/x-www-form-urlencoded",
+//             "Authorization": `Bearer ${localStorage.getItem('token')}`
+//         }
+//     })
+//     const json = await motoboys.json()
+//     if(json){
+//         selectMotoboys.innerHTML += `<option value="">Selecione o motoboy para a corrida:* </option>`
+//         json.motoboys.forEach((item, indice) => {
+//             selectMotoboys.innerHTML += `<option value="${item.id}">${item.name}</option>`
+//         })
+//     }
+// }
 async function listClients() {
     const clients = await fetch(`/client`, {
         method: 'GET',
@@ -766,8 +792,10 @@ function clearListRoutes() {
     tagUlRoutes.innerHTML = ''
 }
 function clearListMotoboys() {
+    selectMotoboys.innerHTML = ''
     tagUlMotoboys.innerHTML = ''
     optionSelectMotoboys.innerHTML = ''
+    
 }
 function clearListClients() {
     tagUlClients.innerHTML = ''

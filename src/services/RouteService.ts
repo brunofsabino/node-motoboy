@@ -12,6 +12,7 @@ type PropCreate = {
     cepEndRoute?: string,
     clientName: string,
     clientId: string,
+    commentsEndRoute?: string,
     requester?: string,
     userId: string,
     description: string,
