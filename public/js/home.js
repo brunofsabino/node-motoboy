@@ -137,6 +137,7 @@ function fieldsDelivery(data) {
     if(data.selectClients == '' || data.fieldLogradouroRoute == '' || data.fieldLogradouroRoute2 == '' || data.fieldBairroRoute == '' || data.fieldBairroRoute2 == '' || data.fieldNumeroRoute == '' || data.fieldNumeroRoute2 == '' || data.valueRoute == '') {
         infoRoute.innerHTML = 'Preencha os campos obrigatorios!'
     } else {
+        addRoutes(data)
         console.log(data)
     }
     
@@ -525,6 +526,34 @@ async function functionDeleteClient(id) {
     }
 }
 
+async function addRoutes(data) {
+    if(data.selectClients && data.fieldLogradouroRoute && data.fieldLogradouroRoute2 && data.fieldBairroRoute && data.fieldBairroRoute2 && data.fieldNumeroRoute && data.fieldNumeroRoute2 && data.valueRoute) {
+        const route = await fetch(`/route/${data.selectClients}`, {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded",
+                "Authorization": `Bearer ${localStorage.getItem('token')}`
+            },
+            body: new URLSearchParams({
+                name: nameMotoboy, email: emailMotoboy, celular: celularMotoboy, address: addressMotoboy, rg: rgMotoboy, cpf: cpfMotoboy, numberBoard: numberBoardMotoboy, cityBoard: cityBoardMotoboy
+            })
+        })
+        const json = await route.json()
+        if(json.error) {
+            infoRoute.innerHTML = json.error
+            exit
+        }
+        if(json) {
+            clearListRoutes()
+            listRoutes()
+            functionCloseModalRoute()
+            // tagLiMotoboys()
+            // updateHeightAside()
+        }
+    } else {
+        infoRoute.innerHTML = 'Preencha os campos obrigatórios!'
+    }
+}
 async function functionAddMotoboy(nameMotoboy, emailMotoboy, celularMotoboy, addressMotoboy, rgMotoboy, cpfMotoboy, numberBoardMotoboy, cityBoardMotoboy, id) {
     if(nameMotoboy && celularMotoboy) {
         const motoboy = await fetch(`/motoboy/${id}`, {
@@ -733,6 +762,9 @@ async function listRoutes() {
         })
     }
 }
+function clearListRoutes() {
+    tagUlRoutes.innerHTML = ''
+}
 function clearListMotoboys() {
     tagUlMotoboys.innerHTML = ''
     optionSelectMotoboys.innerHTML = ''
@@ -804,8 +836,8 @@ function displayFlexDisplayNone(item) {
         case 'Rotas':
             clearListClients()
             alterarLiQuatro()
-            // updateHeightAside()
             clearListMotoboys()
+            clearListRoutes()
             listRoutes()
         break
         case 'Notas Fiscais':
