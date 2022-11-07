@@ -116,6 +116,7 @@ buttonAddRoute.addEventListener('click', () => {
     infoRoute.innerHTML = 'Os campos com asterisco(*) são de preenchimentos obrigatórios'
     fieldsDelivery( { 
         selectClients: selectClients.value, 
+        selectMotoboys: selectMotoboys.value, 
         fieldStartRoute: fieldStartRoute.value, 
         fieldStartRoute2: fieldStartRoute2.value, 
         fieldLogradouroRoute: fieldLogradouroRoute.value, 
@@ -137,7 +138,7 @@ buttonAddRoute.addEventListener('click', () => {
 valueRoute.addEventListener("keyup", formatarMoeda)
 
 function fieldsDelivery(data) {
-    if(data.selectClients == '' || data.fieldLogradouroRoute == '' || data.fieldLogradouroRoute2 == '' || data.fieldBairroRoute == '' || data.fieldBairroRoute2 == '' || data.fieldNumeroRoute == '' || data.fieldNumeroRoute2 == '' || data.valueRoute == '') {
+    if(data.selectClients == '' || data.selectMotoboys == '' ||data.fieldLogradouroRoute == '' || data.fieldLogradouroRoute2 == '' || data.fieldBairroRoute == '' || data.fieldBairroRoute2 == '' || data.fieldNumeroRoute == '' || data.fieldNumeroRoute2 == '' || data.valueRoute == '') {
         infoRoute.innerHTML = 'Preencha os campos obrigatorios!'
     } else {
         addRoutes(data)
@@ -530,7 +531,7 @@ async function functionDeleteClient(id) {
 }
 
 async function addRoutes(data) {
-    if(data.selectClients && data.fieldLogradouroRoute && data.fieldLogradouroRoute2 && data.fieldBairroRoute && data.fieldBairroRoute2 && data.fieldNumeroRoute && data.fieldNumeroRoute2 && data.valueRoute) {
+    if(data.selectClients && data.fieldLogradouroRoute && data.fieldLogradouroRoute2 && data.fieldBairroRoute && data.fieldBairroRoute2 && data.fieldNumeroRoute && data.fieldNumeroRoute2 && data.valueRoute && data.selectMotoboys) {
         const route = await fetch(`/route/${data.selectClients}`, {
             method: 'POST',
             headers: {
@@ -553,9 +554,39 @@ async function addRoutes(data) {
             exit
         }
         if(json) {
+            console.log(json)
+            addMotoboyRoute(data.selectMotoboys, json.route.id)
             clearListRoutes()
             listRoutes()
             functionCloseModalRoute()
+            // tagLiMotoboys()
+            // updateHeightAside()
+        }
+    } else {
+        infoRoute.innerHTML = 'Preencha os campos obrigatórios!'
+    }
+}
+async function addMotoboyRoute(motoboyId, routeId) {
+    console.log(motoboyId, routeId)
+    if(motoboyId && routeId) {
+        const motoboyRoute = await fetch(`/motoboyRoute/${motoboyId}/${routeId}`, {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded",
+                "Authorization": `Bearer ${localStorage.getItem('token')}`
+            }
+        })
+        const json = await motoboyRoute.json()
+        if(json.error) {
+            infoRoute.innerHTML = json.error
+            exit
+        }
+        if(json) {
+            console.log(json)
+            // addMotoboyRoute(selectMotoboys, json.id)
+            // clearListRoutes()
+            // listRoutes()
+            // functionCloseModalRoute()
             // tagLiMotoboys()
             // updateHeightAside()
         }

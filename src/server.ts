@@ -5,6 +5,7 @@ import cors from 'cors'
 import passport from 'passport'
 import userRouter from './routes/user'
 import motoboyRouter from './routes/motoboy'
+import boyRouter from './routes/motoboyRoute'
 import routeRouter from './routes/route'
 import clientRouter from './routes/client'
 import invoiceRouter from './routes/invoice'
@@ -22,6 +23,7 @@ server.use(express.urlencoded({ extended: true}))
 server.use(passport.initialize())
 server.use(userRouter)
 server.use(motoboyRouter)
+server.use(boyRouter)
 server.use(routeRouter)
 server.use(clientRouter)
 server.use(invoiceRouter)
