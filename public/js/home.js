@@ -468,6 +468,12 @@ li.forEach( item => {
         displayFlexDisplayNone(c.target.innerText)
     })
 })
+
+function sendWhatsMotoboy(data) {
+    const url = `https://api.whatsapp.com/send?phone=55${data.celularMotoboy}&text=Empresa Solicitante: *${data.clientName}* %0ARetirar objeto em: *${data.startRoute}* %0ASolicitante: *${data.requesterRoute}* %0AEntregar objeto em: *${data.endRoute}* %0AObservações: *${data.commentsEndRoute}*`
+    window.open(url, '_blank')
+    console.log(data)
+}
 async function getMotoboy(id) {
     const motoboy = await fetch(`/motoboy/${id}`, {
         method: 'GET',
@@ -559,8 +565,6 @@ async function addRoutes(data) {
             clearListRoutes()
             listRoutes()
             functionCloseModalRoute()
-            // tagLiMotoboys()
-            // updateHeightAside()
         }
     } else {
         infoRoute.innerHTML = 'Preencha os campos obrigatórios!'
@@ -577,23 +581,20 @@ async function addMotoboyRoute(motoboyId, routeId) {
             }
         })
         const json = await motoboyRoute.json()
+        console.log(json.route)
         if(json.error) {
             infoRoute.innerHTML = json.error
             exit
         }
-        if(json) {
-            console.log(json)
-            // addMotoboyRoute(selectMotoboys, json.id)
-            // clearListRoutes()
-            // listRoutes()
-            // functionCloseModalRoute()
-            // tagLiMotoboys()
-            // updateHeightAside()
+        if(json.route) {
+            // console.log("addMotoboyRoute "+json)
+            sendWhatsMotoboy(json.route)
         }
     } else {
         infoRoute.innerHTML = 'Preencha os campos obrigatórios!'
     }
 }
+
 async function functionAddMotoboy(nameMotoboy, emailMotoboy, celularMotoboy, addressMotoboy, rgMotoboy, cpfMotoboy, numberBoardMotoboy, cityBoardMotoboy, id) {
     if(nameMotoboy && celularMotoboy) {
         const motoboy = await fetch(`/motoboy/${id}`, {
@@ -763,22 +764,7 @@ async function listMotoboys() {
         })
     }
 }
-// async function listMotoboysRoutes() {
-//     const motoboys = await fetch(`/motoboy`, {
-//         method: 'GET',
-//         headers: {
-//             "Content-Type": "application/x-www-form-urlencoded",
-//             "Authorization": `Bearer ${localStorage.getItem('token')}`
-//         }
-//     })
-//     const json = await motoboys.json()
-//     if(json){
-//         selectMotoboys.innerHTML += `<option value="">Selecione o motoboy para a corrida:* </option>`
-//         json.motoboys.forEach((item, indice) => {
-//             selectMotoboys.innerHTML += `<option value="${item.id}">${item.name}</option>`
-//         })
-//     }
-// }
+
 async function listClients() {
     const clients = await fetch(`/client`, {
         method: 'GET',
