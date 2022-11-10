@@ -85,6 +85,9 @@ const infoModalClient = document.querySelector('.modal-info-client')
 
 
 const buttonOpenModalRouteDelivery = document.querySelector('.btn-add-routes-delivery')
+const buttonUpdateRoute = document.querySelector('.btn-update-routes-delivery')
+
+
 const modalRoute = document.querySelector('.area-routes-modal') 
 const infoRoute = document.querySelector('.modal-info-route') 
 const buttonUpdateRoute2 = document.querySelector('.btn-update-route ')
@@ -110,6 +113,18 @@ const fieldSolicitanteRoute = document.querySelector('.solicitante-routes')
 const fieldCommentsRoute = document.querySelector('.comments-routes') 
 const valueRoute = document.querySelector('.valueRoute') 
 const buttonAddRoute = document.querySelector('.area-routes-delivery .area-modal-submit button') 
+
+
+const closeModalRouMsg = document.querySelector('.area-modal-exit-content-route')
+
+const modalRouteWarning = document.querySelector('.area-routes-modal-warning') 
+const modalRouteWarningMsg = document.querySelector('.area-modal-warning-msg-rou') 
+const modalAreaButtonsRou = document.querySelector('.area-routes-modal-buttons') 
+const modalRouteWarn = document.querySelector('.area-routes-modal') 
+const buttonCloseModalRouteWarning = document.querySelector('.area-modal-exit-route')
+// const buttonAddRoute = document.querySelector('.area-clients-modal-content-add .area-modal-submit button')
+// const buttonUpdateRoute = document.querySelector('.btn-update-route ')
+const h1ModalRoute = document.querySelector('.area-routes-modal-content-add .area-modal-header h1')
 
 buttonAddRoute.addEventListener('click', () => {
     
@@ -180,11 +195,18 @@ buttonAddMotoboy.addEventListener('click', () => {
 closeModalCliMsg.addEventListener('click', functionCloseModalClient)
 buttonUpdateMotoboy.addEventListener('click', ()=> {
     modalAreaButtons.style.display = 'none'
-    const motoboy = verifyMotoboy()
 })
+closeModalRouMsg.addEventListener('click', functionCloseModalRoute)
+// buttonUpdateMotoboy.addEventListener('click', ()=> {
+//     modalAreaButtons.style.display = 'none'
+// })
 buttonUpdateClient.addEventListener('click', ()=> {
     modalAreaButtonsCli.style.display = 'none'
     verifyClient()
+})
+buttonUpdateRoute.addEventListener('click', ()=> {
+    modalAreaButtonsRou.style.display = 'none'
+    verifyRoute()
 })
 
 buttonDeleteMotoboy.addEventListener('click', verifyIdMotoboy)
@@ -361,6 +383,32 @@ async function verifyClient() {
         }
     }
 }
+async function verifyRoute() {
+    const tagLiRoutes = document.querySelector('.area-routes .selected')
+    if(!tagLiRoutes) {
+        openModalWarningRou('Selecione uma rota!')
+    } else {
+        const id = tagLiRoutes.getAttribute('id-item')
+        const route = await getRoute(id)
+        if(route) {
+            console.log(route)
+            h1Modal.innerHTML = "Atualize os campos"
+            buttonAddClient2.style.display = 'block'
+            buttonAddClient.style.display = 'none'
+            nameClient.value = client.client.nameFantasy
+            corporateClient.value = client.client.corporateName
+            CNPJClient.value = client.client.cnpj
+            addressClient.value = client.client.address
+            telephoneClient.value = client.client.telephone
+            CEPClient.value = client.client.cep
+            cityClient.value = client.client.city
+            // openModalUpdateCli()
+            buttonAddClient2.addEventListener('click', () => {
+                functionUpdateClient(nameClient.value, corporateClient.value, CNPJClient.value, addressClient.value, telephoneClient.value, CEPClient.value, cityClient.value, client.client.id)
+            })
+        }
+    }
+}
 function openModalWarning(msg) {
     modalMotoboyWarning.style.display = 'flex'
     modalMotoboyWarningMsg.innerHTML = msg
@@ -368,6 +416,10 @@ function openModalWarning(msg) {
 function openModalWarningCli(msg) {
     modalClientWarning.style.display = 'flex'
     modalClientWarningMsg.innerHTML = msg
+}
+function openModalWarningRou(msg) {
+    modalRouteWarning.style.display = 'flex'
+    modalRouteWarningMsg.innerHTML = msg
 }
 function openModalAdd() {
     h1Modal.innerHTML = 'Preencha os campos'
@@ -422,6 +474,7 @@ function functionCloseModalClient() {
 }
 function functionCloseModalRoute() {
     modalRoute.style.display = 'none'
+    modalRouteWarning.style.display = 'none'
     clearListMotoboys()
 }
 function openCloseMenu() {
@@ -470,7 +523,7 @@ li.forEach( item => {
 })
 
 function sendWhatsMotoboy(data) {
-    const url = `https://api.whatsapp.com/send?phone=55${data.celularMotoboy}&text=Empresa Solicitante: *${data.clientName}* %0ARetirar objeto em: *${data.startRoute}* %0ASolicitante: *${data.requesterRoute}* %0AEntregar objeto em: *${data.endRoute}* %0AObservações: *${data.commentsEndRoute}*`
+    const url = `https://api.whatsapp.com/send?phone=55${data.celularMotoboy}&text=*VAN EXPRESS*%0AEmpresa Solicitante: *${data.clientName}* %0ARetirar objeto em: *${data.startRoute}* %0ASolicitante: *${data.requesterRoute}* %0AEntregar objeto em: *${data.endRoute}* %0AObservações: *${data.commentsEndRoute}*`
     window.open(url, '_blank')
     console.log(data)
 }
@@ -494,6 +547,17 @@ async function getClient(id) {
         }
     })
     const json = await client.json()
+    return json
+}
+async function getRoute(id) {
+    const route = await fetch(`/route/${id}`, {
+        method: 'GET',
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+            "Authorization": `Bearer ${localStorage.getItem('token')}`
+        }
+    })
+    const json = await route.json()
     return json
 }
 
@@ -841,6 +905,24 @@ function tagLiClients() {
         // updateHeightAside()
     }, 500)
 }
+function tagLiRoutes() {
+    setTimeout(() => {
+        const tagLiRoutes = document.querySelectorAll('.area-routes li')
+        tagLiRoutes.forEach(item => {
+            item.addEventListener('click', tagLi => {
+                tagLiRoutesSelected()
+                item.classList.add('selected')
+            })
+        })
+        // updateHeightAside()
+    }, 500)
+}
+function tagLiRoutesSelected() {
+    const tagLiRoutes = document.querySelectorAll('.area-routes li')
+    tagLiRoutes.forEach( item => {
+        item.classList.remove('selected')
+    })
+}
 function tagLiMotoboysSelected() {
     const tagLiMotoboys = document.querySelectorAll('.area-motoboys li')
     tagLiMotoboys.forEach( item => {
@@ -884,6 +966,7 @@ function displayFlexDisplayNone(item) {
             clearListMotoboys()
             clearListRoutes()
             listRoutes()
+            tagLiRoutes()
         break
         case 'Notas Fiscais':
             alterarLiCinco()

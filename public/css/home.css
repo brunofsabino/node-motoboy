@@ -316,7 +316,8 @@ aside nav a img {
     border: 3px solid #F28520;
 }
 .area-modal-warning-msg,
-.area-modal-warning-msg-cli {
+.area-modal-warning-msg-cli,
+.area-modal-warning-msg-rou {
     padding: 15px 20px;
     background-color: #F28520;
     font-weight: 600;
@@ -559,7 +560,8 @@ aside nav a img {
     justify-content: space-around;
 }
 .area-motoboys  .selected,
-.area-clients  .selected {
+.area-clients  .selected,
+.area-routes  .selected {
     background-color: rgba(0,0,0,.2);
 }
 .area-motoboy-circle,
@@ -589,14 +591,14 @@ aside nav a img {
     padding: 3%;
 }
 .area-routes-delivery {
-    width: 80%;
+    width: 95%;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    border: 5px solid #F28520;
+    /* border: 5px solid #F28520;
     border-radius: 33px;
-    padding: 20px 20px 35px;
+    padding: 20px 20px 35px; */
 }
 .area-content-invoices {
     display: none;
@@ -606,7 +608,10 @@ aside nav a img {
     padding: 3%;
 }
 .area-routes {
-    width: 90%;
+    width: 100%;
+    border: 5px solid #F28520;
+    padding: 20px 20px 35px;
+    border-radius: 30px;
 }
 .area-routes li {
     border: 3px solid #F28520;
