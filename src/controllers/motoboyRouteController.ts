@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { RouteService } from "../services/RouteService";
 import { MotoboyService } from "../services/MotoboyService";
 import { MotoboyRouteService } from '../services/MotoboyRouteService'
+import { ClientService } from "../services/ClientService";
 
 export const all = async (req: Request, res: Response) => {
     const routesBoys = await MotoboyRouteService.findAll()
@@ -22,12 +23,14 @@ export const one = async (req: Request, res: Response) => {
 }
 
 export const create = async (req: Request, res: Response) => {
-    const { motoboyId, routeId } = req.params
+    const { motoboyId, routeId, clientId } = req.params
     const motoboy = await MotoboyService.findOne(motoboyId)
     const route = await RouteService.findOne(routeId)
-    if(route && motoboy) {
+    const client = await ClientService.findOne(clientId)
+    if(route && motoboy && client) {
         const motoboyRoute = await MotoboyRouteService.create({
             motoboyId: motoboy.id,
+            clientId: client.id,
             routeId: route.id,
             nameMotoboy: motoboy.name,
             celularMotoboy: motoboy.celular,

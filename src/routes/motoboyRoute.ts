@@ -9,7 +9,7 @@ router.get('/motoboyRoute/:id', privateRoute, MotoboyRouteController.one)
 
 
 
-router.post('/motoboyRoute/:motoboyId/:routeId', privateRoute, MotoboyRouteController.create)
+router.post('/motoboyRoute/:motoboyId/:routeId/:clientId', privateRoute, MotoboyRouteController.create)
 // router.put('/motoboyRoute/:id', privateRoute, MotoboyRouteController.update)
 
 // router.delete('/motoboyRoute/:id', privateRoute, MotoboyRouteController.deleteMotoboy)

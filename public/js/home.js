@@ -392,20 +392,32 @@ async function verifyRoute() {
         const route = await getRoute(id)
         if(route) {
             console.log(route)
-            h1Modal.innerHTML = "Atualize os campos"
-            buttonAddClient2.style.display = 'block'
-            buttonAddClient.style.display = 'none'
-            nameClient.value = client.client.nameFantasy
-            corporateClient.value = client.client.corporateName
-            CNPJClient.value = client.client.cnpj
-            addressClient.value = client.client.address
-            telephoneClient.value = client.client.telephone
-            CEPClient.value = client.client.cep
-            cityClient.value = client.client.city
-            // openModalUpdateCli()
-            buttonAddClient2.addEventListener('click', () => {
-                functionUpdateClient(nameClient.value, corporateClient.value, CNPJClient.value, addressClient.value, telephoneClient.value, CEPClient.value, cityClient.value, client.client.id)
-            })
+            listClients()
+            listMotoboys()
+            h1ModalRoute.innerHTML = "Atualize os campos"
+            buttonUpdateRoute2.style.display = 'block'
+            buttonAddRoute.style.display = 'none'
+            fieldStartRoute.value = route.route.cepStartRoute
+            fieldStartRoute2.value = route.route.cepEndRoute
+            fieldLogradouroRoute.value = route.route.fieldLogradouroRoute
+            fieldLogradouroRoute2.value = route.route.fieldLogradouroRoute2
+            fieldComplementoRoute.value = route.route.fieldComplementoRoute
+            fieldComplementoRoute2.value = route.route.fieldComplementoRoute2
+            fieldBairroRoute.value = route.route.fieldBairroRoute
+            fieldBairroRoute2.value = route.route.fieldBairroRoute2
+            fieldLocalidadeRoute.value = route.route.fieldLocalidadeRoute
+            fieldLocalidadeRoute2.value = route.route.fieldLocalidadeRoute2
+            fieldNumeroRoute.value = route.route.fieldNumeroRoute
+            fieldNumeroRoute2.value = route.route.fieldNumeroRoute2
+            valueRoute.value = route.route.valueRoute
+            setTimeout(() => {
+                selectClients.value = route.route.clientId
+                selectMotoboys.value = route.route.motoboyId
+            }, 300)
+            openModalUpdateRou()
+            // buttonAddClient2.addEventListener('click', () => {
+            //     functionUpdateClient(nameClient.value, corporateClient.value, CNPJClient.value, addressClient.value, telephoneClient.value, CEPClient.value, cityClient.value, client.client.id)
+            // })
         }
     }
 }
@@ -446,6 +458,9 @@ function openModalUpdate() {
 }
 function openModalUpdateCli() {
     modalClient.style.display = 'flex'
+}
+function openModalUpdateRou() {
+    modalRoute.style.display = 'flex'
 }
 function fieldsClear() {
     nameMotoboy.value = ''
@@ -615,7 +630,17 @@ async function addRoutes(data) {
                 cepStartRoute: data.fieldStartRoute ?? '', 
                 cepEndRoute: data.fieldStartRoute2 ?? '', 
                 requester: data.fieldSolicitanteRoute ?? '',
-                commentsEndRoute: data.fieldCommentsRoute ?? ''
+                commentsEndRoute: data.fieldCommentsRoute ?? '',
+                fieldLogradouroRoute: data.fieldLogradouroRoute ?? '',
+                fieldLogradouroRoute2: data.fieldLogradouroRoute2 ?? '',
+                fieldComplementoRoute: data.fieldComplementoRoute ?? '',
+                fieldComplementoRoute2: data.fieldComplementoRoute2 ?? '',
+                fieldBairroRoute: data.fieldBairroRoute ?? '',
+                fieldBairroRoute2: data.fieldBairroRoute2 ?? '',
+                fieldLocalidadeRoute: data.fieldLocalidadeRoute ?? '',
+                fieldLocalidadeRoute2: data.fieldLocalidadeRoute2 ?? '',
+                fieldNumeroRoute: data.fieldNumeroRoute ?? '',
+                fieldNumeroRoute2: data.fieldNumeroRoute2 ?? ''
             })
         })
         const json = await route.json()
@@ -625,7 +650,7 @@ async function addRoutes(data) {
         }
         if(json) {
             console.log(json)
-            addMotoboyRoute(data.selectMotoboys, json.route.id)
+            addMotoboyRoute(data.selectMotoboys, json.route.id, json.route.clientId)
             clearListRoutes()
             listRoutes()
             functionCloseModalRoute()
@@ -634,10 +659,10 @@ async function addRoutes(data) {
         infoRoute.innerHTML = 'Preencha os campos obrigatórios!'
     }
 }
-async function addMotoboyRoute(motoboyId, routeId) {
+async function addMotoboyRoute(motoboyId, routeId, clientId) {
     console.log(motoboyId, routeId)
     if(motoboyId && routeId) {
-        const motoboyRoute = await fetch(`/motoboyRoute/${motoboyId}/${routeId}`, {
+        const motoboyRoute = await fetch(`/motoboyRoute/${motoboyId}/${routeId}/${clientId}`, {
             method: 'POST',
             headers: {
                 "Content-Type": "application/x-www-form-urlencoded",
@@ -819,6 +844,9 @@ async function listMotoboys() {
             "Authorization": `Bearer ${localStorage.getItem('token')}`
         }
     })
+    if(motoboys.status == 401){
+        deslogar()
+    }
     const json = await motoboys.json()
     if(json){
         selectMotoboys.innerHTML += `<option value="">Selecione o motoboy para a corrida:* </option>`
@@ -826,6 +854,9 @@ async function listMotoboys() {
             tagUlMotoboys.innerHTML += `<li id-item="${item.id}" class="" ><div class="area-li"><div class="area-motoboy-circle" ><div class="motoboy-circle"></div></div><div class="motoboy-name">${item.name}</div><div class="motoboy-cel">${item.celular}</div></div></li>`
             selectMotoboys.innerHTML += `<option value="${item.id}">${item.name}</option>`
         })
+    }
+    if(json.error){
+        deslogar()
     }
 }
 
@@ -837,6 +868,9 @@ async function listClients() {
             "Authorization": `Bearer ${localStorage.getItem('token')}`
         }
     })
+    if(clients.status == 401){
+        deslogar()
+    }
     const json = await clients.json()
     if(json){
         optionSelectMotoboys.innerHTML += `<option value="">Selecione a empresa solicitante:* </option>`
@@ -854,6 +888,9 @@ async function listRoutes() {
             "Authorization": `Bearer ${localStorage.getItem('token')}`
         }
     })
+    if(routes.status == 401){
+        deslogar()
+    }
     const json = await routes.json()
     if(json){
         json.routes.forEach((item, indice) => {

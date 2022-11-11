@@ -17,6 +17,16 @@ type PropCreate = {
     userId: string,
     description: string,
     done?: boolean
+    fieldLogradouroRoute?: string,
+    fieldLogradouroRoute2?: string,
+    fieldComplementoRoute?: string,
+    fieldComplementoRoute2?: string,
+    fieldBairroRoute?: string,
+    fieldBairroRoute2?: string,
+    fieldLocalidadeRoute?: string,
+    fieldLocalidadeRoute2?: string,
+    fieldNumeroRoute?: string,
+    fieldNumeroRoute2?: string
 }
 type PropUpdate = {
     startRoute?: string, 

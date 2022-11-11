@@ -6,6 +6,7 @@ const prisma = new PrismaClient()
 type PropCreate = {
     motoboyId: string,
     routeId: string,
+    clientId: string,
     nameMotoboy: string,
     celularMotoboy: string,
     requesterRoute: string,

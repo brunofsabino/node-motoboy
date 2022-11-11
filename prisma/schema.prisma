@@ -44,21 +44,31 @@ model Motoboy {
 }
 
 model Route {
-  id               String   @id @default(uuid())
-  requester        String?
-  commentsEndRoute String?
-  clientId         String
-  clientName       String
-  cepStartRoute    String?
-  cepEndRoute      String?
-  startRoute       String?
-  nameMotoboy      String?
-  endRoute         String
-  createdAt        DateTime @default(now())
-  valueRoute       Int
-  userId           String
-  description      String
-  done             Boolean  @default(false)
+  id                     String   @id @default(uuid())
+  requester              String?
+  commentsEndRoute       String?
+  clientId               String
+  clientName             String
+  cepStartRoute          String?
+  cepEndRoute            String?
+  startRoute             String?
+  nameMotoboy            String?
+  endRoute               String
+  createdAt              DateTime @default(now())
+  valueRoute             Int
+  userId                 String
+  description            String
+  fieldLogradouroRoute   String?
+  fieldLogradouroRoute2  String?
+  fieldComplementoRoute  String?
+  fieldComplementoRoute2 String?
+  fieldBairroRoute       String?
+  fieldBairroRoute2      String?
+  fieldLocalidadeRoute   String?
+  fieldLocalidadeRoute2  String?
+  fieldNumeroRoute       String?
+  fieldNumeroRoute2      String?
+  done                   Boolean  @default(false)
 
   user   User   @relation(fields: [userId], references: [id])
   client Client @relation(fields: [clientId], references: [id])
@@ -72,6 +82,7 @@ model Route {
 model MotoboyRoute {
   id               String   @id @default(uuid())
   motoboyId        String
+  clientId         String
   routeId          String
   nameMotoboy      String
   celularMotoboy   String?
@@ -86,8 +97,9 @@ model MotoboyRoute {
   valueRoute       Int
   description      String
 
-  boy   Motoboy @relation(fields: [motoboyId], references: [id])
-  route Route   @relation(fields: [routeId], references: [id])
+  boy    Motoboy @relation(fields: [motoboyId], references: [id])
+  route  Route   @relation(fields: [routeId], references: [id])
+  client Client  @relation(fields: [clientId], references: [id])
 
   @@map("motoboysRoute")
 }
@@ -103,9 +115,10 @@ model Client {
   city          String
   userId        String
 
-  user    User      @relation(fields: [userId], references: [id])
-  invoice Invoice[]
-  route   Route[]
+  user         User           @relation(fields: [userId], references: [id])
+  invoice      Invoice[]
+  route        Route[]
+  MotoboyRoute MotoboyRoute[]
 
   @@map("clients")
 }
