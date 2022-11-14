@@ -24,9 +24,9 @@ export const one = async(req: Request, res: Response) => {
 }
 export const create = async(req: Request, res: Response) => {
     const { idClient } = req.params
-    const { startRoute, endRoute, valueRoute, cepStartRoute, cepEndRoute, requester, commentsEndRoute, fieldBairroRoute2, fieldNumeroRoute, fieldNumeroRoute2, fieldLocalidadeRoute, fieldLocalidadeRoute2, fieldLogradouroRoute, fieldLogradouroRoute2, fieldComplementoRoute, fieldComplementoRoute2, fieldBairroRoute } = req.body
+    const { startRoute, endRoute, valueRoute, cepStartRoute, cepEndRoute, requester, motoboyId, commentsEndRoute, fieldBairroRoute2, fieldNumeroRoute, fieldNumeroRoute2, fieldLocalidadeRoute, fieldLocalidadeRoute2, fieldLogradouroRoute, fieldLogradouroRoute2, fieldComplementoRoute, fieldComplementoRoute2, fieldBairroRoute } = req.body
     const client = await ClientService.findOne(idClient)
-    console.log(startRoute, endRoute, valueRoute, cepStartRoute, cepEndRoute, requester, commentsEndRoute, fieldBairroRoute2, fieldNumeroRoute, fieldNumeroRoute2, fieldLocalidadeRoute, fieldLocalidadeRoute2, fieldLogradouroRoute, fieldLogradouroRoute2, fieldComplementoRoute, fieldComplementoRoute2, fieldBairroRoute)
+    console.log(startRoute, endRoute, valueRoute, cepStartRoute, cepEndRoute,  requester, commentsEndRoute, fieldBairroRoute2, fieldNumeroRoute, fieldNumeroRoute2, fieldLocalidadeRoute, fieldLocalidadeRoute2, fieldLogradouroRoute, fieldLogradouroRoute2, fieldComplementoRoute, fieldComplementoRoute2, fieldBairroRoute)
     if(client && startRoute && endRoute && valueRoute) {
         const route = await RouteService.create( {
             startRoute, 
@@ -49,7 +49,8 @@ export const create = async(req: Request, res: Response) => {
             fieldLocalidadeRoute  : fieldLocalidadeRoute ?? '',
             fieldLocalidadeRoute2 : fieldLocalidadeRoute2 ?? '',
             fieldNumeroRoute      : fieldNumeroRoute ?? '',
-            fieldNumeroRoute2     : fieldNumeroRoute2 ?? ''
+            fieldNumeroRoute2     : fieldNumeroRoute2 ?? '',
+            motoboyId: motoboyId ?? ''
         })
         if(route) {
             res.status(200).json({ route })

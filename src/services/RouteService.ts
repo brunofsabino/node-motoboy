@@ -26,7 +26,8 @@ type PropCreate = {
     fieldLocalidadeRoute?: string,
     fieldLocalidadeRoute2?: string,
     fieldNumeroRoute?: string,
-    fieldNumeroRoute2?: string
+    fieldNumeroRoute2?: string,
+    motoboyId: string
 }
 type PropUpdate = {
     startRoute?: string, 

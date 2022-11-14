@@ -126,6 +126,7 @@ const buttonCloseModalRouteWarning = document.querySelector('.area-modal-exit-ro
 // const buttonUpdateRoute = document.querySelector('.btn-update-route ')
 const h1ModalRoute = document.querySelector('.area-routes-modal-content-add .area-modal-header h1')
 
+
 buttonAddRoute.addEventListener('click', () => {
     
     infoRoute.innerHTML = 'Os campos com asterisco(*) são de preenchimentos obrigatórios'
@@ -158,7 +159,6 @@ function fieldsDelivery(data) {
     } else {
         addRoutes(data)
     }
-    
 }
 
 fieldStartRoute.addEventListener('keyup', event => {
@@ -195,6 +195,7 @@ buttonAddMotoboy.addEventListener('click', () => {
 closeModalCliMsg.addEventListener('click', functionCloseModalClient)
 buttonUpdateMotoboy.addEventListener('click', ()=> {
     modalAreaButtons.style.display = 'none'
+    verifyMotoboy()
 })
 closeModalRouMsg.addEventListener('click', functionCloseModalRoute)
 // buttonUpdateMotoboy.addEventListener('click', ()=> {
@@ -413,11 +414,30 @@ async function verifyRoute() {
             setTimeout(() => {
                 selectClients.value = route.route.clientId
                 selectMotoboys.value = route.route.motoboyId
-            }, 300)
+            }, 500)
             openModalUpdateRou()
-            // buttonAddClient2.addEventListener('click', () => {
-            //     functionUpdateClient(nameClient.value, corporateClient.value, CNPJClient.value, addressClient.value, telephoneClient.value, CEPClient.value, cityClient.value, client.client.id)
-            // })
+            buttonUpdateRoute2.addEventListener('click', () => {
+                updateRoute( { 
+                    idRoute: route.route.id,
+                    selectClients: selectClients.value, 
+                    selectMotoboys: selectMotoboys.value, 
+                    fieldStartRoute: fieldStartRoute.value, 
+                    fieldStartRoute2: fieldStartRoute2.value, 
+                    fieldLogradouroRoute: fieldLogradouroRoute.value, 
+                    fieldLogradouroRoute2: fieldLogradouroRoute2.value, 
+                    fieldComplementoRoute: fieldComplementoRoute.value, 
+                    fieldComplementoRoute2: fieldComplementoRoute2.value,
+                    fieldBairroRoute: fieldBairroRoute.value,
+                    fieldBairroRoute2: fieldBairroRoute2.value,
+                    fieldLocalidadeRoute: fieldLocalidadeRoute.value,
+                    fieldLocalidadeRoute2: fieldLocalidadeRoute2.value,
+                    fieldNumeroRoute: fieldNumeroRoute.value,
+                    fieldNumeroRoute2: fieldNumeroRoute2.value,
+                    fieldSolicitanteRoute: fieldSolicitanteRoute.value,
+                    fieldCommentsRoute: fieldCommentsRoute.value,
+                    valueRoute: valueRoute.value
+                })
+            })
         }
     }
 }
@@ -640,7 +660,8 @@ async function addRoutes(data) {
                 fieldLocalidadeRoute: data.fieldLocalidadeRoute ?? '',
                 fieldLocalidadeRoute2: data.fieldLocalidadeRoute2 ?? '',
                 fieldNumeroRoute: data.fieldNumeroRoute ?? '',
-                fieldNumeroRoute2: data.fieldNumeroRoute2 ?? ''
+                fieldNumeroRoute2: data.fieldNumeroRoute2 ?? '',
+                motoboyId: data.selectMotoboys ?? ''
             })
         })
         const json = await route.json()
@@ -737,6 +758,51 @@ async function functionAddClient(nameFantasy, corporateName, cnpj, address, tele
         }
     } else {
         infoModalClient.innerHTML = 'Preencha os campos obrigatórios!'
+    }
+}
+async function updateRoute(data) {
+    if(data.selectClients && data.fieldLogradouroRoute && data.fieldLogradouroRoute2 && data.fieldBairroRoute && data.fieldBairroRoute2 && data.fieldNumeroRoute && data.fieldNumeroRoute2 && data.valueRoute && data.selectMotoboys) {
+        const route = await fetch(`/route/${data.idRoute}`, {
+            method: 'PUT',
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded",
+                "Authorization": `Bearer ${localStorage.getItem('token')}`
+            },
+            body: new URLSearchParams({
+                startRoute: `${data.fieldLogradouroRoute}, nº ${data.fieldNumeroRoute}, Bairro ${data.fieldBairroRoute}  ${data.fieldComplementoRoute} - ${data.fieldLocalidadeRoute}`, 
+                endRoute: `${data.fieldLogradouroRoute2}, nº ${data.fieldNumeroRoute2}, Bairro ${data.fieldBairroRoute2}  ${data.fieldComplementoRoute2} - ${data.fieldLocalidadeRoute2}`, 
+                valueRoute: data.valueRoute, 
+                cepStartRoute: data.fieldStartRoute ?? '', 
+                cepEndRoute: data.fieldStartRoute2 ?? '', 
+                requester: data.fieldSolicitanteRoute ?? '',
+                commentsEndRoute: data.fieldCommentsRoute ?? '',
+                fieldLogradouroRoute: data.fieldLogradouroRoute ?? '',
+                fieldLogradouroRoute2: data.fieldLogradouroRoute2 ?? '',
+                fieldComplementoRoute: data.fieldComplementoRoute ?? '',
+                fieldComplementoRoute2: data.fieldComplementoRoute2 ?? '',
+                fieldBairroRoute: data.fieldBairroRoute ?? '',
+                fieldBairroRoute2: data.fieldBairroRoute2 ?? '',
+                fieldLocalidadeRoute: data.fieldLocalidadeRoute ?? '',
+                fieldLocalidadeRoute2: data.fieldLocalidadeRoute2 ?? '',
+                fieldNumeroRoute: data.fieldNumeroRoute ?? '',
+                fieldNumeroRoute2: data.fieldNumeroRoute2 ?? '',
+                motoboyId: data.selectMotoboys ?? ''
+            })
+        })
+        const json = await route.json()
+        if(json.error) {
+            infoRoute.innerHTML = json.error
+            exit
+        }
+        if(json) {
+            console.log(json)
+            addMotoboyRoute(data.selectMotoboys, json.route.id, json.route.clientId)
+            clearListRoutes()
+            listRoutes()
+            functionCloseModalRoute()
+        }
+    } else {
+        infoRoute.innerHTML = 'Preencha os campos obrigatórios!'
     }
 }
 async function functionUpdateMotoboy(nameMotoboy, emailMotoboy, celularMotoboy, addressMotoboy, rgMotoboy, cpfMotoboy, numberBoardMotoboy, cityBoardMotoboy, id) {

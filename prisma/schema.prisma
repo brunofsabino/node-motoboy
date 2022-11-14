@@ -48,6 +48,7 @@ model Route {
   requester              String?
   commentsEndRoute       String?
   clientId               String
+  motoboyId              String?
   clientName             String
   cepStartRoute          String?
   cepEndRoute            String?
