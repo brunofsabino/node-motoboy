@@ -102,7 +102,7 @@ model MotoboyRoute {
   route  Route   @relation(fields: [routeId], references: [id])
   client Client  @relation(fields: [clientId], references: [id])
 
-  @@map("motoboysRoute")
+  @@map("motoboysRoutes")
 }
 
 model Client {

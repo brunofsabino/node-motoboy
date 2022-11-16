@@ -86,6 +86,7 @@ const infoModalClient = document.querySelector('.modal-info-client')
 
 const buttonOpenModalRouteDelivery = document.querySelector('.btn-add-routes-delivery')
 const buttonUpdateRoute = document.querySelector('.btn-update-routes-delivery')
+const buttonDeleteRoute = document.querySelector('.btn-delete-routes-delivery')
 
 
 const modalRoute = document.querySelector('.area-routes-modal') 
@@ -212,6 +213,7 @@ buttonUpdateRoute.addEventListener('click', ()=> {
 
 buttonDeleteMotoboy.addEventListener('click', verifyIdMotoboy)
 buttonDeleteClient.addEventListener('click', verifyIdClient)
+buttonDeleteRoute.addEventListener('click', verifyIdRoute)
 
 btn_sair.addEventListener('click', deslogar)
 function deslogar() {
@@ -283,6 +285,55 @@ function fillingFieldsCNPJ(data, fieldName, fieldCorporate, fieldAddress, fieldT
     fieldTelephone.value = `${data.estabelecimento.ddd1} ${data.estabelecimento.telefone1}`
     fieldCep.value = data.estabelecimento.cep
     fieldCity.value = data.estabelecimento.cidade.nome
+}
+async function functionDeleteRoute(id) {
+    console.log(id)
+    if(id) {
+        const del = await fetch(`/route/${id}`, {
+            method: 'DELETE',
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded",
+                "Authorization": `Bearer ${localStorage.getItem('token')}`
+            }
+        })
+        const json = await del.json()
+        // if(await json.sucess) {
+        //     clearListRoutes()
+        //     listRoutes() 
+        //     functionCloseModalRoute()
+        //     tagLiRoutes()
+        //     modalAreaButtonsRou.style.display = 'none'
+        // }
+    }
+}
+
+function verifyIdRoute() {
+    const tagLiRoutes2 = document.querySelector('.area-routes .selected')
+    const buttonNoDelete = document.querySelector('.area-routes-modal-buttons .btn-no-delete')
+    const buttonDelete = document.querySelector('.area-routes-modal-buttons .btn-delete')
+    if(!tagLiRoutes2) {
+        openModalWarningRou('Selecione uma rota!')
+    } 
+    if(tagLiRoutes2) {
+        const id = tagLiRoutes2.getAttribute('id-item')
+        openModalWarningRou('Tem certeza que deseja excluir esta rota?')
+        modalAreaButtonsRou.style.display = 'flex'
+        buttonNoDelete.addEventListener('click', functionCloseModalRoute)
+        buttonDelete.addEventListener('click', async() => {
+            await functionDeleteRoute(id)
+            functionCloseModalRoute()
+            setTimeout(()=>{
+                clearListClients()
+                alterarLiQuatro()
+                clearListMotoboys()
+                clearListRoutes()
+                listRoutes()
+                tagLiRoutes()
+            }, 150)
+            }
+        )
+    }   
+    
 }
 function verifyIdMotoboy() {
     const tagLiMotoboys2 = document.querySelector('.area-motoboys .selected')
@@ -451,6 +502,7 @@ function openModalWarningCli(msg) {
 }
 function openModalWarningRou(msg) {
     modalRouteWarning.style.display = 'flex'
+    modalAreaButtonsRou.style.display = 'none'
     modalRouteWarningMsg.innerHTML = msg
 }
 function openModalAdd() {
@@ -595,6 +647,7 @@ async function getRoute(id) {
     const json = await route.json()
     return json
 }
+
 
 async function functionDeleteMotoboy(id) {
     if(id) {
@@ -786,7 +839,8 @@ async function updateRoute(data) {
                 fieldLocalidadeRoute2: data.fieldLocalidadeRoute2 ?? '',
                 fieldNumeroRoute: data.fieldNumeroRoute ?? '',
                 fieldNumeroRoute2: data.fieldNumeroRoute2 ?? '',
-                motoboyId: data.selectMotoboys ?? ''
+                motoboyId: data.selectMotoboys ?? '',
+                clientId: data.selectClients ?? ''
             })
         })
         const json = await route.json()
@@ -796,10 +850,11 @@ async function updateRoute(data) {
         }
         if(json) {
             console.log(json)
-            addMotoboyRoute(data.selectMotoboys, json.route.id, json.route.clientId)
+            // addMotoboyRoute(data.selectMotoboys, json.route.id, json.route.clientId)
             clearListRoutes()
             listRoutes()
             functionCloseModalRoute()
+            tagLiRoutes()
         }
     } else {
         infoRoute.innerHTML = 'Preencha os campos obrigatórios!'

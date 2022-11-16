@@ -63,24 +63,41 @@ export const create = async(req: Request, res: Response) => {
     }
 }
 export const update = async(req: Request, res: Response) => {
-    const { id } = req.params
-    const { requester, clientId, startRoute, endRoute, day, month, year, valueRoute } = req.body
+    const { id } = req.params 
+    const { startRoute, endRoute, valueRoute, cepStartRoute, day, month, year, cepEndRoute, requester, clientId, motoboyId, commentsEndRoute, fieldBairroRoute2, fieldNumeroRoute, fieldNumeroRoute2, fieldLocalidadeRoute, fieldLocalidadeRoute2, fieldLogradouroRoute, fieldLogradouroRoute2, fieldComplementoRoute, fieldComplementoRoute2, fieldBairroRoute } = req.body
+
     const route = await RouteService.findOne(id)
-    
+    const client = await ClientService.findOne(clientId)
     let createdAt = new Date()
-    if(route) {
+    if(route && client) {
         if(day && month && year) {
             createdAt = new Date(`${year}-${month}-${day}`)
         }
-        if(requester || clientId || startRoute || endRoute  || valueRoute || createdAt) {
+        if( startRoute || endRoute  || valueRoute  ) {
             // let client = await ClientService.findOne(clientId)
             const routeUpdated = await RouteService.update(route.id, {
-                requester: requester ? requester : route.requester,
-                clientId: clientId ? clientId : route.clientId,
-                startRoute: startRoute ? startRoute : route.startRoute,
-                endRoute: endRoute ? endRoute : route.endRoute,
-                valueRoute: valueRoute ? parseInt(valueRoute) : route.valueRoute,
-                createdAt: createdAt ? createdAt : route.createdAt
+                cepStartRoute: cepStartRoute ?? route.cepStartRoute,
+                cepEndRoute: cepEndRoute ?? route.cepEndRoute,
+                commentsEndRoute: commentsEndRoute ?? route.commentsEndRoute,
+                clientName: client.nameFantasy ?? '',
+                fieldBairroRoute2: fieldBairroRoute2 ?? route.fieldBairroRoute2,
+                fieldNumeroRoute: fieldNumeroRoute ?? route.fieldNumeroRoute,
+                fieldNumeroRoute2: fieldNumeroRoute2 ?? route.fieldNumeroRoute2,
+                fieldLocalidadeRoute: fieldLocalidadeRoute ?? route.fieldLocalidadeRoute,
+                fieldLocalidadeRoute2: fieldLocalidadeRoute2 ?? route.fieldLocalidadeRoute2,
+                fieldLogradouroRoute: fieldLogradouroRoute ?? route.fieldLogradouroRoute,
+                fieldLogradouroRoute2: fieldLogradouroRoute2 ?? route.fieldLogradouroRoute2,
+                fieldComplementoRoute: fieldComplementoRoute ?? route.fieldComplementoRoute,
+                fieldComplementoRoute2: fieldComplementoRoute2 ?? route.fieldComplementoRoute2,
+                fieldBairroRoute: fieldBairroRoute ?? route.fieldBairroRoute,
+                motoboyId: motoboyId ?? '',
+                description: `Objeto retirado na ${startRoute} e entregue na ${endRoute}`,
+                requester: requester ?? route.requester,
+                clientId: clientId ?? route.clientId,
+                startRoute: startRoute ?? route.startRoute,
+                endRoute: endRoute ?? route.endRoute,
+                valueRoute: parseInt(valueRoute) ?? route.valueRoute,
+                createdAt: createdAt ?? route.createdAt
             })
             if(routeUpdated) {
                 res.status(200).json({route: routeUpdated})
@@ -115,8 +132,10 @@ export const deleteRoute = async(req: Request, res: Response) => {
     const { id } = req.params
     const route = await RouteService.findOne(id)
     if(route) {
+        console.log(route.id)
         await RouteService.deleteRoute(route.id)
         res.status(200).json({success: true})
+        
     } else {
         res.json(400).json({ error: "Dados invalidos"})
     }

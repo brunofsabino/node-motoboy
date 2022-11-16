@@ -33,11 +33,26 @@ type PropUpdate = {
     startRoute?: string, 
     endRoute?: string,
     valueRoute?: number,
-    cep?: string,
+    cepStartRoute?: string,
+    cepEndRoute?: string,
+    clientName?: string,
     clientId?: string,
+    commentsEndRoute?: string,
     requester?: string,
-    createdAt?: Date,
-    done?: boolean
+    description?: string,
+    done?: boolean,
+    fieldLogradouroRoute?: string,
+    fieldLogradouroRoute2?: string,
+    fieldComplementoRoute?: string,
+    fieldComplementoRoute2?: string,
+    fieldBairroRoute?: string,
+    fieldBairroRoute2?: string,
+    fieldLocalidadeRoute?: string,
+    fieldLocalidadeRoute2?: string,
+    fieldNumeroRoute?: string,
+    fieldNumeroRoute2?: string,
+    motoboyId?: string,
+    createdAt?: Date
 }
 
 export const RouteService = {
@@ -57,6 +72,6 @@ export const RouteService = {
         })
     },
     deleteRoute: async(id: string) => {
-        return await prisma.route.delete({ where: { id }})
+        return await prisma.route.delete({ where: { id: id }})
     }
 }
