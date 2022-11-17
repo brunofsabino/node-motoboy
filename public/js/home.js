@@ -297,13 +297,13 @@ async function functionDeleteRoute(id) {
             }
         })
         const json = await del.json()
-        // if(await json.sucess) {
-        //     clearListRoutes()
-        //     listRoutes() 
-        //     functionCloseModalRoute()
-        //     tagLiRoutes()
-        //     modalAreaButtonsRou.style.display = 'none'
-        // }
+        if( json.sucess) {
+            clearListRoutes()
+            listRoutes()
+            tagLiRoutes()
+            modalAreaButtonsRou.style.display = 'none'
+            return true
+        }
     }
 }
 
@@ -315,22 +315,27 @@ function verifyIdRoute() {
         openModalWarningRou('Selecione uma rota!')
     } 
     if(tagLiRoutes2) {
-        const id = tagLiRoutes2.getAttribute('id-item')
+        let id = tagLiRoutes2.getAttribute('id-item')
         openModalWarningRou('Tem certeza que deseja excluir esta rota?')
         modalAreaButtonsRou.style.display = 'flex'
         buttonNoDelete.addEventListener('click', functionCloseModalRoute)
         buttonDelete.addEventListener('click', async() => {
-            await functionDeleteRoute(id)
-            functionCloseModalRoute()
-            setTimeout(()=>{
-                clearListClients()
-                alterarLiQuatro()
-                clearListMotoboys()
-                clearListRoutes()
-                listRoutes()
-                tagLiRoutes()
-            }, 150)
-            }
+            
+            console.log(id)
+            const del = await functionDeleteRoute(id)
+            functionCloseModalRouteDelete()
+            id = ''
+            // if(del) {
+            //         setTimeout(()=>{
+            //             clearListClients()
+            //             alterarLiQuatro()
+            //             clearListMotoboys()
+            //             clearListRoutes()
+            //             listRoutes()
+            //             tagLiRoutes()
+            //         }, 150)
+            //     }
+             }
         )
     }   
     
@@ -564,6 +569,17 @@ function functionCloseModalRoute() {
     modalRouteWarning.style.display = 'none'
     clearListMotoboys()
 }
+function functionCloseModalRouteDelete() {
+    modalRoute.style.display = 'none'
+    modalRouteWarning.style.display = 'none'
+    clearListMotoboys()
+    clearListClients()
+    alterarLiQuatro()
+    clearListRoutes()
+    listRoutes()
+    tagLiRoutes()
+}
+                        
 function openCloseMenu() {
     if(aside.classList.contains('menuClosed')) {
         aside.classList.add('menuOpen')
