@@ -59,6 +59,13 @@ export const RouteService = {
     findAll: async() => {
         return await prisma.route.findMany({})
     },
+    findAllDoneFalse: async() => {
+        return await prisma.route.findMany({
+            where: {
+                done: false
+            }
+        })
+    },
     findOne: async(id: string) => {
         return await prisma.route.findUnique({ where: { id }})
     },
@@ -72,6 +79,6 @@ export const RouteService = {
         })
     },
     deleteRoute: async(id: string) => {
-        return await prisma.route.delete({ where: { id: id }})
+        return await prisma.route.delete({ where: { id }})
     }
 }

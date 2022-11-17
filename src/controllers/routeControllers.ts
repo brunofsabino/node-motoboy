@@ -13,6 +13,15 @@ export const all = async(req: Request, res: Response) => {
         res.json(400).json({ error: "Dados invalidos"})
     }
 }
+
+export const allDoneFalse = async(req: Request, res: Response) => {
+    const routes = await RouteService.findAllDoneFalse()
+    if(routes) {
+        res.status(200).json({routes})
+    } else {
+        res.json(400).json({ error: "Dados invalidos"})
+    }
+}
 export const one = async(req: Request, res: Response) => {
     const { id } = req.params
     const route = await RouteService.findOne(id)

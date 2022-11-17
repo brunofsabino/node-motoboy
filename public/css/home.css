@@ -581,14 +581,14 @@ aside nav a img {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding: 3%;
+    padding: 1% 3%;
 }
 .area-content-routes {
     display: none;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding: 3%;
+    padding: 1% 3%;
 }
 .area-routes-delivery {
     width: 95%;
@@ -612,6 +612,32 @@ aside nav a img {
     border: 5px solid #F28520;
     padding: 20px 20px 35px;
     border-radius: 30px;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    flex-direction: column;
+}
+.area-routes-status {
+    display: flex;
+}
+.area-routes-status .btn-no-done {
+    padding: 8px 15px;
+    margin: 10px 0px;
+    border-top-left-radius: 7px;
+    border-bottom-left-radius: 7px;
+    cursor: pointer;
+}
+.area-routes-status .btn-true-done {
+    padding: 8px 15px;
+    margin: 10px 0px;
+    border-top-right-radius: 7px;
+    border-bottom-right-radius: 7px;
+    cursor: pointer;
+}
+.area-routes-status .btn-no-done.active,
+.area-routes-status .btn-true-done.active {
+    background-color: #000;
+    color: #FFF;
 }
 .area-routes li {
     border: 3px solid #F28520;

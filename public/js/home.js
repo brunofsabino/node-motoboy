@@ -123,9 +123,22 @@ const modalRouteWarningMsg = document.querySelector('.area-modal-warning-msg-rou
 const modalAreaButtonsRou = document.querySelector('.area-routes-modal-buttons') 
 const modalRouteWarn = document.querySelector('.area-routes-modal') 
 const buttonCloseModalRouteWarning = document.querySelector('.area-modal-exit-route')
-// const buttonAddRoute = document.querySelector('.area-clients-modal-content-add .area-modal-submit button')
-// const buttonUpdateRoute = document.querySelector('.btn-update-route ')
 const h1ModalRoute = document.querySelector('.area-routes-modal-content-add .area-modal-header h1')
+
+const buttonRoutesStatus = document.querySelectorAll('.area-routes-status button')
+const buttonRoutesAndamento = document.querySelector('.btn-no-done')
+const buttonRoutesFinaly = document.querySelector('.btn-true-done')
+
+
+buttonRoutesStatus.forEach(item => {
+    item.addEventListener('click', item => {
+        buttonRoutesAndamento.classList.toggle('active')
+        buttonRoutesFinaly.classList.toggle('active')
+        if(buttonRoutesAndamento.classList.contains('active')){
+            listRoutesDoneFalse()
+        } 
+    })
+})
 
 
 buttonAddRoute.addEventListener('click', () => {
@@ -289,7 +302,7 @@ function fillingFieldsCNPJ(data, fieldName, fieldCorporate, fieldAddress, fieldT
 async function functionDeleteRoute(id) {
     console.log(id)
     if(id) {
-        const del = await fetch(`/route/${id}`, {
+        const del = await fetch(`route/${id}`, {
             method: 'DELETE',
             headers: {
                 "Content-Type": "application/x-www-form-urlencoded",
@@ -298,12 +311,16 @@ async function functionDeleteRoute(id) {
         })
         const json = await del.json()
         if( json.sucess) {
+            clearListMotoboys()
+            clearListClients()
+            alterarLiQuatro()
             clearListRoutes()
-            listRoutes()
+            listRoutesDoneFalse()
             tagLiRoutes()
+            functionCloseModalRouteDelete()
             modalAreaButtonsRou.style.display = 'none'
-            return true
         }
+        console.log(json)
     }
 }
 
@@ -320,23 +337,9 @@ function verifyIdRoute() {
         modalAreaButtonsRou.style.display = 'flex'
         buttonNoDelete.addEventListener('click', functionCloseModalRoute)
         buttonDelete.addEventListener('click', async() => {
-            
             console.log(id)
-            const del = await functionDeleteRoute(id)
-            functionCloseModalRouteDelete()
-            id = ''
-            // if(del) {
-            //         setTimeout(()=>{
-            //             clearListClients()
-            //             alterarLiQuatro()
-            //             clearListMotoboys()
-            //             clearListRoutes()
-            //             listRoutes()
-            //             tagLiRoutes()
-            //         }, 150)
-            //     }
-             }
-        )
+            await functionDeleteRoute(id)
+        })
     }   
     
 }
@@ -572,12 +575,6 @@ function functionCloseModalRoute() {
 function functionCloseModalRouteDelete() {
     modalRoute.style.display = 'none'
     modalRouteWarning.style.display = 'none'
-    clearListMotoboys()
-    clearListClients()
-    alterarLiQuatro()
-    clearListRoutes()
-    listRoutes()
-    tagLiRoutes()
 }
                         
 function openCloseMenu() {
@@ -742,7 +739,7 @@ async function addRoutes(data) {
             console.log(json)
             addMotoboyRoute(data.selectMotoboys, json.route.id, json.route.clientId)
             clearListRoutes()
-            listRoutes()
+            listRoutesDoneFalse()
             functionCloseModalRoute()
         }
     } else {
@@ -868,7 +865,7 @@ async function updateRoute(data) {
             console.log(json)
             // addMotoboyRoute(data.selectMotoboys, json.route.id, json.route.clientId)
             clearListRoutes()
-            listRoutes()
+            listRoutesDoneFalse()
             functionCloseModalRoute()
             tagLiRoutes()
         }
@@ -1017,8 +1014,9 @@ async function listClients() {
         })
     }
 }
-async function listRoutes() {
-    const routes = await fetch(`/route`, {
+async function listRoutesDoneFalse() {
+    clearListRoutes()
+    const routes = await fetch(`/route/done/false`, {
         method: 'GET',
         headers: {
             "Content-Type": "application/x-www-form-urlencoded",
@@ -1139,7 +1137,7 @@ function displayFlexDisplayNone(item) {
             alterarLiQuatro()
             clearListMotoboys()
             clearListRoutes()
-            listRoutes()
+            listRoutesDoneFalse()
             tagLiRoutes()
         break
         case 'Notas Fiscais':
