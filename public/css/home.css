@@ -621,14 +621,14 @@ aside nav a img {
     display: flex;
 }
 .area-routes-status .btn-no-done {
-    padding: 8px 15px;
+    padding: 10px 20px;
     margin: 10px 0px;
     border-top-left-radius: 7px;
     border-bottom-left-radius: 7px;
     cursor: pointer;
 }
 .area-routes-status .btn-true-done {
-    padding: 8px 15px;
+    padding: 10px 20px;
     margin: 10px 0px;
     border-top-right-radius: 7px;
     border-bottom-right-radius: 7px;

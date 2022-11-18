@@ -128,7 +128,13 @@ const h1ModalRoute = document.querySelector('.area-routes-modal-content-add .are
 const buttonRoutesStatus = document.querySelectorAll('.area-routes-status button')
 const buttonRoutesAndamento = document.querySelector('.btn-no-done')
 const buttonRoutesFinaly = document.querySelector('.btn-true-done')
+const spanRoute = document.querySelector('.area-routes h2 span')
+const dateRouteFinal = document.querySelector('input[type=date]')
 
+
+// dateRouteFinal.addEventListener('change',)
+
+spanRoute.innerHTML = new Date(Date.now()).toLocaleString().split(',')[0]
 
 buttonRoutesStatus.forEach(item => {
     item.addEventListener('click', item => {
@@ -136,7 +142,10 @@ buttonRoutesStatus.forEach(item => {
         buttonRoutesFinaly.classList.toggle('active')
         if(buttonRoutesAndamento.classList.contains('active')){
             listRoutesDoneFalse()
-        } 
+        } else if(buttonRoutesFinaly.classList.contains('active')) {
+            listRoutesDoneTrue()
+        }
+
     })
 })
 
@@ -1041,6 +1050,33 @@ async function listRoutesDoneFalse() {
         })
     }
 }
+async function listRoutesDoneTrue() {
+    clearListRoutes()
+    const routes = await fetch(`/route/done/true`, {
+        method: 'GET',
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+            "Authorization": `Bearer ${localStorage.getItem('token')}`
+        }
+    })
+    if(routes.status == 401){
+        deslogar()
+    }
+    const json = await routes.json()
+    if(json){
+        json.routes.forEach((item, indice) => {
+            tagUlRoutes.innerHTML += `<li id-item="${item.id}" class="" >
+                                        <div class="area-li"><div class="area-route-circle" >
+                                            <div class="client-circle"></div></div>
+                                            <div class="route-name">Empresa solicitante:${item.clientName}</div>
+                                            <div class="route-start">De:${item.startRoute}</div>
+                                            <div class="route-end">Para:${item.endRoute}</div>
+                                            <div class="route-motoboy">${item.nameMotoboy != null ? 'Motoboy legal' : ''}</div>
+                                        </div>
+                                      </li>`
+        })
+    }
+}
 function clearListRoutes() {
     tagUlRoutes.innerHTML = ''
 }
@@ -1137,7 +1173,7 @@ function displayFlexDisplayNone(item) {
             alterarLiQuatro()
             clearListMotoboys()
             clearListRoutes()
-            listRoutesDoneFalse()
+            buttonRoutesAndamento.click()
             tagLiRoutes()
         break
         case 'Notas Fiscais':

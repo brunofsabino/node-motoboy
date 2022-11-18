@@ -22,6 +22,21 @@ export const allDoneFalse = async(req: Request, res: Response) => {
         res.json(400).json({ error: "Dados invalidos"})
     }
 }
+export const allDoneTrue = async(req: Request, res: Response) => {
+    let createdAt = new Date()
+    let today = new Date(Date.now()).toLocaleString().split(',')[0]
+    let [ day, month, year ] = today.split('/')
+    createdAt = new Date(`${year}-${month}-${day}`)
+    console.log(today, day, month, year)
+    console.log(createdAt)
+    const routes = await RouteService.findAllDoneTrue(createdAt)
+        
+    if(routes) {
+        res.status(200).json({routes})
+    } else {
+        res.json(400).json({ error: "Dados invalidos"})
+    }
+}
 export const one = async(req: Request, res: Response) => {
     const { id } = req.params
     const route = await RouteService.findOne(id)

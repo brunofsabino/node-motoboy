@@ -59,6 +59,19 @@ export const RouteService = {
     findAll: async() => {
         return await prisma.route.findMany({})
     },
+    findAllDoneTrue: async(date: Date) => {
+        return await prisma.route.findMany({
+            where: {
+                done: true,
+                createdAt: date
+                // select: {
+                //     createdAt: {
+                //         gt: date
+                //     }
+                // }
+            }
+        })
+    },
     findAllDoneFalse: async() => {
         return await prisma.route.findMany({
             where: {
