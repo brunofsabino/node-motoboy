@@ -27,7 +27,8 @@ type PropCreate = {
     fieldLocalidadeRoute2?: string,
     fieldNumeroRoute?: string,
     fieldNumeroRoute2?: string,
-    motoboyId: string
+    motoboyId: string,
+    nameMotoboy: string
 }
 type PropUpdate = {
     startRoute?: string, 
@@ -52,23 +53,22 @@ type PropUpdate = {
     fieldNumeroRoute?: string,
     fieldNumeroRoute2?: string,
     motoboyId?: string,
-    createdAt?: Date
+    createdAt?: Date,
+    nameMotoboy?: string
 }
 
 export const RouteService = {
     findAll: async() => {
         return await prisma.route.findMany({})
     },
-    findAllDoneTrue: async(date: Date) => {
+    findAllDoneTrue: async(date: Date, dateMaisUm: Date) => {
         return await prisma.route.findMany({
             where: {
                 done: true,
-                createdAt: date
-                // select: {
-                //     createdAt: {
-                //         gt: date
-                //     }
-                // }
+                createdAt: {
+                    gte: new Date(date),
+                    lt: new Date(dateMaisUm)
+                }
             }
         })
     },

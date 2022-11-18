@@ -23,14 +23,11 @@ export const allDoneFalse = async(req: Request, res: Response) => {
     }
 }
 export const allDoneTrue = async(req: Request, res: Response) => {
-    let createdAt = new Date()
-    let today = new Date(Date.now()).toLocaleString().split(',')[0]
-    let [ day, month, year ] = today.split('/')
-    createdAt = new Date(`${year}-${month}-${day}`)
-    console.log(today, day, month, year)
-    console.log(createdAt)
-    const routes = await RouteService.findAllDoneTrue(createdAt)
-        
+    let { date  } = req.params
+    let dateTime = new Date(date)
+    let createdAt = new Date(date)
+    let createdAt2 = new Date(createdAt.setDate(createdAt.getDate() + 1))
+    const routes = await RouteService.findAllDoneTrue( dateTime, createdAt2)  
     if(routes) {
         res.status(200).json({routes})
     } else {
@@ -50,8 +47,9 @@ export const create = async(req: Request, res: Response) => {
     const { idClient } = req.params
     const { startRoute, endRoute, valueRoute, cepStartRoute, cepEndRoute, requester, motoboyId, commentsEndRoute, fieldBairroRoute2, fieldNumeroRoute, fieldNumeroRoute2, fieldLocalidadeRoute, fieldLocalidadeRoute2, fieldLogradouroRoute, fieldLogradouroRoute2, fieldComplementoRoute, fieldComplementoRoute2, fieldBairroRoute } = req.body
     const client = await ClientService.findOne(idClient)
+    const motoboy = await MotoboyService.findOne(motoboyId)
     console.log(startRoute, endRoute, valueRoute, cepStartRoute, cepEndRoute,  requester, commentsEndRoute, fieldBairroRoute2, fieldNumeroRoute, fieldNumeroRoute2, fieldLocalidadeRoute, fieldLocalidadeRoute2, fieldLogradouroRoute, fieldLogradouroRoute2, fieldComplementoRoute, fieldComplementoRoute2, fieldBairroRoute)
-    if(client && startRoute && endRoute && valueRoute) {
+    if(client && startRoute && endRoute && valueRoute && motoboy) {
         const route = await RouteService.create( {
             startRoute, 
             endRoute, 
@@ -74,7 +72,8 @@ export const create = async(req: Request, res: Response) => {
             fieldLocalidadeRoute2 : fieldLocalidadeRoute2 ?? '',
             fieldNumeroRoute      : fieldNumeroRoute ?? '',
             fieldNumeroRoute2     : fieldNumeroRoute2 ?? '',
-            motoboyId: motoboyId ?? ''
+            motoboyId: motoboyId ?? '',
+            nameMotoboy: motoboy.name
         })
         if(route) {
             res.status(200).json({ route })
@@ -88,7 +87,7 @@ export const create = async(req: Request, res: Response) => {
 }
 export const update = async(req: Request, res: Response) => {
     const { id } = req.params 
-    const { startRoute, endRoute, valueRoute, cepStartRoute, day, month, year, cepEndRoute, requester, clientId, motoboyId, commentsEndRoute, fieldBairroRoute2, fieldNumeroRoute, fieldNumeroRoute2, fieldLocalidadeRoute, fieldLocalidadeRoute2, fieldLogradouroRoute, fieldLogradouroRoute2, fieldComplementoRoute, fieldComplementoRoute2, fieldBairroRoute } = req.body
+    const { startRoute, endRoute, valueRoute, cepStartRoute, day, month, year, cepEndRoute, motoboyName, requester, clientId, motoboyId, commentsEndRoute, fieldBairroRoute2, fieldNumeroRoute, fieldNumeroRoute2, fieldLocalidadeRoute, fieldLocalidadeRoute2, fieldLogradouroRoute, fieldLogradouroRoute2, fieldComplementoRoute, fieldComplementoRoute2, fieldBairroRoute } = req.body
 
     const route = await RouteService.findOne(id)
     const client = await ClientService.findOne(clientId)
@@ -121,7 +120,8 @@ export const update = async(req: Request, res: Response) => {
                 startRoute: startRoute ?? route.startRoute,
                 endRoute: endRoute ?? route.endRoute,
                 valueRoute: parseInt(valueRoute) ?? route.valueRoute,
-                createdAt: createdAt ?? route.createdAt
+                createdAt: createdAt ?? route.createdAt,
+                nameMotoboy: motoboyName ?? route.nameMotoboy
             })
             if(routeUpdated) {
                 res.status(200).json({route: routeUpdated})

@@ -128,28 +128,46 @@ const h1ModalRoute = document.querySelector('.area-routes-modal-content-add .are
 const buttonRoutesStatus = document.querySelectorAll('.area-routes-status button')
 const buttonRoutesAndamento = document.querySelector('.btn-no-done')
 const buttonRoutesFinaly = document.querySelector('.btn-true-done')
+const h2Route = document.querySelector('.area-routes h2 ')
 const spanRoute = document.querySelector('.area-routes h2 span')
 const dateRouteFinal = document.querySelector('input[type=date]')
 
 
-// dateRouteFinal.addEventListener('change',)
 
-spanRoute.innerHTML = new Date(Date.now()).toLocaleString().split(',')[0]
+let day = new Date(Date.now()).toLocaleString().split(',')[0]
+let [dia, mes, ano ] = day.split('/')
+spanRoute.innerHTML = day
+console.log(day)
+dateRouteFinal.value = `${ano}-${mes}-${dia}`
 
 buttonRoutesStatus.forEach(item => {
     item.addEventListener('click', item => {
         buttonRoutesAndamento.classList.toggle('active')
         buttonRoutesFinaly.classList.toggle('active')
         if(buttonRoutesAndamento.classList.contains('active')){
-            listRoutesDoneFalse()
+            routeAndamento()
         } else if(buttonRoutesFinaly.classList.contains('active')) {
-            listRoutesDoneTrue()
+            h2Route.style.display = 'block'
+            dateRouteFinal.style.display = 'block'
+            dateRouteFinal
+            listRoutesDoneTrue(dateRouteFinal.value)
         }
 
     })
 })
 
+dateRouteFinal.addEventListener('change', () => {
+    const find = dateRouteFinal.value
+    let [ ano, mes, dia ] = find.split('-')
+    listRoutesDoneTrue(find)
+    spanRoute.innerHTML = `${dia}/${mes}/${ano}`
+})
 
+function routeAndamento() {
+    h2Route.style.display = 'none'
+    dateRouteFinal.style.display = 'none'
+    listRoutesDoneFalse()
+}
 buttonAddRoute.addEventListener('click', () => {
     
     infoRoute.innerHTML = 'Os campos com asterisco(*) são de preenchimentos obrigatórios'
@@ -1036,6 +1054,7 @@ async function listRoutesDoneFalse() {
         deslogar()
     }
     const json = await routes.json()
+    console.log(json)
     if(json){
         json.routes.forEach((item, indice) => {
             tagUlRoutes.innerHTML += `<li id-item="${item.id}" class="" >
@@ -1044,15 +1063,15 @@ async function listRoutesDoneFalse() {
                                             <div class="route-name">Empresa solicitante:${item.clientName}</div>
                                             <div class="route-start">De:${item.startRoute}</div>
                                             <div class="route-end">Para:${item.endRoute}</div>
-                                            <div class="route-motoboy">${item.nameMotoboy != null ? 'Motoboy legal' : ''}</div>
+                                            <div class="route-motoboy">Rota com: ${item.nameMotoboy ?? ''}</div>
                                         </div>
                                       </li>`
         })
     }
 }
-async function listRoutesDoneTrue() {
+async function listRoutesDoneTrue(date) {
     clearListRoutes()
-    const routes = await fetch(`/route/done/true`, {
+    const routes = await fetch(`/route/done/true/${date}`, {
         method: 'GET',
         headers: {
             "Content-Type": "application/x-www-form-urlencoded",
@@ -1173,7 +1192,7 @@ function displayFlexDisplayNone(item) {
             alterarLiQuatro()
             clearListMotoboys()
             clearListRoutes()
-            buttonRoutesAndamento.click()
+            routeAndamento()
             tagLiRoutes()
         break
         case 'Notas Fiscais':
