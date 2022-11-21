@@ -656,6 +656,10 @@ aside nav a img {
     background-color: #000;
     color: #FFF;
 }
+.area-routes h2 {
+    margin: 10px;
+    font-size: 28px;
+}
 .area-routes h2,
 .area-routes input[type="date"] {
     display: none;
@@ -675,6 +679,12 @@ aside nav a img {
     cursor: pointer;
     margin: 20px 0px;
 }
+.area-routes ul li {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
 .area-routes ul li .area-li {
     flex-wrap: wrap;
     height: inherit;
@@ -683,11 +693,15 @@ aside nav a img {
     display: none;
 } */
 .area-routes ul li  button {
-    width: 15%;
+    width: 18%;
     padding: 5px 0px;
     margin: 6px 30%;
     border-radius: 5px;
     cursor: pointer;
+}
+.area-routes ul li  button:hover {
+    background-color: rgba(0,0,0,.5);
+    color: #FFF;
 }
 .area-routes ul li .area-li .route-name,
 .area-routes ul li .area-li .route-end,

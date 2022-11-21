@@ -126,7 +126,7 @@ const buttonCloseModalRouteWarning = document.querySelector('.area-modal-exit-ro
 const h1ModalRoute = document.querySelector('.area-routes-modal-content-add .area-modal-header h1')
 
 const buttonRoutesStatus = document.querySelectorAll('.area-routes-status button')
-const buttonFinalyRoute = document.querySelectorAll('.area-routes ul li button')
+
 const buttonRoutesAndamento = document.querySelector('.btn-no-done')
 const buttonRoutesFinaly = document.querySelector('.btn-true-done')
 const h2Route = document.querySelector('.area-routes h2 ')
@@ -134,12 +134,17 @@ const spanRoute = document.querySelector('.area-routes h2 span')
 const dateRouteFinal = document.querySelector('input[type=date]')
 
 
-buttonFinalyRoute.forEach(item => {
-    item.addEventListener('click', button => {
-        const id = button.getAttribute('id-item')
-        finalyRoute(id)
+function functionButtonRoutes() {
+    const buttonFinalyRoute = document.querySelectorAll('.area-routes ul li button')
+    buttonFinalyRoute.forEach(item => {
+        item.addEventListener('click', async( button) => {
+            const id = item.getAttribute('id-item')
+            const done = await finalyRoute(id)
+            console.log(id)
+            console.log(done)
+        })
     })
-})
+}
 
 let day = new Date(Date.now()).toLocaleString().split(',')[0]
 let [dia, mes, ano ] = day.split('/')
@@ -159,7 +164,6 @@ buttonRoutesStatus.forEach(item => {
             dateRouteFinal
             listRoutesDoneTrue(dateRouteFinal.value)
         }
-
     })
 })
 
@@ -671,10 +675,11 @@ async function finalyRoute(id) {
         }
     })
     const json = await motoboy.json()
-    clearListMotoboys()
-    clearListRoutes()
-    routeAndamento()
+    // clearListMotoboys()
+    // clearListRoutes()
+    // routeAndamento()
     tagLiRoutes()
+    listRoutesDoneTrue(dateRouteFinal.value)
     return json
 }
 async function getMotoboy(id) {
@@ -1084,16 +1089,18 @@ async function listRoutesDoneFalse() {
                                         <div class="area-li"><div class="area-route-circle" >
                                             <div class="client-circle client-circle-anime"></div></div>
                                             <div class="route-name">Empresa solicitante:${item.clientName}</div>
-                                            <div class="route-start">De:${item.startRoute}</div>
-                                            <div class="route-end">Para:${item.endRoute}</div>
+                                            <div class="route-start"> De:${item.startRoute}</div>
+                                            <div class="route-end"> Para:${item.endRoute}</div>
                                             <div class="route-motoboy">Rota com: ${item.nameMotoboy ?? ''}</div>
-                                            <div class="route-motoboy-value">Valor: R$${item.valueRoute.toFixed(2).replace('.',',') ?? ''}</div><br>
+                                            <div class="route-motoboy-value">Valor: R$${item.valueRoute.toFixed(2).replace('.',',') ?? ''}</div>
                                             
                                         </div>
                                         <button href="" id-item="${item.id}">Finalizar rota</button>
                                       </li>`
         })
     }
+    functionButtonRoutes()
+    tagLiRoutes()
 }
 async function listRoutesDoneTrue(date) {
     clearListRoutes()
@@ -1114,13 +1121,18 @@ async function listRoutesDoneTrue(date) {
                                         <div class="area-li"><div class="area-route-circle" >
                                             <div class="client-circle client-circle-finaly "></div></div>
                                             <div class="route-name">Empresa solicitante:${item.clientName}</div>
-                                            <div class="route-start">De:${item.startRoute}</div>
-                                            <div class="route-end">Para:${item.endRoute}</div>
-                                            <div class="route-motoboy">${item.nameMotoboy != null ? 'Motoboy legal' : ''}</div>
+                                            <div class="route-start">De: ${item.startRoute}</div>
+                                            <div class="route-end">Para: ${item.endRoute}</div>
+                                            <div class="route-motoboy">Rota com: ${item.nameMotoboy ?? ''}</div>
+                                            <div class="route-motoboy-value">Valor: R$${item.valueRoute.toFixed(2).replace('.',',') ?? ''}</div>
                                         </div>
+                                        <button href="" id-item="${item.id}">Alterar para Rota em Andamento</button>
                                       </li>`
         })
     }
+    // tagLiRoutes()
+    functionButtonRoutes()
+    
 }
 function clearListRoutes() {
     tagUlRoutes.innerHTML = ''
