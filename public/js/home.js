@@ -126,6 +126,7 @@ const buttonCloseModalRouteWarning = document.querySelector('.area-modal-exit-ro
 const h1ModalRoute = document.querySelector('.area-routes-modal-content-add .area-modal-header h1')
 
 const buttonRoutesStatus = document.querySelectorAll('.area-routes-status button')
+const buttonFinalyRoute = document.querySelectorAll('.area-routes ul li button')
 const buttonRoutesAndamento = document.querySelector('.btn-no-done')
 const buttonRoutesFinaly = document.querySelector('.btn-true-done')
 const h2Route = document.querySelector('.area-routes h2 ')
@@ -133,6 +134,12 @@ const spanRoute = document.querySelector('.area-routes h2 span')
 const dateRouteFinal = document.querySelector('input[type=date]')
 
 
+buttonFinalyRoute.forEach(item => {
+    item.addEventListener('click', button => {
+        const id = button.getAttribute('id-item')
+        finalyRoute(id)
+    })
+})
 
 let day = new Date(Date.now()).toLocaleString().split(',')[0]
 let [dia, mes, ano ] = day.split('/')
@@ -654,6 +661,22 @@ function sendWhatsMotoboy(data) {
     window.open(url, '_blank')
     console.log(data)
 }
+
+async function finalyRoute(id) {
+    const motoboy = await fetch(`/route/done/${id}`, {
+        method: 'PUT',
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+            "Authorization": `Bearer ${localStorage.getItem('token')}`
+        }
+    })
+    const json = await motoboy.json()
+    clearListMotoboys()
+    clearListRoutes()
+    routeAndamento()
+    tagLiRoutes()
+    return json
+}
 async function getMotoboy(id) {
     const motoboy = await fetch(`/motoboy/${id}`, {
         method: 'GET',
@@ -1059,12 +1082,15 @@ async function listRoutesDoneFalse() {
         json.routes.forEach((item, indice) => {
             tagUlRoutes.innerHTML += `<li id-item="${item.id}" class="" >
                                         <div class="area-li"><div class="area-route-circle" >
-                                            <div class="client-circle"></div></div>
+                                            <div class="client-circle client-circle-anime"></div></div>
                                             <div class="route-name">Empresa solicitante:${item.clientName}</div>
                                             <div class="route-start">De:${item.startRoute}</div>
                                             <div class="route-end">Para:${item.endRoute}</div>
                                             <div class="route-motoboy">Rota com: ${item.nameMotoboy ?? ''}</div>
+                                            <div class="route-motoboy-value">Valor: R$${item.valueRoute.toFixed(2).replace('.',',') ?? ''}</div><br>
+                                            
                                         </div>
+                                        <button href="" id-item="${item.id}">Finalizar rota</button>
                                       </li>`
         })
     }
@@ -1086,7 +1112,7 @@ async function listRoutesDoneTrue(date) {
         json.routes.forEach((item, indice) => {
             tagUlRoutes.innerHTML += `<li id-item="${item.id}" class="" >
                                         <div class="area-li"><div class="area-route-circle" >
-                                            <div class="client-circle"></div></div>
+                                            <div class="client-circle client-circle-finaly "></div></div>
                                             <div class="route-name">Empresa solicitante:${item.clientName}</div>
                                             <div class="route-start">De:${item.startRoute}</div>
                                             <div class="route-end">Para:${item.endRoute}</div>

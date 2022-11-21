@@ -572,10 +572,27 @@ aside nav a img {
 .client-circle {
     width: 10px;
     height: 10px;
-    border: 2px solid;
+    /* border: 2px solid #F22020; */
     border-radius: 50%;
 }
-
+.client-circle-finaly {
+   background-color: #000;
+}
+.client-circle-anime {
+    animation: myAnim 2s ease 0s infinite normal backwards;
+}
+@keyframes myAnim {
+	0%,
+	50%,
+	100% {
+		opacity: 1;
+        background-color: red;
+	}
+	25%,
+	75% {
+		opacity: 0;
+	}
+}
 .area-content-clients {
     display: none;
     flex-direction: column;
@@ -665,14 +682,12 @@ aside nav a img {
 /* .area-routes ul li .area-li .area-route-circle {
     display: none;
 } */
-.area-routes ul li .area-li .route-motoboy {
-    /* background-color: #F28520; */
-    color: #000;
-    width: 100%;
-    text-align: center;
-    padding: 5px;
-    margin: 5px 0px;
-    font-weight: 900;
+.area-routes ul li  button {
+    width: 15%;
+    padding: 5px 0px;
+    margin: 6px 30%;
+    border-radius: 5px;
+    cursor: pointer;
 }
 .area-routes ul li .area-li .route-name,
 .area-routes ul li .area-li .route-end,
