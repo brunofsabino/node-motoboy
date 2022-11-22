@@ -12,7 +12,7 @@ router.get('/motoboyRoute/:id', privateRoute, MotoboyRouteController.one)
 router.post('/motoboyRoute/:motoboyId/:routeId/:clientId', privateRoute, MotoboyRouteController.create)
 // router.put('/motoboyRoute/:id', privateRoute, MotoboyRouteController.update)
 
-// router.delete('/motoboyRoute/:id', privateRoute, MotoboyRouteController.deleteMotoboy)
+// router.delete('/motoboyRoute/:id', privateRoute, MotoboyRouteController.deleteRoute)
 
 
 export default router

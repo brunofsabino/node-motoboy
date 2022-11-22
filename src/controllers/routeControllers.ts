@@ -3,6 +3,7 @@ import { UserService } from "../services/UserService";
 import { MotoboyService } from '../services/MotoboyService'
 import { RouteService } from '../services/RouteService'
 import { ClientService } from "../services/ClientService";
+import { MotoboyRouteService } from "../services/MotoboyRouteService";
 import { Client } from "@prisma/client";
 
 export const all = async(req: Request, res: Response) => {
@@ -157,9 +158,12 @@ export const deleteRoute = async(req: Request, res: Response) => {
     const route = await RouteService.findOne(id)
     if(route) {
         console.log(route.id)
-        await RouteService.deleteRoute(route.id)
-        res.status(200).json({success: true})
-        
+        const motoboyRoute = await MotoboyRouteService.findOneRoute(route.id)
+        if(motoboyRoute) {
+            await MotoboyRouteService.delete(motoboyRoute[0].id)
+            await RouteService.deleteRoute(route.id)
+            res.status(200).json({success: true})
+        }
     } else {
         res.json(400).json({ error: "Dados invalidos"})
     }

@@ -140,8 +140,6 @@ function functionButtonRoutes() {
         item.addEventListener('click', async( button) => {
             const id = item.getAttribute('id-item')
             const done = await finalyRoute(id)
-            console.log(id)
-            console.log(done)
         })
     })
 }
@@ -178,6 +176,7 @@ function routeAndamento() {
     h2Route.style.display = 'none'
     dateRouteFinal.style.display = 'none'
     listRoutesDoneFalse()
+    
 }
 buttonAddRoute.addEventListener('click', () => {
     
@@ -338,6 +337,7 @@ function fillingFieldsCNPJ(data, fieldName, fieldCorporate, fieldAddress, fieldT
     fieldCity.value = data.estabelecimento.cidade.nome
 }
 async function functionDeleteRoute(id) {
+    
     console.log(id)
     if(id) {
         const del = await fetch(`route/${id}`, {
@@ -348,15 +348,11 @@ async function functionDeleteRoute(id) {
             }
         })
         const json = await del.json()
+        functionCloseModalRouteDelete()
         if( json.sucess) {
-            clearListMotoboys()
-            clearListClients()
-            alterarLiQuatro()
-            clearListRoutes()
-            listRoutesDoneFalse()
-            tagLiRoutes()
-            functionCloseModalRouteDelete()
+            
             modalAreaButtonsRou.style.display = 'none'
+            
         }
         console.log(json)
     }
@@ -377,6 +373,7 @@ function verifyIdRoute() {
         buttonDelete.addEventListener('click', async() => {
             console.log(id)
             await functionDeleteRoute(id)
+            
         })
     }   
     
@@ -613,6 +610,17 @@ function functionCloseModalRoute() {
 function functionCloseModalRouteDelete() {
     modalRoute.style.display = 'none'
     modalRouteWarning.style.display = 'none'
+    if(buttonRoutesAndamento.classList.contains('active')){
+        console.log('entrou aqui')
+        routeAndamento()
+        tagLiRoutes()
+    } else if(buttonRoutesFinaly.classList.contains('active')) {
+        h2Route.style.display = 'block'
+        dateRouteFinal.style.display = 'block'
+        dateRouteFinal
+        listRoutesDoneTrue(dateRouteFinal.value)
+        tagLiRoutes()
+    }
 }
                         
 function openCloseMenu() {
@@ -675,11 +683,16 @@ async function finalyRoute(id) {
         }
     })
     const json = await motoboy.json()
-    // clearListMotoboys()
-    // clearListRoutes()
-    // routeAndamento()
-    tagLiRoutes()
-    listRoutesDoneTrue(dateRouteFinal.value)
+    if(buttonRoutesAndamento.classList.contains('active')){
+        routeAndamento()
+        tagLiRoutes()
+    } else if(buttonRoutesFinaly.classList.contains('active')) {
+        h2Route.style.display = 'block'
+        dateRouteFinal.style.display = 'block'
+        dateRouteFinal
+        listRoutesDoneTrue(dateRouteFinal.value)
+        tagLiRoutes()
+    }
     return json
 }
 async function getMotoboy(id) {
@@ -1130,7 +1143,7 @@ async function listRoutesDoneTrue(date) {
                                       </li>`
         })
     }
-    // tagLiRoutes()
+    tagLiRoutes()
     functionButtonRoutes()
     
 }

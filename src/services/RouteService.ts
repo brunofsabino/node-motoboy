@@ -91,7 +91,20 @@ export const RouteService = {
             data
         })
     },
+    deleteRouteRelation: async(id: string) => {
+        return await prisma.route.update({ 
+            where: { id },
+            data: {
+               motoboyRoute : {
+                    delete: {}
+               } 
+            }
+            }
+        )
+    },
     deleteRoute: async(id: string) => {
-        return await prisma.route.delete({ where: { id }})
+        return await prisma.route.delete({
+            where: { id }
+        })
     }
 }

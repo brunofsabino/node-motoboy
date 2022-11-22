@@ -28,6 +28,12 @@ export const MotoboyRouteService = {
     findOne: async(id: string) =>{
         return await prisma.motoboyRoute.findUnique({ where: { id} })
     },
+    findOneRoute: async(id: string) => {
+        return await prisma.motoboyRoute.findMany({ where: { routeId: id } }) 
+    },
+    delete: async(id: string) => {
+        return await prisma.motoboyRoute.delete({ where: { id } }) 
+    },
     create: async(data: PropCreate) => {
         return await prisma.motoboyRoute.create({ data })
     }

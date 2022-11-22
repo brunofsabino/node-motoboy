@@ -50,3 +50,8 @@ export const create = async (req: Request, res: Response) => {
         res.status(404).json({ error: 'Dados invalidos'})
     }
 }
+
+// export const deleteRoute = async(req: Request, res: Response) => {
+//     const { id } = req.params
+//     const idMotoboyRoute = await MotoboyRouteService.findOneIdRoute(id)
+// }
