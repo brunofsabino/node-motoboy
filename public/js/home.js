@@ -563,6 +563,7 @@ function openModalClientAdd() {
     fieldsClear()
 }
 function openModalRouteDeliveryAdd() {
+    fieldsClear()
     modalRoute.style.display = 'flex'
     buttonUpdateRoute2.style.display = 'none'
     listClients()
@@ -593,7 +594,23 @@ function fieldsClear() {
     telephoneClient.value = ''
     CEPClient.value = ''
     cityClient.value = ''
+    fieldStartRoute.value = ''
+    fieldStartRoute2 .value = ''
+    fieldLogradouroRoute .value = ''
+    fieldLogradouroRoute2.value = ''
+    fieldComplementoRoute.value = ''
+    fieldComplementoRoute2.value = ''
+    fieldBairroRoute .value = ''
+    fieldBairroRoute2.value = ''
+    fieldLocalidadeRoute.value = ''
+    fieldLocalidadeRoute2.value = ''
+    fieldNumeroRoute.value = ''
+    fieldNumeroRoute2.value = ''
+    fieldSolicitanteRoute.value = ''
+    fieldCommentsRoute.value = ''
+    valueRoute.value = ''
 }
+
 function functionCloseModal() {
     modalMotoboy.style.display = 'none'
     modalMotoboyWarning.style.display = 'none'
@@ -644,7 +661,7 @@ function openCloseMenu() {
 }
 
 function nameHeader(name){
-    areaName.innerHTML = `Olá ${name}!`
+    areaName.innerHTML = `Olá ${name}`
 }
 nameHeader(areaName.innerHTML = `${localStorage.getItem('name')}!`)
 nameUser.value = localStorage.getItem('name')

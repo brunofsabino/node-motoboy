@@ -265,6 +265,7 @@ aside nav a img {
     display: none;
     justify-content: center;
     align-items: center;
+    z-index: 2;
 }
 .area-motoboys-modal-buttons {
     display: none;
