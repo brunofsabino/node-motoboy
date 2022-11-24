@@ -193,7 +193,8 @@ aside nav a img {
 }
 .area-content-motoboys h1,
 .area-content-clients h1,
-.area-content-routes h1 {
+.area-content-routes h1,
+.area-content-invoices h1 {
     margin: 30px;
     background-color: #F28520;
     padding: 7px 25px;

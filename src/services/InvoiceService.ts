@@ -7,6 +7,7 @@ type PropCreate = {
     motoboyId: string,
     cnpjId: string,
     cnpj: string,
+    date: Date,
     description: string,
     corporateName: string,
     startRoute: string,
@@ -17,7 +18,7 @@ type PropCreate = {
     telephone: string,
     valueRoute: number,
     nameMotoboy: string,
-    numberBoard?: string
+    numberBoard?: string,
 }
 type PropUpdate = {
     motoboyId?: string,

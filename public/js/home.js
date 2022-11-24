@@ -826,13 +826,27 @@ async function addRoutes(data) {
             clearListRoutes()
             listRoutesDoneFalse()
             functionCloseModalRoute()
+            createInvoice(data.selectClients, data.selectMotoboys, json.route.id) //idClient, idMotoboy, idRoute
         }
     } else {
         infoRoute.innerHTML = 'Preencha os campos obrigatórios!'
     }
 }
+async function createInvoice(idClient, idMotoboy, idRoute) {
+    if(idClient && idMotoboy && idRoute) {
+        const invoice = await fetch(`/invoice/${idClient}/${idMotoboy}/${idRoute}`, {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded",
+                "Authorization": `Bearer ${localStorage.getItem('token')}`
+            }
+        })
+        const json = await invoice.json()
+        console.log(json.invoice)
+        
+    } 
+}
 async function addMotoboyRoute(motoboyId, routeId, clientId) {
-    console.log(motoboyId, routeId)
     if(motoboyId && routeId) {
         const motoboyRoute = await fetch(`/motoboyRoute/${motoboyId}/${routeId}/${clientId}`, {
             method: 'POST',
@@ -1263,7 +1277,7 @@ function displayFlexDisplayNone(item) {
             routeAndamento()
             tagLiRoutes()
         break
-        case 'Notas Fiscais':
+        case 'Ordens de Serviço':
             alterarLiCinco()
             // updateHeightAside()
             clearListMotoboys()
