@@ -134,6 +134,12 @@ const spanRoute = document.querySelector('.area-routes h2 span')
 const dateRouteFinal = document.querySelector('input[type=date]')
 
 
+const selectInvoiceClients = document.querySelector('.area-content-invoices .area-invoices select')
+const optionInvoiceClients = document.querySelectorAll('.area-invoices option')
+const dateInitialInvoice = document.querySelector('.area-invoices .data-initial')
+const dateFinalInvoice = document.querySelector('.area-invoices .data-final')
+
+
 function functionButtonRoutes() {
     const buttonFinalyRoute = document.querySelectorAll('.area-routes ul li button')
     buttonFinalyRoute.forEach(item => {
@@ -144,11 +150,16 @@ function functionButtonRoutes() {
     })
 }
 
+let date = new Date()
 let day = new Date(Date.now()).toLocaleString().split(',')[0]
 let [dia, mes, ano ] = day.split('/')
+let ultimoDia = new Date(date.getFullYear(), date.getMonth() + 1, 0).toLocaleString().split(',')[0];
+let [dia2, mes2, ano2 ] = ultimoDia.split('/')
 spanRoute.innerHTML = day
 console.log(day)
 dateRouteFinal.value = `${ano}-${mes}-${dia}`
+dateInitialInvoice.value = `${ano}-${mes}-01`
+dateFinalInvoice.value = `${ano2}-${mes2}-${dia2}`
 
 buttonRoutesStatus.forEach(item => {
     item.addEventListener('click', item => {
@@ -1107,9 +1118,11 @@ async function listClients() {
     const json = await clients.json()
     if(json){
         optionSelectMotoboys.innerHTML += `<option value="">Selecione a empresa solicitante:* </option>`
+        selectInvoiceClients.innerHTML += `<option value="">Selecione um cliente para gerar as ordens de servico:</option>`
         json.clients.forEach((item, indice) => {
             tagUlClients.innerHTML += `<li id-item="${item.id}" class="" ><div class="area-li"><div class="area-client-circle" ><div class="client-circle"></div></div><div class="client-name">${item.nameFantasy}</div><div class="client-cel">${item.cnpj}</div></div></li>`
             optionSelectMotoboys.innerHTML += `<option value="${item.id}">${item.nameFantasy}</option>`
+            selectInvoiceClients.innerHTML += `<option value="${item.id}">${item.nameFantasy}</option>`
         })
     }
 }
@@ -1186,9 +1199,11 @@ function clearListMotoboys() {
     tagUlMotoboys.innerHTML = ''
     optionSelectMotoboys.innerHTML = ''
     
+    
 }
 function clearListClients() {
     tagUlClients.innerHTML = ''
+    selectInvoiceClients.innerHTML = ''
 }
 function tagLiMotoboys() {
     setTimeout(() => {
@@ -1279,7 +1294,8 @@ function displayFlexDisplayNone(item) {
         break
         case 'Ordens de Serviço':
             alterarLiCinco()
-            // updateHeightAside()
+            clearListClients()
+            listClients() 
             clearListMotoboys()
             clearListClients()
         break
