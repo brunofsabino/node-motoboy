@@ -38,8 +38,17 @@ type PropUpdate = {
 }
 
 export const InvoiceService = {
-    findAll: async() => {
-        return await prisma.invoice.findMany({})
+    findAll: async(corporateName : string, dataInitial : Date, dataFinal : Date) => {
+        return await prisma.invoice.findMany({
+            where: {
+                corporateName,
+                date: {
+                    gte: new Date(dataInitial),
+                    lt: new Date(dataFinal)
+                }
+            }
+
+        })
     },
     findOne: async(id: string) => {
         return await prisma.invoice.findUnique( {where: { id }})

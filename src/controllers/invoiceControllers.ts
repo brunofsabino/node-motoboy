@@ -57,12 +57,21 @@ export const remove = async(req: Request, res: Response) => {
     }
 }
 export const all = async(req: Request, res: Response) => {
-    const all = await InvoiceService.findAll()
-    if(all) {
-        res.status(200).json({ invoices: all})
-    } else {
-        res.status(400).json({ error: "Dados invalidos"})
+    const { idClient, dataInitial, dataFinal } = req.params
+    console.log(idClient, dataInitial, dataFinal)
+    const client = await ClientService.findOne(idClient)
+    if(client) {
+        const initialDate = new Date(dataInitial)
+        const finalDate = new Date(dataFinal)
+        console.log(client.corporateName, initialDate, finalDate)
+        const all = await InvoiceService.findAll(client.corporateName, initialDate, finalDate)
+        if(all) {
+            res.status(200).json({ invoices: all})
+        } else {
+            res.status(400).json({ error: "Dados invalidos"})
+        }
     }
+    
 }
 export const one = async(req: Request, res: Response) => {
     const { idInvoice } = req.params

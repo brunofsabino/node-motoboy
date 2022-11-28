@@ -135,7 +135,7 @@ const dateRouteFinal = document.querySelector('input[type=date]')
 
 
 const selectInvoiceClients = document.querySelector('.area-content-invoices .area-invoices select')
-const optionInvoiceClients = document.querySelectorAll('.area-invoices option')
+
 const dateInitialInvoice = document.querySelector('.area-invoices .data-initial')
 const dateFinalInvoice = document.querySelector('.area-invoices .data-final')
 
@@ -150,16 +150,36 @@ function functionButtonRoutes() {
     })
 }
 
-let date = new Date()
-let day = new Date(Date.now()).toLocaleString().split(',')[0]
-let [dia, mes, ano ] = day.split('/')
-let ultimoDia = new Date(date.getFullYear(), date.getMonth() + 1, 0).toLocaleString().split(',')[0];
-let [dia2, mes2, ano2 ] = ultimoDia.split('/')
-spanRoute.innerHTML = day
-console.log(day)
-dateRouteFinal.value = `${ano}-${mes}-${dia}`
-dateInitialInvoice.value = `${ano}-${mes}-01`
-dateFinalInvoice.value = `${ano2}-${mes2}-${dia2}`
+function optionsClientsInvoices() {
+    let date = new Date()
+    let day = new Date(Date.now()).toLocaleString().split(',')[0]
+    let [dia, mes, ano ] = day.split('/')
+    let ultimoDia = new Date(date.getFullYear(), date.getMonth() + 1, 0).toLocaleString().split(',')[0];
+    let [dia2, mes2, ano2 ] = ultimoDia.split('/')
+    spanRoute.innerHTML = day
+    console.log(day)
+    dateRouteFinal.value = `${ano}-${mes}-${dia}`
+    dateInitialInvoice.value = `${ano}-${mes}-01`
+    dateFinalInvoice.value = `${ano2}-${mes2}-${dia2}`
+
+   setTimeout( async() => {
+        const optionInvoiceClients = document.querySelectorAll('.area-content-invoices select option')
+        const options = [...optionInvoiceClients]
+        options[1].setAttribute('selected', '')
+        
+        console.log(selectInvoiceClients.value)
+        if(dateInitialInvoice > dateFinalInvoice || !selectInvoiceClients.value ) {
+
+        }
+        console.log(dateInitialInvoice.value, dateFinalInvoice.value)
+        const invoices = await getInvoices(selectInvoiceClients.value, dateInitialInvoice.value, dateFinalInvoice.value)
+        console.log(invoices)
+   }, 50)
+
+   
+}
+
+
 
 buttonRoutesStatus.forEach(item => {
     item.addEventListener('click', item => {
@@ -722,6 +742,20 @@ async function finalyRoute(id) {
         tagLiRoutes()
     }
     return json
+}
+async function getInvoices(idClient, dataInitial, dataFinal) {
+    if(idClient && dataInitial &&  dataFinal) {
+        const invoices = await fetch(`/invoice/${idClient}/${dataInitial}/${dataFinal}`, {
+            method: 'GET',
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded",
+                "Authorization": `Bearer ${localStorage.getItem('token')}`
+            }
+        })
+        const json = await invoices.json()
+        console.log(json)
+        return json
+    }
 }
 async function getMotoboy(id) {
     const motoboy = await fetch(`/motoboy/${id}`, {
@@ -1298,6 +1332,7 @@ function displayFlexDisplayNone(item) {
             listClients() 
             clearListMotoboys()
             clearListClients()
+            optionsClientsInvoices()
         break
     }
 }
