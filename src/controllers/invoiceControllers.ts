@@ -32,7 +32,7 @@ export const create = async(req: Request, res: Response) => {
             
         })
         if(newInvoice) {
-            newInvoice.numberInvoice += 35674
+            newInvoice.numberInvoice += 23210
             res.status(200).json({ invoice: newInvoice})
         } else {
             res.status(400).json({ error: "Dados invalidos"})
@@ -64,9 +64,11 @@ export const all = async(req: Request, res: Response) => {
         const initialDate = new Date(dataInitial)
         const finalDate = new Date(dataFinal)
         console.log(client.corporateName, initialDate, finalDate)
-        const all = await InvoiceService.findAll(client.corporateName, initialDate, finalDate)
+        let all = await InvoiceService.findAll(client.corporateName, initialDate, finalDate)
         if(all) {
-            res.status(200).json({ invoices: all})
+           let invoices = [...all]
+           invoices.forEach(invoice => invoice.numberInvoice += 23210 )
+                res.status(200).json({invoices})
         } else {
             res.status(400).json({ error: "Dados invalidos"})
         }

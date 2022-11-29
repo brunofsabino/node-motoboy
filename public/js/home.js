@@ -134,12 +134,45 @@ const spanRoute = document.querySelector('.area-routes h2 span')
 const dateRouteFinal = document.querySelector('input[type=date]')
 
 
-const selectInvoiceClients = document.querySelector('.area-content-invoices .area-invoices select')
+const selectInvoiceClients = document.querySelector('.area-content-invoices .area-invoices-filters select')
+const buttonFilterInvoices = document.querySelector('.area-content-invoices .area-invoices-filters button')
+const areaInvoicesWarning = document.querySelector('.area-content-invoices .area-invoices-filters .area-invoices-filters-warning')
 
-const dateInitialInvoice = document.querySelector('.area-invoices .data-initial')
-const dateFinalInvoice = document.querySelector('.area-invoices .data-final')
+const dateInitialInvoice = document.querySelector('.area-invoices-filters .data-initial')
+const dateFinalInvoice = document.querySelector('.area-invoices-filters .data-final')
+const areaInvoices = document.querySelector('.area-content-invoices .area-invoices')
 
+const date = new Date()
+const day = new Date(Date.now()).toLocaleString().split(',')[0]
+const [dia, mes, ano ] = day.split('/')
+const ultimoDia = new Date(date.getFullYear(), date.getMonth() + 1, 0).toLocaleString().split(',')[0];
+const [dia2, mes2, ano2 ] = ultimoDia.split('/')
 
+buttonFilterInvoices.addEventListener('click', async() => {
+    if(dateInitialInvoice.value > dateFinalInvoice.value  ) {
+        areaInvoicesWarning.innerHTML = 'A data inicial não pode ser maior que a data final!'
+    } else if(!selectInvoiceClients.value) {
+        areaInvoicesWarning.innerHTML = 'Selecione um cliente!'
+    } else {
+        areaInvoicesWarning.innerHTML = ''
+        const invoices =  await getInvoices(selectInvoiceClients.value, dateInitialInvoice.value, dateFinalInvoice.value)
+        if(invoices){
+            console.log(invoices)
+            listInvoice(invoices)
+        }
+    }
+    
+    
+})
+function listInvoice(data) {
+    if(data){
+        data.invoices.forEach( item => {
+            const day = new Date(item.date).toLocaleString().split(',')[0]
+            areaInvoices.innerHTML += `<input type="checkbox" id="${item.id}">
+                                       <label for="${item.id}">${day} - Romaneio: ${item.numberInvoice} - Rota feita por: ${item.nameMotoboy} - Valor: R$${item.valueRoute.toFixed(2)}</label><br>`
+        })
+    }
+}
 function functionButtonRoutes() {
     const buttonFinalyRoute = document.querySelectorAll('.area-routes ul li button')
     buttonFinalyRoute.forEach(item => {
@@ -151,11 +184,7 @@ function functionButtonRoutes() {
 }
 
 function optionsClientsInvoices() {
-    let date = new Date()
-    let day = new Date(Date.now()).toLocaleString().split(',')[0]
-    let [dia, mes, ano ] = day.split('/')
-    let ultimoDia = new Date(date.getFullYear(), date.getMonth() + 1, 0).toLocaleString().split(',')[0];
-    let [dia2, mes2, ano2 ] = ultimoDia.split('/')
+   
     spanRoute.innerHTML = day
     console.log(day)
     dateRouteFinal.value = `${ano}-${mes}-${dia}`
@@ -173,10 +202,7 @@ function optionsClientsInvoices() {
         }
         console.log(dateInitialInvoice.value, dateFinalInvoice.value)
         const invoices = await getInvoices(selectInvoiceClients.value, dateInitialInvoice.value, dateFinalInvoice.value)
-        console.log(invoices)
-   }, 50)
-
-   
+   }, 200)
 }
 
 
@@ -753,7 +779,6 @@ async function getInvoices(idClient, dataInitial, dataFinal) {
             }
         })
         const json = await invoices.json()
-        console.log(json)
         return json
     }
 }

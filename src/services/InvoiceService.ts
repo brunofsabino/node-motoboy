@@ -46,6 +46,9 @@ export const InvoiceService = {
                     gte: new Date(dataInitial),
                     lt: new Date(dataFinal)
                 }
+            },
+            orderBy: {
+                date: 'desc',
             }
 
         })
