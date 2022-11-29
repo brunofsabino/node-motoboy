@@ -136,11 +136,15 @@ const dateRouteFinal = document.querySelector('input[type=date]')
 
 const selectInvoiceClients = document.querySelector('.area-content-invoices .area-invoices-filters select')
 const buttonFilterInvoices = document.querySelector('.area-content-invoices .area-invoices-filters button')
+const buttonCheckedTrueInvoices = document.querySelector('.area-content-invoices .allTrueChecked')
+const buttonGenerateInvoices = document.querySelector('.area-content-invoices .invoices-generate')
 const areaInvoicesWarning = document.querySelector('.area-content-invoices .area-invoices-filters .area-invoices-filters-warning')
 
 const dateInitialInvoice = document.querySelector('.area-invoices-filters .data-initial')
 const dateFinalInvoice = document.querySelector('.area-invoices-filters .data-final')
-const areaInvoices = document.querySelector('.area-content-invoices .area-invoices')
+const areaInvoices = document.querySelector('.area-content-invoices .area-invoices ')
+
+
 
 const date = new Date()
 const day = new Date(Date.now()).toLocaleString().split(',')[0]
@@ -148,30 +152,57 @@ const [dia, mes, ano ] = day.split('/')
 const ultimoDia = new Date(date.getFullYear(), date.getMonth() + 1, 0).toLocaleString().split(',')[0];
 const [dia2, mes2, ano2 ] = ultimoDia.split('/')
 
+
+
+buttonCheckedTrueInvoices.addEventListener('click', checkedTrueInvoice)
+
 buttonFilterInvoices.addEventListener('click', async() => {
+    clearListInvoice()
     if(dateInitialInvoice.value > dateFinalInvoice.value  ) {
+        areaInvoicesWarning.style.display = 'block'
         areaInvoicesWarning.innerHTML = 'A data inicial não pode ser maior que a data final!'
     } else if(!selectInvoiceClients.value) {
+        areaInvoicesWarning.style.display = 'block'
         areaInvoicesWarning.innerHTML = 'Selecione um cliente!'
     } else {
+        areaInvoicesWarning.style.display = 'none'
         areaInvoicesWarning.innerHTML = ''
         const invoices =  await getInvoices(selectInvoiceClients.value, dateInitialInvoice.value, dateFinalInvoice.value)
         if(invoices){
             console.log(invoices)
             listInvoice(invoices)
+           
         }
     }
-    
-    
 })
+function checkedTrueInvoice() {
+    const inputsInvoices = document.querySelectorAll('.area-content-invoices .area-invoices input ')
+    inputsInvoices.forEach(item => {
+        item.checked = !item.checked
+    })
+
+    buttonGenerateInvoices.addEventListener('click', () => {
+        inputsInvoices.forEach(item => {
+            
+         console.log("item.checked")
+            
+            
+        })
+    })
+}
+
 function listInvoice(data) {
     if(data){
         data.invoices.forEach( item => {
             const day = new Date(item.date).toLocaleString().split(',')[0]
-            areaInvoices.innerHTML += `<input type="checkbox" id="${item.id}">
-                                       <label for="${item.id}">${day} - Romaneio: ${item.numberInvoice} - Rota feita por: ${item.nameMotoboy} - Valor: R$${item.valueRoute.toFixed(2)}</label><br>`
+            areaInvoices.innerHTML += `<label for="${item.id}"> <input type="checkbox" class="invoicesChecked" id="${item.id}" corporateName="${item.corporateName}" date="${day}" nameFantasy="${item.nameFantasy}"
+                                        description="${item.description}" nameMotoboy="${item.nameMotoboy}" numberInvoice="${item.numberInvoice}" requester="${item.requester}" telephone="${item.telephone}" valueRoute="${item.valueRoute.toFixed(2).replace('.',',')}">
+                                        ${day} - Romaneio: ${item.numberInvoice} - Rota feita por: ${item.nameMotoboy} - R$${item.valueRoute.toFixed(2).replace('.',',')}</label><br>`
         })
     }
+}
+function clearListInvoice() {
+    areaInvoices.innerHTML = ''
 }
 function functionButtonRoutes() {
     const buttonFinalyRoute = document.querySelectorAll('.area-routes ul li button')
@@ -184,7 +215,7 @@ function functionButtonRoutes() {
 }
 
 function optionsClientsInvoices() {
-   
+    clearListInvoice()
     spanRoute.innerHTML = day
     console.log(day)
     dateRouteFinal.value = `${ano}-${mes}-${dia}`
@@ -202,10 +233,11 @@ function optionsClientsInvoices() {
         }
         console.log(dateInitialInvoice.value, dateFinalInvoice.value)
         const invoices = await getInvoices(selectInvoiceClients.value, dateInitialInvoice.value, dateFinalInvoice.value)
+        listInvoice(invoices)
    }, 200)
 }
 
-
+dateRouteFinal.value = `${ano}-${mes}-${dia}`
 
 buttonRoutesStatus.forEach(item => {
     item.addEventListener('click', item => {
@@ -1177,7 +1209,7 @@ async function listClients() {
     const json = await clients.json()
     if(json){
         optionSelectMotoboys.innerHTML += `<option value="">Selecione a empresa solicitante:* </option>`
-        selectInvoiceClients.innerHTML += `<option value="">Selecione um cliente para gerar as ordens de servico:</option>`
+        selectInvoiceClients.innerHTML += `<option value="">Selecione um cliente:</option>`
         json.clients.forEach((item, indice) => {
             tagUlClients.innerHTML += `<li id-item="${item.id}" class="" ><div class="area-li"><div class="area-client-circle" ><div class="client-circle"></div></div><div class="client-name">${item.nameFantasy}</div><div class="client-cel">${item.cnpj}</div></div></li>`
             optionSelectMotoboys.innerHTML += `<option value="${item.id}">${item.nameFantasy}</option>`

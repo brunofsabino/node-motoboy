@@ -48,7 +48,7 @@ export const InvoiceService = {
                 }
             },
             orderBy: {
-                date: 'desc',
+                date: 'asc',
             }
 
         })
