@@ -143,6 +143,7 @@ const areaInvoicesWarning = document.querySelector('.area-content-invoices .area
 const dateInitialInvoice = document.querySelector('.area-invoices-filters .data-initial')
 const dateFinalInvoice = document.querySelector('.area-invoices-filters .data-final')
 const areaInvoices = document.querySelector('.area-content-invoices .area-invoices ')
+const areaInvoicesGenerate = document.querySelector('.area-content-invoices .area-invoices-generate ')
 
 
 
@@ -153,7 +154,35 @@ const ultimoDia = new Date(date.getFullYear(), date.getMonth() + 1, 0).toLocaleS
 const [dia2, mes2, ano2 ] = ultimoDia.split('/')
 
 
-
+buttonGenerateInvoices.addEventListener('click', () => {
+    const inputsInvoices = document.querySelectorAll('.area-content-invoices .area-invoices input ')
+    let invoices = []
+    inputsInvoices.forEach(item => {
+        let checked = item.getAttribute('checked')
+        if(!checked) {
+            areaInvoicesWarning.style.display = 'block'
+            areaInvoicesWarning.innerHTML = 'Selecione ao menos uma ordem de serviço!'
+        }
+        if(checked) {
+            console.log(item)
+            areaInvoicesWarning.style.display = 'none'
+            areaInvoicesWarning.innerHTML = ''
+            invoices.push({
+                id: item.id,
+                corporateName: item.getAttribute('corporatename'),
+                description: item.getAttribute('description'),
+                cnpj: item.getAttribute('cnpj'),
+                nameFantasy: item.getAttribute('namefantasy'),
+                nameMotoboy: item.getAttribute('namemotoboy'),
+                numberInvoice: item.getAttribute('numberinvoice'),
+                requester: item.getAttribute('requester'),
+                telephone: item.getAttribute('telephone'),
+                valueRoute: item.getAttribute('valueroute'),
+            })
+        } 
+    })
+    generateInvoice(invoices)
+})
 buttonCheckedTrueInvoices.addEventListener('click', checkedTrueInvoice)
 
 buttonFilterInvoices.addEventListener('click', async() => {
@@ -171,23 +200,48 @@ buttonFilterInvoices.addEventListener('click', async() => {
         if(invoices){
             console.log(invoices)
             listInvoice(invoices)
-           
+            
         }
     }
 })
+function generateInvoice(invoice) {
+    window.jsPDF = window.jspdf.jsPDF
+
+    let doc = new jsPDF()
+    console.log(invoice)
+    
+    invoice.forEach((item, i) => {
+        console.log(item, i)
+        areaInvoicesGenerate.innerHTML += `${item.id}`
+    })
+    doc.html(areaInvoicesGenerate, {
+        callback: function(doc){
+            doc.save('ordem-de-serviço.pdf')
+        },
+        margin: [10, 10, 10, 10],
+        autoPaging: 'text',
+        x: 0, y: 0,
+        width: 190, windowWidth: 675
+    })
+    
+}
 function checkedTrueInvoice() {
     const inputsInvoices = document.querySelectorAll('.area-content-invoices .area-invoices input ')
     inputsInvoices.forEach(item => {
-        item.checked = !item.checked
+        // item.checked = !item.checked
+        let checked = item.getAttribute('checked')
+        checked ? item.removeAttribute('checked') : item.setAttribute('checked', true)
     })
-
-    buttonGenerateInvoices.addEventListener('click', () => {
-        inputsInvoices.forEach(item => {
-            
-         console.log("item.checked")
-            
-            
-        })
+    
+}
+function checkedTrueInvoice2() {
+    const inputsInvoices = document.querySelectorAll('.area-content-invoices .area-invoices input ')
+    inputsInvoices.forEach(item => {
+        item.addEventListener('change', c => {
+            let checked = item.getAttribute('checked')
+            checked ? item.removeAttribute('checked') : item.setAttribute('checked', true)
+        } )
+        
     })
 }
 
@@ -195,11 +249,12 @@ function listInvoice(data) {
     if(data){
         data.invoices.forEach( item => {
             const day = new Date(item.date).toLocaleString().split(',')[0]
-            areaInvoices.innerHTML += `<label for="${item.id}"> <input type="checkbox" class="invoicesChecked" id="${item.id}" corporateName="${item.corporateName}" date="${day}" nameFantasy="${item.nameFantasy}"
+            areaInvoices.innerHTML += `<label for="${item.id}"> <input type="checkbox" class="invoicesChecked" id="${item.id}" corporatename="${item.corporateName}" cnpj="${item.cnpj}" date="${day}" nameFantasy="${item.nameFantasy}"
                                         description="${item.description}" nameMotoboy="${item.nameMotoboy}" numberInvoice="${item.numberInvoice}" requester="${item.requester}" telephone="${item.telephone}" valueRoute="${item.valueRoute.toFixed(2).replace('.',',')}">
                                         ${day} - Romaneio: ${item.numberInvoice} - Rota feita por: ${item.nameMotoboy} - R$${item.valueRoute.toFixed(2).replace('.',',')}</label><br>`
         })
     }
+    checkedTrueInvoice2()
 }
 function clearListInvoice() {
     areaInvoices.innerHTML = ''

@@ -736,8 +736,8 @@ aside nav a img {
     align-items: center;
 }
 .area-invoices-filters select {
-    width: 37%;
-    padding: 8px 6px;
+    width: 40%;
+    padding: 10px 6px;
     border-radius: 7px;
     outline: none;
 }
@@ -759,8 +759,10 @@ aside nav a img {
 .area-invoices-filter-dates button {
     padding: 5px 30px;
     border-radius: 5px;
-    border: 1px solid;
+    border: 1px solid #0CA4A5;
     cursor: pointer;
+    background-color: #0CA4A5;
+    color: #fff;
 }
 .area-invoices-filters-warning {
     display: none;
@@ -768,4 +770,28 @@ aside nav a img {
     padding: 12px;
     color: #FFF;
     margin: 7px;
+}
+.invoices-generate {
+    padding: 10px 20px;
+    border-radius: 5px;
+    border: 1px solid;
+    font-size: 18px;
+    margin: 15px;
+    background-color: #000;
+    color: #FFF;
+    cursor: pointer;
+}
+.allTrueChecked {
+    padding: 6px 15px;
+    cursor: pointer;
+    background-color: #FFF;
+    border-top: 3px solid;
+    border-left: 3px solid;
+    border-right: 3px solid;
+    border-bottom: none;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+}
+.area-invoices-generate {
+    display: flex;
 }
