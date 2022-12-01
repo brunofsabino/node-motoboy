@@ -143,7 +143,7 @@ const areaInvoicesWarning = document.querySelector('.area-content-invoices .area
 const dateInitialInvoice = document.querySelector('.area-invoices-filters .data-initial')
 const dateFinalInvoice = document.querySelector('.area-invoices-filters .data-final')
 const areaInvoices = document.querySelector('.area-content-invoices .area-invoices ')
-const areaInvoicesGenerate = document.querySelector('.area-content-invoices .area-invoices-generate ')
+const areaInvoicesGenerate = document.querySelector('.area-invoices-generate-modal ')
 
 
 
@@ -165,8 +165,7 @@ buttonGenerateInvoices.addEventListener('click', () => {
         }
         if(checked) {
             console.log(item)
-            areaInvoicesWarning.style.display = 'none'
-            areaInvoicesWarning.innerHTML = ''
+            
             invoices.push({
                 id: item.id,
                 corporateName: item.getAttribute('corporatename'),
@@ -181,7 +180,9 @@ buttonGenerateInvoices.addEventListener('click', () => {
             })
         } 
     })
-    generateInvoice(invoices)
+    if(invoices.length >= 1) {
+        generateInvoice(invoices)
+    }
 })
 buttonCheckedTrueInvoices.addEventListener('click', checkedTrueInvoice)
 
@@ -204,7 +205,11 @@ buttonFilterInvoices.addEventListener('click', async() => {
         }
     }
 })
-function generateInvoice(invoice) {
+async function generateInvoice (invoice) {
+    // window.open('http://localhost:4000/invoice.html', '_blank')
+    areaInvoicesWarning.style.display = 'none'
+    areaInvoicesWarning.innerHTML = ''
+    areaInvoicesGenerate.style.display = 'flex'
     window.jsPDF = window.jspdf.jsPDF
 
     let doc = new jsPDF()
@@ -212,7 +217,8 @@ function generateInvoice(invoice) {
     
     invoice.forEach((item, i) => {
         console.log(item, i)
-        areaInvoicesGenerate.innerHTML += `${item.id}`
+        console.log(areaInvoicesGenerate)
+        // areaInvoicesGenerate.innerHTML += `${item.id}`
     })
     doc.html(areaInvoicesGenerate, {
         callback: function(doc){
@@ -223,6 +229,10 @@ function generateInvoice(invoice) {
         x: 0, y: 0,
         width: 190, windowWidth: 675
     })
+    // setTimeout(()=> {
+    //     areaInvoicesGenerate.style.display = 'none'
+    // }, 300)
+    
     
 }
 function checkedTrueInvoice() {

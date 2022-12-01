@@ -254,7 +254,8 @@ aside nav a img {
 .area-clients-modal-warning,
 .area-clients-modal,
 .area-routes-modal-warning,
-.area-routes-modal {
+.area-routes-modal,
+.area-invoices-generate-modal {
     width: 100%;
     height: 100vh;
     background-color: rgba(0,0,0,0.7);
@@ -296,7 +297,8 @@ aside nav a img {
 }
 .area-motoboys-modal-content-add,
 .area-clients-modal-content-add,
-.area-routes-modal-content-add {
+.area-routes-modal-content-add,
+.area-invoices-generate-content {
     width: 60%;
     background-color:#F2F4FF;
     border-radius: 25px;
@@ -792,6 +794,68 @@ aside nav a img {
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;
 }
-.area-invoices-generate {
-    display: flex;
+.area-invoices-generate-modal {
+    background-color: #FFF;
+    flex-direction: column;
+    justify-content: flex-start;
 }
+.area-invoices-generate-header {
+    height: 55px;
+    width: 100%;
+}
+.area-invoices-generate-modal .container {
+    max-width: 95%;
+    margin: 0 auto;
+}
+.invoice-area-header {
+    display: flex;
+    
+}
+.invoice-area-header img {
+    width: 150px;
+}
+.corporate-name-van {
+    display: flex;
+    flex-direction: column;
+    justify-content: end;
+    font-size: 12px;
+    margin-bottom: 4px;
+    margin-left: -15px;
+}
+.area-invoices-generate-title h1 {
+    margin: 15px;
+}
+.area-invoices-generate-romaneio,
+.area-invoices-generate-client {
+    display: flex;
+    width: 95%;
+}
+.area-invoices-generate-client  {
+    flex-direction: column;
+}
+.area-invoices-romaneio-content,
+.area-invoices-generate-client-content  {
+    padding: 7px 15px;
+    border: 1px solid;
+    border-radius: 5px;
+    font-size: 12px;
+}
+.area-invoices-generate-client-corporate span,
+.area-invoices-generate-client-corporate-info span{
+    padding: 7px 15px;
+    border: 1px solid;
+    border-radius: 5px;
+    font-size: 12px;
+}
+/* .area-invoices-romaneio-content,
+.area-invoices-generate-client,
+.area-invoices-generate-client-corporate,
+.area-invoices-generate-client-corporate-info  {
+    padding: 7px 15px;
+    border: 1px solid;
+    border-radius: 5px;
+    font-size: 12px;
+} */
+/* .area-invoices-generate-client-content {
+
+} */
