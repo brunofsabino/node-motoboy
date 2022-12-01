@@ -254,10 +254,23 @@ aside nav a img {
 .area-clients-modal-warning,
 .area-clients-modal,
 .area-routes-modal-warning,
-.area-routes-modal,
-.area-invoices-generate-modal {
+.area-routes-modal {
     width: 100%;
     height: 100vh;
+    background-color: rgba(0,0,0,0.7);
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 2;
+}
+.area-invoices-generate-modal {
+    width: 100%;
+    min-height: 100vh;
     background-color: rgba(0,0,0,0.7);
     position: fixed;
     top: 0;
@@ -822,31 +835,143 @@ aside nav a img {
     margin-bottom: 4px;
     margin-left: -15px;
 }
+.area-invoices-generate-title {
+    height: 14vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 .area-invoices-generate-title h1 {
     margin: 15px;
 }
+.area-invoices-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    min-height: 70%;
+}
 .area-invoices-generate-romaneio,
-.area-invoices-generate-client {
+.area-invoices-generate-client,
+.area-invoices-generate-routes,
+.area-invoices-generate-signature {
     display: flex;
     width: 95%;
 }
-.area-invoices-generate-client  {
+.area-invoices-romaneio-content {
+    margin-bottom: 10px;
+}
+
+.area-invoices-generate-client,
+.area-invoices-generate-routes,
+.area-invoices-generate-signature {
     flex-direction: column;
 }
+.area-invoices-generate-routes {
+    min-height: 63vh;
+}
 .area-invoices-romaneio-content,
-.area-invoices-generate-client-content  {
+.area-invoices-generate-client-content,
+.area-invoices-generate-routes-content,
+.area-invoices-generate-client-corporate span,
+.area-invoices-generate-client-corporate-info span,
+.area-invoices-routes,
+.area-invoices-routes-date,
+.area-invoices-routes-description,
+.area-invoices-routes-info,
+.area-invoices-routes-value,
+.area-invoices-generate-signature-content {
     padding: 7px 15px;
     border: 1px solid;
     border-radius: 5px;
     font-size: 12px;
 }
-.area-invoices-generate-client-corporate span,
+.area-invoices-routes {
+    display: flex;
+    justify-content: space-evenly;
+}
+.area-invoices-routes-date,
+.area-invoices-routes-description,
+.area-invoices-routes-info,
+.area-invoices-routes-value  {
+    display: flex;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+}
+.area-invoices-routes-description {
+    font-size: 10px;
+    max-width: 33%;
+}
+.area-invoices-routes-info,
+.area-invoices-routes-value {
+    font-size: 10px;
+    max-width: 18%;
+}
+.area-invoices-routes-info {
+    max-width: 20%;
+}
+.area-invoices-generate-client-content,
+.area-invoices-generate-routes-content,
+.area-invoices-generate-signature-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+}
+.area-invoices-generate-client-content{
+    height: 120px;
+}
+
+.area-invoices-generate-routes-content,
+.area-invoices-routes-content {
+    display: flex;
+    flex-direction: column;
+    min-height: 63vh;
+}
+.area-invoices-generate-routes-content,
+.area-invoices-generate-signature-content  {
+    margin-top: 10px;
+}
+
+.area-invoices-generate-signature-content {
+    display: flex;
+    text-align: center;
+    align-items: flex-start;
+    justify-content: center;
+}
+.area-invoices-generate-client-corporate,
+.area-invoices-generate-client-corporate-info,
+.area-invoices-routes {
+    margin: 10px 0px;
+}
+.area-invoices-generate-routes-content p,
+.area-invoices-generate-client-corporate-info span {
+    margin-bottom: 10px;
+}
+.area-invoices-signature {
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    width: 100%;
+}
+.area-invoices-signature-van,
+.area-invoices-signature-cli {
+    display: flex;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    margin-top: 10px;
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 12px;
+}
+/* .area-invoices-generate-client-corporate span,
 .area-invoices-generate-client-corporate-info span{
     padding: 7px 15px;
     border: 1px solid;
     border-radius: 5px;
     font-size: 12px;
-}
+} */
 /* .area-invoices-romaneio-content,
 .area-invoices-generate-client,
 .area-invoices-generate-client-corporate,

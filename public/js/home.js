@@ -170,13 +170,14 @@ buttonGenerateInvoices.addEventListener('click', () => {
                 id: item.id,
                 corporateName: item.getAttribute('corporatename'),
                 description: item.getAttribute('description'),
+                date: item.getAttribute('date'),
                 cnpj: item.getAttribute('cnpj'),
                 nameFantasy: item.getAttribute('namefantasy'),
                 nameMotoboy: item.getAttribute('namemotoboy'),
                 numberInvoice: item.getAttribute('numberinvoice'),
                 requester: item.getAttribute('requester'),
                 telephone: item.getAttribute('telephone'),
-                valueRoute: item.getAttribute('valueroute'),
+                valueRoute: item.getAttribute('valueroute').replace(',', '.'),
             })
         } 
     })
@@ -205,20 +206,42 @@ buttonFilterInvoices.addEventListener('click', async() => {
         }
     }
 })
+const romaneioRoute = document.querySelector('.area-invoices-romaneio-content')
+const nameClientInvoice = document.querySelector('.area-invoices-generate-client-corporate span')
+const infoClientInvoice = document.querySelector('.area-invoices-generate-client-corporate-info span')
+const contentInvoice = document.querySelector('.area-invoices-routes-content')
+const heightClientInvoice = document.querySelector('.area-invoices-generate-routes-content')
+const tagPClientInvoice = document.querySelector('.area-invoices-generate-routes-content p')
+const nameFantasyClientInvoice = document.querySelector('.area-invoices-signature-cli span')
 async function generateInvoice (invoice) {
-    // window.open('http://localhost:4000/invoice.html', '_blank')
     areaInvoicesWarning.style.display = 'none'
     areaInvoicesWarning.innerHTML = ''
     areaInvoicesGenerate.style.display = 'flex'
     window.jsPDF = window.jspdf.jsPDF
-
+    if(invoice.length < 4 ) {
+        contentInvoice.style.minHeight = '59vh'
+        heightClientInvoice.style.minHeight = '59vh'
+    }
     let doc = new jsPDF()
     console.log(invoice)
-    
+    romaneioRoute.innerHTML = `Romaneio: ${invoice[0].numberInvoice}  - Data ${day}`
+    nameClientInvoice.innerHTML = `Razão Social: ${invoice[0].corporateName}`
+    infoClientInvoice.innerHTML = `CNPJ: ${invoice[0].cnpj} - Nome fantasia:  ${invoice[0].nameFantasy} - Telefone: ${invoice[0].telephone}`
+    nameFantasyClientInvoice.innerHTML = `${invoice[0].nameFantasy}`
+   
+    let total = invoice.reduce((a, b) => a + parseInt(b.valueRoute), 0)
+    console.log(total)
     invoice.forEach((item, i) => {
         console.log(item, i)
         console.log(areaInvoicesGenerate)
-        // areaInvoicesGenerate.innerHTML += `${item.id}`
+        contentInvoice.innerHTML += `<div class="area-invoices-routes">
+        <div class="area-invoices-routes-date">Data:<br>${item.date}</div>
+        <div class="area-invoices-routes-description">${item.description}</div>
+        <div class="area-invoices-routes-info">Nome solicitante: ${item.requester}<br>Nome motoboy: ${item.nameMotoboy}</div>
+        <div class="area-invoices-routes-value">Valor corrida:<br> R$${item.valueRoute.replace('.', ',')}</div>
+    </div>`
+    
+    tagPClientInvoice.innerHTML = `Total de corridas: ${i+1} - Valor total : R$${total},00`
     })
     doc.html(areaInvoicesGenerate, {
         callback: function(doc){
@@ -231,6 +254,9 @@ async function generateInvoice (invoice) {
     })
     // setTimeout(()=> {
     //     areaInvoicesGenerate.style.display = 'none'
+    //     contentInvoice.innerHTML = ''
+    //     contentInvoice.style.minHeight = '63vh'
+    //     heightClientInvoice.style.minHeight = '63vh'
     // }, 300)
     
     
