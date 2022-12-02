@@ -194,7 +194,8 @@ aside nav a img {
 .area-content-motoboys h1,
 .area-content-clients h1,
 .area-content-routes h1,
-.area-content-invoices h1 {
+.area-content-invoices h1,
+.area-content-fechamento h1 {
     margin: 30px;
     background-color: #F28520;
     padding: 7px 25px;
@@ -634,13 +635,15 @@ aside nav a img {
     border-radius: 33px;
     padding: 20px 20px 35px; */
 }
-.area-content-invoices {
+.area-content-invoices,
+.area-content-fechamento {
     display: none;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     padding: 3%;
 }
+
 .area-routes {
     width: 100%;
     /* border: 5px solid #F28520; */
@@ -725,7 +728,8 @@ aside nav a img {
 .area-routes ul li .area-li .route-start {
     margin: 5px 0px;
 }
-.area-invoices {
+.area-invoices,
+.area-fechamentos {
     width: 80%;
     display: flex;
     flex-direction: column;
@@ -744,19 +748,22 @@ aside nav a img {
 .area-invoices label input {
     margin-right: 30px;
 }
-.area-invoices-filters {
+.area-invoices-filters,
+.area-fechamento-filters {
     width: 80%;
     display: flex;
     flex-direction: column;
     align-items: center;
 }
-.area-invoices-filters select {
+.area-invoices-filters select,
+.area-fechamento-filters select {
     width: 40%;
     padding: 10px 6px;
     border-radius: 7px;
     outline: none;
 }
-.area-invoices-filter-dates {
+.area-invoices-filter-dates,
+.area-fechamento-filter-dates {
     width: 70%;
     border: 1px solid;
     padding: 8px 9px;
@@ -765,19 +772,23 @@ aside nav a img {
     display: flex;
     justify-content: space-evenly;
     align-items: center;
+    background-color: #bbbbbb63;
 }
-.area-invoices-filter-dates input {
+.area-invoices-filter-dates input,
+.area-fechamento-filter-dates input {
     border-radius: 15px;
     border: 1px solid;
     padding: 5px 7px;
 }
-.area-invoices-filter-dates button {
+.area-invoices-filter-dates button,
+.area-fechamento-filter-dates button {
     padding: 5px 30px;
     border-radius: 5px;
     border: 1px solid #0CA4A5;
     cursor: pointer;
     background-color: #0CA4A5;
     color: #fff;
+    font-weight: 600;
 }
 .area-invoices-filters-warning {
     display: none;
@@ -786,26 +797,29 @@ aside nav a img {
     color: #FFF;
     margin: 7px;
 }
-.invoices-generate {
+.invoices-generate,
+.fechamento-generate {
     padding: 10px 20px;
-    border-radius: 5px;
+    border-radius: 10px;
     border: 1px solid;
     font-size: 18px;
     margin: 15px;
-    background-color: #000;
+    background-color: #747a10;
     color: #FFF;
     cursor: pointer;
+    font-weight: 600;
 }
 .allTrueChecked {
     padding: 6px 15px;
     cursor: pointer;
-    background-color: #FFF;
     border-top: 3px solid;
     border-left: 3px solid;
     border-right: 3px solid;
     border-bottom: none;
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;
+    background-color: #bbbbbb9e;
+    font-weight: 600;
 }
 .area-invoices-generate-modal {
     background-color: #FFF;
@@ -836,7 +850,7 @@ aside nav a img {
     margin-left: -15px;
 }
 .area-invoices-generate-title {
-    height: 14vh;
+    height: 12vh;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -884,6 +898,14 @@ aside nav a img {
     border: 1px solid;
     border-radius: 5px;
     font-size: 12px;
+}
+.area-invoices-generate-routes-content p {
+    background-color: #000;
+    color: #fff;
+    width: 45%;
+    text-align: center;
+    padding: 5px 15px;
+    border-radius: 10px;
 }
 .area-invoices-routes {
     display: flex;
@@ -965,22 +987,13 @@ aside nav a img {
     border-radius: 5px;
     font-size: 12px;
 }
-/* .area-invoices-generate-client-corporate span,
-.area-invoices-generate-client-corporate-info span{
-    padding: 7px 15px;
-    border: 1px solid;
-    border-radius: 5px;
-    font-size: 12px;
-} */
-/* .area-invoices-romaneio-content,
-.area-invoices-generate-client,
-.area-invoices-generate-client-corporate,
-.area-invoices-generate-client-corporate-info  {
-    padding: 7px 15px;
-    border: 1px solid;
-    border-radius: 5px;
-    font-size: 12px;
-} */
-/* .area-invoices-generate-client-content {
-
-} */
+.area-fechamentos {
+    width: 50%;
+}
+.area-fechamentos ul {
+    list-style: none;
+    font-size: 16px;
+}
+.area-fechamentos li {
+    margin: 10px;
+}

@@ -14,6 +14,22 @@ export const all = async(req: Request, res: Response) => {
         res.json(400).json({ error: "Dados invalidos"})
     }
 }
+export const allDate = async(req: Request, res: Response) => {
+    const { idBoy, dataInitial, dataFinal } = req.params
+    const boy = await MotoboyService.findOne(idBoy)
+    if(boy) {
+        const initialDate = new Date(dataInitial)
+        const finalDate = new Date(dataFinal)
+        // console.log(boy.name, initialDate, finalDate)
+        let routes = await RouteService.findAllDate(boy.id, initialDate, finalDate)
+        if(routes) {
+           res.status(200).json({routes})
+        } else {
+            res.status(400).json({ error: "Dados invalidos"})
+        }
+    }
+    
+}
 
 export const allDoneFalse = async(req: Request, res: Response) => {
     const routes = await RouteService.findAllDoneFalse()

@@ -6,6 +6,7 @@ const router = Router()
 
 router.post('/route/:idClient', privateRoute, RouteController.create)
 
+router.get('/route/:idBoy/:dataInitial/:dataFinal', privateRoute, RouteController.allDate)
 router.get('/route', privateRoute, RouteController.all)
 router.get('/route/done/false', privateRoute, RouteController.allDoneFalse)
 router.get('/route/done/true/:date', privateRoute, RouteController.allDoneTrue)

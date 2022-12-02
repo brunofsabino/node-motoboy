@@ -13,11 +13,13 @@ const li2 = document.querySelector('.item2')
 const li3 = document.querySelector('.item3')
 const li4 = document.querySelector('.item4')
 const li5 = document.querySelector('.item5')
+const li6 = document.querySelector('.item6')
 const areaUser = document.querySelector('.area-content-users')
 const areaMotoboy = document.querySelector('.area-content-motoboys')
 const areaClient = document.querySelector('.area-content-clients')
 const areaRoute = document.querySelector('.area-content-routes')
 const areaInvoice = document.querySelector('.area-content-invoices')
+const areaFechamento = document.querySelector('.area-content-fechamento')
 
 const nameUser = document.querySelector('.name')
 const emailUser = document.querySelector('.email')
@@ -146,6 +148,13 @@ const areaInvoices = document.querySelector('.area-content-invoices .area-invoic
 const areaInvoicesGenerate = document.querySelector('.area-invoices-generate-modal ')
 
 
+const selectFechamentoBoys = document.querySelector('.area-content-fechamento .area-fechamento-filters select')
+const buttonFilterFechamento = document.querySelector('.area-content-fechamento .area-fechamento-filters button')
+const dateInitialFechamento = document.querySelector('.area-content-fechamento  .data-initial')
+const dateFinalFechamento = document.querySelector('.area-content-fechamento  .data-final')
+const areaFechamentos = document.querySelector('.area-content-fechamento  .area-fechamentos ul ')
+
+const areaFechamentoWarning = document.querySelector('.area-content-fechamento .area-fechamento-filters .area-fechamento-filters-warning')
 
 const date = new Date()
 const day = new Date(Date.now()).toLocaleString().split(',')[0]
@@ -187,6 +196,24 @@ buttonGenerateInvoices.addEventListener('click', () => {
 })
 buttonCheckedTrueInvoices.addEventListener('click', checkedTrueInvoice)
 
+buttonFilterFechamento.addEventListener('click', async() => {
+    clearListFechamento()
+    if(dateInitialFechamento.value > dateFinalFechamento.value  ) {
+        areaFechamentoWarning.style.display = 'block'
+        areaFechamentoWarning.innerHTML = 'A data inicial não pode ser maior que a data final!'
+    } else if(!selectFechamentoBoys.value) {
+        areaFechamentoWarning.style.display = 'block'
+        areaFechamentoWarning.innerHTML = 'Selecione um cliente!'
+    } else {
+        areaFechamentoWarning.style.display = 'none'
+        areaFechamentoWarning.innerHTML = ''
+        const fechamentos =  await getFechamentos(selectFechamentoBoys.value, dateInitialFechamento.value, dateFinalFechamento.value)
+        if(fechamentos){
+            listFechamento(fechamentos)
+        }
+    }
+})
+
 buttonFilterInvoices.addEventListener('click', async() => {
     clearListInvoice()
     if(dateInitialInvoice.value > dateFinalInvoice.value  ) {
@@ -202,7 +229,6 @@ buttonFilterInvoices.addEventListener('click', async() => {
         if(invoices){
             console.log(invoices)
             listInvoice(invoices)
-            
         }
     }
 })
@@ -213,14 +239,15 @@ const contentInvoice = document.querySelector('.area-invoices-routes-content')
 const heightClientInvoice = document.querySelector('.area-invoices-generate-routes-content')
 const tagPClientInvoice = document.querySelector('.area-invoices-generate-routes-content p')
 const nameFantasyClientInvoice = document.querySelector('.area-invoices-signature-cli span')
+
 async function generateInvoice (invoice) {
     areaInvoicesWarning.style.display = 'none'
     areaInvoicesWarning.innerHTML = ''
     areaInvoicesGenerate.style.display = 'flex'
     window.jsPDF = window.jspdf.jsPDF
-    if(invoice.length < 4 ) {
-        contentInvoice.style.minHeight = '59vh'
-        heightClientInvoice.style.minHeight = '59vh'
+    if(invoice.length < 5 ) {
+        contentInvoice.style.minHeight = '54vh'
+        heightClientInvoice.style.minHeight = '54vh'
     }
     let doc = new jsPDF()
     console.log(invoice)
@@ -245,19 +272,19 @@ async function generateInvoice (invoice) {
     })
     doc.html(areaInvoicesGenerate, {
         callback: function(doc){
-            doc.save('ordem-de-serviço.pdf')
+            doc.save(`Ordem-de-serviço_Romaneio_${invoice[0].numberInvoice}.pdf`)
         },
         margin: [10, 10, 10, 10],
         autoPaging: 'text',
         x: 0, y: 0,
         width: 190, windowWidth: 675
     })
-    // setTimeout(()=> {
-    //     areaInvoicesGenerate.style.display = 'none'
-    //     contentInvoice.innerHTML = ''
-    //     contentInvoice.style.minHeight = '63vh'
-    //     heightClientInvoice.style.minHeight = '63vh'
-    // }, 300)
+    setTimeout(()=> {
+        areaInvoicesGenerate.style.display = 'none'
+        contentInvoice.innerHTML = ''
+        contentInvoice.style.minHeight = '63vh'
+        heightClientInvoice.style.minHeight = '63vh'
+    }, 100)
     
     
 }
@@ -280,7 +307,15 @@ function checkedTrueInvoice2() {
         
     })
 }
-
+function listFechamento(data) {
+    if(data){
+        data.routes.forEach( item => {
+            const day = new Date(item.createdAt).toLocaleString().split(',')[0]
+            areaFechamentos.innerHTML += `<li> ${day} - ${item.clientName} - R$${item.valueRoute.toFixed(2).replace('.',',')}</li>`
+            
+        })
+    }
+}
 function listInvoice(data) {
     if(data){
         data.invoices.forEach( item => {
@@ -295,6 +330,9 @@ function listInvoice(data) {
 function clearListInvoice() {
     areaInvoices.innerHTML = ''
 }
+function clearListFechamento() {
+    areaFechamentos.innerHTML = ''
+}
 function functionButtonRoutes() {
     const buttonFinalyRoute = document.querySelectorAll('.area-routes ul li button')
     buttonFinalyRoute.forEach(item => {
@@ -303,6 +341,27 @@ function functionButtonRoutes() {
             const done = await finalyRoute(id)
         })
     })
+}
+
+function optionsMotoboysFechamento() {
+    clearListFechamento()
+    // spanRoute.innerHTML = day
+    console.log(day)
+    // dateRouteFinal.value = `${ano}-${mes}-${dia}`
+    dateInitialFechamento.value = `${ano}-${mes}-01`
+    dateFinalFechamento.value = `${ano2}-${mes2}-${dia2}`
+
+   setTimeout( async() => {
+        const optionFechamentoBoy = document.querySelectorAll('.area-content-fechamento select option')
+        const options = [...optionFechamentoBoy]
+        options[1].setAttribute('selected', '')
+        
+        console.log(selectFechamentoBoys.value)
+        
+        console.log(dateInitialInvoice.value, dateFinalInvoice.value)
+        const fechamentos = await getFechamentos(selectFechamentoBoys.value, dateInitialFechamento.value, dateFinalFechamento.value)
+        listFechamento(fechamentos)
+   }, 200)
 }
 
 function optionsClientsInvoices() {
@@ -892,6 +951,20 @@ async function finalyRoute(id) {
     }
     return json
 }
+async function getFechamentos(idBoy, dataInitial, dataFinal) {
+    console.log('chegou aqui')
+    if(idBoy && dataInitial &&  dataFinal) {
+        const fechamento = await fetch(`/route/${idBoy}/${dataInitial}/${dataFinal}`, {
+            method: 'GET',
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded",
+                "Authorization": `Bearer ${localStorage.getItem('token')}`
+            }
+        })
+        const json = await fechamento.json()
+        return json
+    }
+}
 async function getInvoices(idClient, dataInitial, dataFinal) {
     if(idClient && dataInitial &&  dataFinal) {
         const invoices = await fetch(`/invoice/${idClient}/${dataInitial}/${dataFinal}`, {
@@ -1276,11 +1349,14 @@ async function listMotoboys() {
     const json = await motoboys.json()
     if(json){
         selectMotoboys.innerHTML += `<option value="">Selecione o motoboy para a corrida:* </option>`
+        selectFechamentoBoys.innerHTML += `<option value="">Selecione um motoboy:</option>`
         json.motoboys.forEach((item, indice) => {
             tagUlMotoboys.innerHTML += `<li id-item="${item.id}" class="" ><div class="area-li"><div class="area-motoboy-circle" ><div class="motoboy-circle"></div></div><div class="motoboy-name">${item.name}</div><div class="motoboy-cel">${item.celular}</div></div></li>`
             selectMotoboys.innerHTML += `<option value="${item.id}">${item.name}</option>`
+            selectFechamentoBoys.innerHTML += `<option value="${item.id}">${item.name}</option>`
         })
     }
+
     if(json.error){
         deslogar()
     }
@@ -1380,12 +1456,11 @@ function clearListMotoboys() {
     selectMotoboys.innerHTML = ''
     tagUlMotoboys.innerHTML = ''
     optionSelectMotoboys.innerHTML = ''
-    
-    
 }
 function clearListClients() {
     tagUlClients.innerHTML = ''
     selectInvoiceClients.innerHTML = ''
+    selectFechamentoBoys.innerHTML = ''
 }
 function tagLiMotoboys() {
     setTimeout(() => {
@@ -1455,14 +1530,12 @@ function displayFlexDisplayNone(item) {
             listMotoboys()
             tagLiMotoboys()
             clearListClients()
-            // updateHeightAside()
         break
         case 'Clientes':
             clearListClients()
             alterarLiTres()
             tagLiClients()
             listClients()
-            // updateHeightAside()
             clearListMotoboys()
             
         break
@@ -1476,11 +1549,19 @@ function displayFlexDisplayNone(item) {
         break
         case 'Ordens de Serviço':
             alterarLiCinco()
-            clearListClients()
             listClients() 
             clearListMotoboys()
             clearListClients()
             optionsClientsInvoices()
+        break
+        case 'Fechamento':
+            alterarLiSeis()
+            clearListClients()
+            listMotoboys()
+            optionsMotoboysFechamento()
+            // clearListMotoboys()
+            // clearListClients()
+            // optionsClientsInvoices()
         break
     }
 }
@@ -1497,11 +1578,13 @@ function alterarLiUm(){
     li3.classList.remove('active')
     li4.classList.remove('active')
     li5.classList.remove('active')
+    li6.classList.remove('active')
     areaUser.style.display = 'flex'
     areaMotoboy.style.display = 'none'
     areaClient.style.display = 'none'
     areaRoute.style.display = 'none'
     areaInvoice.style.display = 'none'
+    areaFechamento.style.display = 'none'
 }
 function alterarLiDois(){
     li1.classList.remove('active')
@@ -1509,11 +1592,13 @@ function alterarLiDois(){
     li3.classList.remove('active')
     li4.classList.remove('active')
     li5.classList.remove('active')
+    li6.classList.remove('active')
     areaUser.style.display = 'none'
     areaMotoboy.style.display = 'flex'
     areaClient.style.display = 'none'
     areaRoute.style.display = 'none'
     areaInvoice.style.display = 'none'
+    areaFechamento.style.display = 'none'
 }
 function alterarLiTres(){
     li1.classList.remove('active')
@@ -1521,11 +1606,13 @@ function alterarLiTres(){
     li3.classList.add('active')
     li4.classList.remove('active')
     li5.classList.remove('active')
+    li6.classList.remove('active')
     areaUser.style.display = 'none'
     areaMotoboy.style.display = 'none'
     areaClient.style.display = 'flex'
     areaRoute.style.display = 'none'
     areaInvoice.style.display = 'none'
+    areaFechamento.style.display = 'none'
 }
 function alterarLiQuatro(){
     li1.classList.remove('active')
@@ -1533,11 +1620,13 @@ function alterarLiQuatro(){
     li3.classList.remove('active')
     li4.classList.add('active')
     li5.classList.remove('active')
+    li6.classList.remove('active')
     areaUser.style.display = 'none'
     areaMotoboy.style.display = 'none'
     areaClient.style.display = 'none'
     areaRoute.style.display = 'flex'
     areaInvoice.style.display = 'none'
+    areaFechamento.style.display = 'none'
 }
 function alterarLiCinco(){
     li1.classList.remove('active')
@@ -1545,9 +1634,25 @@ function alterarLiCinco(){
     li3.classList.remove('active')
     li4.classList.remove('active')
     li5.classList.add('active')
+    li6.classList.remove('active')
     areaUser.style.display = 'none'
     areaMotoboy.style.display = 'none'
     areaClient.style.display = 'none'
     areaRoute.style.display = 'none'
     areaInvoice.style.display = 'flex'
+    areaFechamento.style.display = 'none'
+}
+function alterarLiSeis(){
+    li1.classList.remove('active')
+    li2.classList.remove('active')
+    li3.classList.remove('active')
+    li4.classList.remove('active')
+    li5.classList.remove('active')
+    li6.classList.add('active')
+    areaUser.style.display = 'none'
+    areaMotoboy.style.display = 'none'
+    areaClient.style.display = 'none'
+    areaRoute.style.display = 'none'
+    areaInvoice.style.display = 'none'
+    areaFechamento.style.display = 'flex'
 }
