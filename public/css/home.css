@@ -731,7 +731,7 @@ aside nav a img {
 .area-invoices,
 .area-fechamentos {
     width: 80%;
-    display: flex;
+    display: none;
     flex-direction: column;
     justify-content: center;
     align-items: center;
@@ -790,7 +790,8 @@ aside nav a img {
     color: #fff;
     font-weight: 600;
 }
-.area-invoices-filters-warning {
+.area-invoices-filters-warning,
+.area-fechamento-filters-warning {
     display: none;
     background-color: red;
     padding: 12px;
@@ -810,6 +811,7 @@ aside nav a img {
     font-weight: 600;
 }
 .allTrueChecked {
+    display: none;
     padding: 6px 15px;
     cursor: pointer;
     border-top: 3px solid;
@@ -989,6 +991,12 @@ aside nav a img {
 }
 .area-fechamentos {
     width: 50%;
+}
+.area-fechamentos p {
+    background-color: #000;
+    color: #FFF;
+    padding: 5px 10px;
+    border-radius: 5px;
 }
 .area-fechamentos ul {
     list-style: none;

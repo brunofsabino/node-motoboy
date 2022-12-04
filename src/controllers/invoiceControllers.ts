@@ -58,12 +58,10 @@ export const remove = async(req: Request, res: Response) => {
 }
 export const all = async(req: Request, res: Response) => {
     const { idClient, dataInitial, dataFinal } = req.params
-    console.log(idClient, dataInitial, dataFinal)
     const client = await ClientService.findOne(idClient)
     if(client) {
         const initialDate = new Date(dataInitial)
         const finalDate = new Date(dataFinal)
-        console.log(client.corporateName, initialDate, finalDate)
         let all = await InvoiceService.findAll(client.corporateName, initialDate, finalDate)
         if(all) {
            let invoices = [...all]

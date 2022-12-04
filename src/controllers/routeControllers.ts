@@ -20,7 +20,6 @@ export const allDate = async(req: Request, res: Response) => {
     if(boy) {
         const initialDate = new Date(dataInitial)
         const finalDate = new Date(dataFinal)
-        // console.log(boy.name, initialDate, finalDate)
         let routes = await RouteService.findAllDate(boy.id, initialDate, finalDate)
         if(routes) {
            res.status(200).json({routes})
@@ -65,7 +64,6 @@ export const create = async(req: Request, res: Response) => {
     const { startRoute, endRoute, valueRoute, cepStartRoute, cepEndRoute, requester, motoboyId, commentsEndRoute, fieldBairroRoute2, fieldNumeroRoute, fieldNumeroRoute2, fieldLocalidadeRoute, fieldLocalidadeRoute2, fieldLogradouroRoute, fieldLogradouroRoute2, fieldComplementoRoute, fieldComplementoRoute2, fieldBairroRoute } = req.body
     const client = await ClientService.findOne(idClient)
     const motoboy = await MotoboyService.findOne(motoboyId)
-    console.log(startRoute, endRoute, valueRoute, cepStartRoute, cepEndRoute,  requester, commentsEndRoute, fieldBairroRoute2, fieldNumeroRoute, fieldNumeroRoute2, fieldLocalidadeRoute, fieldLocalidadeRoute2, fieldLogradouroRoute, fieldLogradouroRoute2, fieldComplementoRoute, fieldComplementoRoute2, fieldBairroRoute)
     if(client && startRoute && endRoute && valueRoute && motoboy) {
         const route = await RouteService.create( {
             startRoute, 
@@ -173,7 +171,6 @@ export const deleteRoute = async(req: Request, res: Response) => {
     const { id } = req.params
     const route = await RouteService.findOne(id)
     if(route) {
-        console.log(route.id)
         const motoboyRoute = await MotoboyRouteService.findOneRoute(route.id)
         if(motoboyRoute) {
             await MotoboyRouteService.delete(motoboyRoute[0].id)

@@ -147,12 +147,24 @@ const dateFinalInvoice = document.querySelector('.area-invoices-filters .data-fi
 const areaInvoices = document.querySelector('.area-content-invoices .area-invoices ')
 const areaInvoicesGenerate = document.querySelector('.area-invoices-generate-modal ')
 
+const areaInvoiceContent = document.querySelector('.area-invoices')
+const romaneioRoute = document.querySelector('.area-invoices-romaneio-content')
+const nameClientInvoice = document.querySelector('.area-invoices-generate-client-corporate span')
+const infoClientInvoice = document.querySelector('.area-invoices-generate-client-corporate-info span')
+const contentInvoice = document.querySelector('.area-invoices-routes-content')
+const heightClientInvoice = document.querySelector('.area-invoices-generate-routes-content')
+const tagPClientInvoice = document.querySelector('.area-invoices-generate-routes-content p')
+const nameFantasyClientInvoice = document.querySelector('.area-invoices-signature-cli span')
+
 
 const selectFechamentoBoys = document.querySelector('.area-content-fechamento .area-fechamento-filters select')
 const buttonFilterFechamento = document.querySelector('.area-content-fechamento .area-fechamento-filters button')
 const dateInitialFechamento = document.querySelector('.area-content-fechamento  .data-initial')
 const dateFinalFechamento = document.querySelector('.area-content-fechamento  .data-final')
-const areaFechamentos = document.querySelector('.area-content-fechamento  .area-fechamentos ul ')
+const areaFechamentosContent = document.querySelector('.area-content-fechamento  .area-fechamentos')
+const areaFechamentos = document.querySelector('.area-content-fechamento  .area-fechamentos ul')
+const tagPFechamentos = document.querySelector('.area-content-fechamento  .area-fechamentos p ')
+const buttonGenerateFechamento = document.querySelector('.area-content-fechamento .fechamento-generate')
 
 const areaFechamentoWarning = document.querySelector('.area-content-fechamento .area-fechamento-filters .area-fechamento-filters-warning')
 
@@ -208,9 +220,23 @@ buttonFilterFechamento.addEventListener('click', async() => {
         areaFechamentoWarning.style.display = 'none'
         areaFechamentoWarning.innerHTML = ''
         const fechamentos =  await getFechamentos(selectFechamentoBoys.value, dateInitialFechamento.value, dateFinalFechamento.value)
-        if(fechamentos){
+        
+        if(fechamentos.routes.length >= 1) {
+            areaFechamentoWarning.innerHTML = ''
+            areaFechamentoWarning.style.display = 'none'
+            areaFechamentosContent.style.display = 'none'
+            areaFechamentosContent.style.display = 'flex'
             listFechamento(fechamentos)
+            buttonGenerateFechamento.addEventListener('click', () => {
+                console.log(fechamentos)
+                downloadXLSX(fechamentos)
+            })
+        } else {
+            areaFechamentoWarning.style.display = 'block'
+            areaFechamentoWarning.innerHTML = 'Nenhuma corrida efetuada neste periodo!'
+            areaFechamentosContent.style.display = 'none'
         }
+        
     }
 })
 
@@ -226,19 +252,22 @@ buttonFilterInvoices.addEventListener('click', async() => {
         areaInvoicesWarning.style.display = 'none'
         areaInvoicesWarning.innerHTML = ''
         const invoices =  await getInvoices(selectInvoiceClients.value, dateInitialInvoice.value, dateFinalInvoice.value)
-        if(invoices){
-            console.log(invoices)
+        if(invoices.invoices.length > 0) {
+            areaInvoicesWarning.innerHTML = ''
+            areaInvoicesWarning.style.display = 'none'
+            buttonCheckedTrueInvoices.style.display = 'none'
+            buttonCheckedTrueInvoices.style.display = 'block'
+            areaInvoiceContent.style.display = 'flex'
             listInvoice(invoices)
+        } else {
+            areaInvoicesWarning.style.display = 'flex'
+            areaInvoicesWarning.innerHTML = 'Nenhuma ordem de serviço para este periodo!'
+            buttonCheckedTrueInvoices.style.display = 'none'
+            areaInvoiceContent.style.display = 'none'
         }
     }
 })
-const romaneioRoute = document.querySelector('.area-invoices-romaneio-content')
-const nameClientInvoice = document.querySelector('.area-invoices-generate-client-corporate span')
-const infoClientInvoice = document.querySelector('.area-invoices-generate-client-corporate-info span')
-const contentInvoice = document.querySelector('.area-invoices-routes-content')
-const heightClientInvoice = document.querySelector('.area-invoices-generate-routes-content')
-const tagPClientInvoice = document.querySelector('.area-invoices-generate-routes-content p')
-const nameFantasyClientInvoice = document.querySelector('.area-invoices-signature-cli span')
+
 
 async function generateInvoice (invoice) {
     areaInvoicesWarning.style.display = 'none'
@@ -308,13 +337,16 @@ function checkedTrueInvoice2() {
     })
 }
 function listFechamento(data) {
+    let total = data.routes.reduce((a, b) => a + parseInt(b.valueRoute), 0)
+    console.log(total)
     if(data){
-        data.routes.forEach( item => {
+        data.routes.forEach( (item, i) => {
             const day = new Date(item.createdAt).toLocaleString().split(',')[0]
-            areaFechamentos.innerHTML += `<li> ${day} - ${item.clientName} - R$${item.valueRoute.toFixed(2).replace('.',',')}</li>`
-            
+            areaFechamentos.innerHTML += `<li> ${day} - ${item.clientName} - R$${(item.valueRoute * 0.70).toFixed(2).replace('.',',')}</li>`
+            tagPFechamentos.innerHTML = `Total de corridas: ${i + 1} - Valor total: R$${(total * 0.70 ).toFixed(2).replace('.',',')}`
         })
     }
+    
 }
 function listInvoice(data) {
     if(data){
@@ -360,9 +392,53 @@ function optionsMotoboysFechamento() {
         
         console.log(dateInitialInvoice.value, dateFinalInvoice.value)
         const fechamentos = await getFechamentos(selectFechamentoBoys.value, dateInitialFechamento.value, dateFinalFechamento.value)
-        listFechamento(fechamentos)
+        if(fechamentos.routes.length >= 1) {
+            areaFechamentoWarning.innerHTML = ''
+            areaFechamentoWarning.style.display = 'none'
+            areaFechamentosContent.style.display = 'none'
+            areaFechamentosContent.style.display = 'flex'
+            listFechamento(fechamentos)
+            buttonGenerateFechamento.addEventListener('click', () => {
+                console.log(fechamentos)
+                downloadXLSX(fechamentos)
+            })
+        } else {
+            areaFechamentoWarning.style.display = 'block'
+            areaFechamentoWarning.innerHTML = 'Nenhuma corrida efetuada neste periodo!'
+            areaFechamentosContent.style.display = 'none'
+        }
    }, 200)
 }
+const downloadXLSX = (data) => {
+    const wb = XLSX.utils.book_new();
+    
+    wb.Props = {
+      Title: `Fechamento ${data.routes[0].nameMotoboy}`,
+      Subject: 'Fechamento Van Express',
+      Author: 'Vanderlei',
+      CreatedDate: new Date(),
+    };
+    
+    wb.SheetNames.push(`Fechamento ${data.routes[0].nameMotoboy}`);
+   
+    // areaFechamentos.innerHTML += `<li> ${day} - ${item.clientName} - R$${(item.valueRoute * 0.70).toFixed(2).replace('.',',')}</li>`
+    // tagPFechamentos.innerHTML = `Total de corridas: ${i + 1} - Valor total: R$${(total * 0.70 ).toFixed(2).replace('.',',')}`
+    
+    const dados = [
+      ['Nome', 'Data', 'Cliente', 'Descrição', 'Valor'],
+    //   ['Naruto', 'folha123', 'uzumaki@folha.oculta', 'https://you.be/h97g9vebv'],
+    //   ['Kakaroto', 'veditaAmigao', 'kakaroto@dahora.jp', 'https://you.be/h97g9vebv']
+    ];
+    data.routes.forEach( item => {
+        const day = new Date(item.createdAt).toLocaleString().split(',')[0]
+        dados.push([item.nameMotoboy, day, item.clientName, item.description, (item.valueRoute * 0.70)])
+    })
+    const ws = XLSX.utils.aoa_to_sheet(dados);
+    
+    wb.Sheets[`Fechamento ${data.routes[0].nameMotoboy}`] = ws;
+    
+    XLSX.writeFile(wb, `Fechamento ${data.routes[0].nameMotoboy}.xlsx`, { bookType: 'xlsx', type: 'bynary'});
+  };
 
 function optionsClientsInvoices() {
     clearListInvoice()
@@ -383,7 +459,19 @@ function optionsClientsInvoices() {
         }
         console.log(dateInitialInvoice.value, dateFinalInvoice.value)
         const invoices = await getInvoices(selectInvoiceClients.value, dateInitialInvoice.value, dateFinalInvoice.value)
-        listInvoice(invoices)
+        if(invoices.invoices.length > 0) {
+            areaInvoicesWarning.innerHTML = ''
+            areaInvoicesWarning.style.display = 'none'
+            buttonCheckedTrueInvoices.style.display = 'none'
+            buttonCheckedTrueInvoices.style.display = 'block'
+            areaInvoiceContent.style.display = 'flex'
+            listInvoice(invoices)
+        } else {
+            areaInvoicesWarning.style.display = 'flex'
+            areaInvoicesWarning.innerHTML = 'Nenhuma ordem de serviço para este periodo!'
+            buttonCheckedTrueInvoices.style.display = 'none'
+            areaInvoiceContent.style.display = 'none'
+        }
    }, 200)
 }
 
@@ -952,7 +1040,6 @@ async function finalyRoute(id) {
     return json
 }
 async function getFechamentos(idBoy, dataInitial, dataFinal) {
-    console.log('chegou aqui')
     if(idBoy && dataInitial &&  dataFinal) {
         const fechamento = await fetch(`/route/${idBoy}/${dataInitial}/${dataFinal}`, {
             method: 'GET',
@@ -1554,7 +1641,7 @@ function displayFlexDisplayNone(item) {
             clearListClients()
             optionsClientsInvoices()
         break
-        case 'Fechamento':
+        case 'Fechamentos':
             alterarLiSeis()
             clearListClients()
             listMotoboys()
