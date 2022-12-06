@@ -40,6 +40,7 @@ export const allDoneFalse = async(req: Request, res: Response) => {
 }
 export const allDoneTrue = async(req: Request, res: Response) => {
     let { date  } = req.params
+    console.log(date)
     let dateTime = new Date(date)
     let createdAt = new Date(date)
     let createdAt2 = new Date(createdAt.setDate(createdAt.getDate() + 1))

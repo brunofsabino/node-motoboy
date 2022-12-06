@@ -72,8 +72,8 @@ model Route {
   fieldNumeroRoute2      String?
   done                   Boolean  @default(false)
 
-  user   User   @relation(fields: [userId], references: [id])
-  client Client @relation(fields: [clientId], references: [id])
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  client Client @relation(fields: [clientId], references: [id], onDelete: Cascade)
 
   route        Invoice[]
   motoboyRoute MotoboyRoute[]
@@ -99,9 +99,9 @@ model MotoboyRoute {
   valueRoute       Int
   description      String
 
-  boy    Motoboy @relation(fields: [motoboyId], references: [id])
+  boy    Motoboy @relation(fields: [motoboyId], references: [id], onDelete: Cascade)
   route  Route   @relation(fields: [routeId], references: [id], onDelete: Cascade)
-  client Client  @relation(fields: [clientId], references: [id])
+  client Client  @relation(fields: [clientId], references: [id], onDelete: Cascade)
 
   @@map("motoboysRoutes")
 }
@@ -153,9 +153,9 @@ model Invoice {
   endRoute      String
   valueRoute    Int
 
-  route      Route   @relation(fields: [idRoute], references: [id])
-  cnpjClient Client  @relation(fields: [cnpjId], references: [id])
-  motoboy    Motoboy @relation(fields: [motoboyId], references: [id])
+  route      Route   @relation(fields: [idRoute], references: [id], onDelete: Cascade)
+  cnpjClient Client  @relation(fields: [cnpjId], references: [id], onDelete: Cascade)
+  motoboy    Motoboy @relation(fields: [motoboyId], references: [id], onDelete: Cascade)
 
   @@map("invoices")
 }

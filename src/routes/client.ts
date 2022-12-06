@@ -10,14 +10,7 @@ router.get('/client/:idClient', privateRoute, ClientController.one)
 router.put('/client/:idClient', privateRoute, ClientController.update)
 router.delete('/client/:idClient', privateRoute, ClientController.deleteClient)
 
-// router.get('/motoboy', privateRoute, MotoboyController.all)
-// router.get('/motoboy/:id', privateRoute, MotoboyController.one)
 
-
-
-// router.put('/motoboy/:id', privateRoute, MotoboyController.update)
-
-// router.delete('/motoboy/:id', privateRoute, MotoboyController.deleteMotoboy)
 
 
 export default router

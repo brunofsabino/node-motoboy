@@ -7,8 +7,6 @@ const router = Router()
 router.get('/motoboyRoute', privateRoute, MotoboyRouteController.all)
 router.get('/motoboyRoute/:id', privateRoute, MotoboyRouteController.one)
 
-
-
 router.post('/motoboyRoute/:motoboyId/:routeId/:clientId', privateRoute, MotoboyRouteController.create)
 // router.put('/motoboyRoute/:id', privateRoute, MotoboyRouteController.update)
 

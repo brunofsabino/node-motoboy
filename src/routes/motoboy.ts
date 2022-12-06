@@ -6,9 +6,6 @@ const router = Router()
 
 router.get('/motoboy', privateRoute, MotoboyController.all)
 router.get('/motoboy/:id', privateRoute, MotoboyController.one)
-
-
-
 router.post('/motoboy/:id', privateRoute, MotoboyController.create)
 router.put('/motoboy/:id', privateRoute, MotoboyController.update)
 

@@ -420,14 +420,9 @@ const downloadXLSX = (data) => {
     };
     
     wb.SheetNames.push(`Fechamento ${data.routes[0].nameMotoboy}`);
-   
-    // areaFechamentos.innerHTML += `<li> ${day} - ${item.clientName} - R$${(item.valueRoute * 0.70).toFixed(2).replace('.',',')}</li>`
-    // tagPFechamentos.innerHTML = `Total de corridas: ${i + 1} - Valor total: R$${(total * 0.70 ).toFixed(2).replace('.',',')}`
     
     const dados = [
-      ['Nome', 'Data', 'Cliente', 'Descrição', 'Valor'],
-    //   ['Naruto', 'folha123', 'uzumaki@folha.oculta', 'https://you.be/h97g9vebv'],
-    //   ['Kakaroto', 'veditaAmigao', 'kakaroto@dahora.jp', 'https://you.be/h97g9vebv']
+      ['Nome', 'Data', 'Cliente', 'Descrição', 'Valor']
     ];
     data.routes.forEach( item => {
         const day = new Date(item.createdAt).toLocaleString().split(',')[0]
@@ -484,10 +479,11 @@ buttonRoutesStatus.forEach(item => {
         if(buttonRoutesAndamento.classList.contains('active')){
             routeAndamento()
         } else if(buttonRoutesFinaly.classList.contains('active')) {
+            listRoutesDoneTrue(dateRouteFinal.value)
             h2Route.style.display = 'block'
             dateRouteFinal.style.display = 'block'
-            dateRouteFinal
-            listRoutesDoneTrue(dateRouteFinal.value)
+            spanRoute.innerHTML = `${dia}/${mes}/${ano}`
+            
         }
     })
 })
@@ -988,9 +984,9 @@ function openCloseMenu() {
 }
 
 function nameHeader(name){
-    areaName.innerHTML = `Olá ${name}`
+    areaName.innerHTML = `Olá ${name}!`
 }
-nameHeader(areaName.innerHTML = `${localStorage.getItem('name')}!`)
+nameHeader(areaName.innerHTML = `${localStorage.getItem('name')}`)
 nameUser.value = localStorage.getItem('name')
 emailUser.value = localStorage.getItem('email')
 
@@ -1505,14 +1501,16 @@ async function listRoutesDoneFalse() {
     tagLiRoutes()
 }
 async function listRoutesDoneTrue(date) {
+    console.log(date)
     clearListRoutes()
-    const routes = await fetch(`/route/done/true/${date}`, {
+    const routes = await fetch(`/route/true/${date}`, {
         method: 'GET',
         headers: {
             "Content-Type": "application/x-www-form-urlencoded",
             "Authorization": `Bearer ${localStorage.getItem('token')}`
         }
     })
+    console.log(routes)
     if(routes.status == 401){
         deslogar()
     }
